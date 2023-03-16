@@ -1,210 +1,549 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hans">
+
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>Archives | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta property="og:type" content="website">
 <meta property="og:title" content="Hexo">
 <meta property="og:url" content="http://example.com/archives/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:locale" content="en_US">
+<meta property="og:locale">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
+
+
+<title >Hexo</title>
+
+<!-- Favicon -->
+
+    <link href='/favicon-16x16.png?v=2.0.3' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/favicon-32x32.png?v=2.0.3' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/apple-touch-icon.png?v=2.0.3' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
     
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
     
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+<link rel="stylesheet" href="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
 
-  
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"example.com","author":"John Doe","root":"/","typed_text":["Web Developer"],"theme_version":"2.0.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"favicon-32x32.png","icon16":"favicon-16x16.png","icon32":"favicon-32x32.png","appleTouchIcon":"apple-touch-icon.png","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":false,"isHome":false,"postUpdate":"2023-03-16 17:28:29"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.0.3" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
 <meta name="generator" content="Hexo 6.3.0"></head>
 
 <body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
 
-      <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2023" class="archive-year">2023</a>
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
-        <div class="archives">
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" data-scroll-container style="opacity: 0">
+          <div data-scroll-section id="content" class="trm-scroll-section">
+
+            <div class="locomotive-scroll__sticky-target" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none;"></div>
+
+            <!-- top bar -->
+            <header class="trm-top-bar" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
     
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2023/03/16/OS-Lab1/" class="archive-article-date">
-  <time class="dt-published" datetime="2023-03-16T08:36:58.000Z" itemprop="datePublished">Mar 16</time>
+        <img alt="logo" src="/favicon-32x32.png">
+    
+    
+        <div class="trm-logo-text">
+            Gao<span>Jiaxuan</span>
+        </div>
+    
 </a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/03/16/OS-Lab1/">OS-Lab1</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2023/03/16/hello-world/" class="archive-article-date">
-  <time class="dt-published" datetime="2023-03-16T08:19:44.824Z" itemprop="datePublished">Mar 16</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/03/16/hello-world/">Hello World</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-
-  
-    
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/03/">March 2023</a></li></ul>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    home
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a  href="/archives2/" target="">
+                            archives2
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children current-menu-item">
+                <a data-no-swup href="/archives/" target="">
+                    archives
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
     </div>
-  </div>
+    <!-- mode switcher place end -->
 
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
 
-  
+            <!-- body -->
+            <div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner" data-scroll data-scroll-direction="vertical">
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2023/03/16/OS-Lab1/">OS-Lab1</a>
-          </li>
-        
-          <li>
-            <a href="/2023/03/16/hello-world/">Hello World</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" data-scroll data-scroll-direction="vertical" data-scroll-speed="-3" src="/img/banner.png">
+    <!-- banner cover end -->
+    
 
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2023 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container" data-scroll data-scroll-direction="vertical" data-scroll-speed="0">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            The article archive
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            云间连下榻，<br>天上接行杯。
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        archives
+                                    </span
+                                ></li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <a href="#about-triger" data-scroll-to="#about-triger" data-scroll-offset="-130" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </a>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div id="page-sidebar" class="col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    
+
+<div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card" data-scroll data-scroll-repeat data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="60"> 
+    
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/avatar.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        Xenon
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+        <a href="https://gitee.com" title="gitee" rel="nofollow" target="_blank">
+            <i class="iconfont iconfont cg-gitee"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                火星
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                18
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:2283509194@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+    
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div id="page-content" class="col-lg-8">
+                <div class="trm-content" id="trm-content">
+                    <div data-scroll data-scroll-repeat data-scroll-offset="500" id="about-triger"></div>
+
+                    <div class="row">
+    <div class="col-lg-12">
+        <div class="trm-card">
+            <div style="padding: 0 20px;">
+                
+                    <ul class="row trm-list" style="margin-bottom: 0px;"><li class="col-lg-4 trm-list-item" style="margin: 6px 0;"><a class="archive-list-link" href="/archives/2023/">2023</a><span class="archive-list-count">（2）</span></li></ul>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- history -->
+
+<div class="row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            
+                所有归档
+            
+            <span data-number="01"></span>
+        </h5>
+    </div>
+    <div class="col-lg-12">
+        <!-- timeline -->
+        <div class="trm-timeline">
+            
+            <div class="trm-timeline-item trm-scroll-animation" data-scroll data-scroll-offset="40">
+                <div class="trm-timeline-mark-light"></div>
+                <div class="trm-timeline-mark"></div>
+                <div class="trm-a trm-timeline-content more">
+                    
+                        <div class="trm-card-header">
+                            <div class="trm-left-side">
+                                <h6>
+                                    <a href="/2023/03/16/OS-Lab1/" class="trm-anima-link">
+                                        OS-Lab1
+                                    </a>
+                                </h6>
+                                <div class="trm-text-sm trm-accent-color trm-mt-15">
+                                    <ul class="trm-card-data trm-label ">
+                                        <li class="trm-accent-color">03/16</li>
+                                        <li class="trm-accent-color">16:36</li>
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    
+                </div>
+            </div>
+            
+            <div class="trm-timeline-item trm-scroll-animation" data-scroll data-scroll-offset="40">
+                <div class="trm-timeline-mark-light"></div>
+                <div class="trm-timeline-mark"></div>
+                <div class="trm-a trm-timeline-content more">
+                    
+                        <div class="trm-card-header">
+                            <div class="trm-left-side">
+                                <h6>
+                                    <a href="/2023/03/16/hello-world/" class="trm-anima-link">
+                                        Hello World
+                                    </a>
+                                </h6>
+                                <div class="trm-text-sm trm-accent-color trm-mt-15">
+                                    <ul class="trm-card-data trm-label ">
+                                        <li class="trm-accent-color">03/16</li>
+                                        <li class="trm-accent-color">16:19</li>
+                                        
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    
+                </div>
+            </div>
+            
+        </div>
+        <!-- timeline end -->
+    </div>
+</div>
+
+<!-- history end -->
+
+
+    <div class="trm-pagination">
+        <span class="page-number current">1</span>
+    </div>
+
+
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation" data-scroll data-scroll-offset="50">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2020- 2023</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">Xenon</span>
+        </div>
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.3.0
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                主题 - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.0.3
+            </span>
+        </div>
+      
+
+     
+
+     
 </footer>
+ 
+                    <!-- footer end -->
 
+                </div>
+            </div>
+        </div>
     </div>
-    <nav id="mobile-nav">
+</div>
+            <!-- body end -->
+
+            <div class="trm-fixed-container" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+          </div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+
+  </div>
+  <!-- app wrapper end -->
+
   
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.0.3"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
     
 
 
-<script src="/js/jquery-3.4.1.min.js"></script>
+
+<!-- CDN -->
 
 
+    
 
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
+    
 
-
-
-
-<script src="/js/script.js"></script>
+    
 
 
 
 
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
 
-  </div>
+
+<script id="async-script" src="/js/main.js?v=2.0.3"></script>
+
 </body>
+
 </html>
