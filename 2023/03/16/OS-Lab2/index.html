@@ -7,12 +7,12 @@
 <meta name="full-screen" content="yes">
 <meta name="theme-color" content="#317EFB" />
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
-<meta name="description" content="Lab1 实验报告一、思考题Thinking 1.1 答： 执行 gcc -E hello.c后部分代码如下  执行 objdump -DS hello.o &gt; test.txt后main代码如下  执行  gcc hello.o -o hello objdump -DS hello &gt; test.txt后main代码如下  执行 mips-linux-gnu-gcc -E hello">
+<meta name="description" content="Lab2实验报告一、思考题Thinking 2.1 答：虚拟地址。 Thinking 2.2 答： 使用宏来实现列表，增加了代码的可复用性和可读性。 单向链表：如果是删除项或者在某一项前插入项，则需要从头遍历链表。而如果是在某一项后插入项则可以直接插入。 循环链表：同样是单向的，因此删除和插入与单向链表相同。但由于其首尾相连，因此直接可以在链表尾部插入。 双向链表：元素可以获得其前后两项。因此删除">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OS-Lab1">
-<meta property="og:url" content="https://xenonga.github.io/2023/03/16/OS-Lab1/index.html">
+<meta property="og:title" content="OS-Lab2">
+<meta property="og:url" content="https://xenonga.github.io/2023/03/16/OS-Lab2/index.html">
 <meta property="og:site_name" content="Xenon的小破站">
-<meta property="og:description" content="Lab1 实验报告一、思考题Thinking 1.1 答： 执行 gcc -E hello.c后部分代码如下  执行 objdump -DS hello.o &gt; test.txt后main代码如下  执行  gcc hello.o -o hello objdump -DS hello &gt; test.txt后main代码如下  执行 mips-linux-gnu-gcc -E hello">
+<meta property="og:description" content="Lab2实验报告一、思考题Thinking 2.1 答：虚拟地址。 Thinking 2.2 答： 使用宏来实现列表，增加了代码的可复用性和可读性。 单向链表：如果是删除项或者在某一项前插入项，则需要从头遍历链表。而如果是在某一项后插入项则可以直接插入。 循环链表：同样是单向的，因此删除和插入与单向链表相同。但由于其首尾相连，因此直接可以在链表尾部插入。 双向链表：元素可以获得其前后两项。因此删除">
 <meta property="og:locale">
 <meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
 <meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
@@ -23,20 +23,16 @@
 <meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
 <meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
 <meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
-<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
-<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
-<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
-<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
 <meta property="article:published_time" content="2023-03-16T12:46:25.000Z">
-<meta property="article:modified_time" content="2023-03-16T15:37:19.712Z">
+<meta property="article:modified_time" content="2023-03-16T15:36:57.814Z">
 <meta property="article:author" content="Jiaxuan Gao">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://xenonga.github.io/img/404.jpg">
 
-    <meta name="keywords" content="boot,ELF,printk()函数">
+    <meta name="keywords" content="内存管理">
 
 
-<title >OS-Lab1</title>
+<title >OS-Lab2</title>
 
 <!-- Favicon -->
 
@@ -82,7 +78,7 @@
 
 <!-- Variable -->
 <script>window.ASYNC_CONFIG = {"hostname":"xenonga.github.io","author":"Jiaxuan Gao","root":"/","typed_text":["a SE Learner"],"theme_version":"2.0.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"rabbit-32×32.png","icon16":"rabbit-16×16.png","icon32":"rabbit-32×32.png","appleTouchIcon":"rabbit-32×32.png","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false}};</script>
-<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2023-03-16 23:37:19"};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2023-03-16 23:36:57"};</script>
 
 <!-- Theme mode css -->
 <link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.0.3" id="trm-switch-style">
@@ -297,7 +293,7 @@
                             Hi my new friend!
                         </div>
                         <h1 class="trm-mb-30 trm-hsmb-font">
-                            OS-Lab1
+                            OS-Lab2
                         </h1>
 
                         
@@ -431,7 +427,7 @@
             </div>
             <div name="tabs-toc" class="trm-tabs-item active">
                 <div class="post-toc">
-    <ol class="toc"><li class="toc-item toc-level-1"><a rel="nofollow" class="toc-link" href="#Lab1-实验报告"  data-scroll-to="#Lab1-实验报告"><span class="toc-number">1.</span> <span class="toc-text">Lab1 实验报告</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#一、思考题"  data-scroll-to="#一、思考题"><span class="toc-number">1.1.</span> <span class="toc-text">一、思考题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-1-1"  data-scroll-to="#Thinking-1-1"><span class="toc-number">1.1.1.</span> <span class="toc-text">Thinking 1.1</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-1-2-尚未完成"  data-scroll-to="#Thinking-1-2-尚未完成"><span class="toc-number">1.1.2.</span> <span class="toc-text">Thinking 1.2 (尚未完成)</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-1-3"  data-scroll-to="#Thinking-1-3"><span class="toc-number">1.1.3.</span> <span class="toc-text">Thinking 1.3</span></a></li></ol></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#二、实验难点"  data-scroll-to="#二、实验难点"><span class="toc-number">1.2.</span> <span class="toc-text">二、实验难点</span></a></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#1-理解指针对于ELF文件中段（Segments）和节（Sections）位置下数据的获取"  data-scroll-to="#1-理解指针对于ELF文件中段（Segments）和节（Sections）位置下数据的获取"><span class="toc-number">1.3.</span> <span class="toc-text">1.理解指针对于ELF文件中段（Segments）和节（Sections）位置下数据的获取</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#2-理解printf-的实现逻辑"  data-scroll-to="#2-理解printf-的实现逻辑"><span class="toc-number">1.3.1.</span> <span class="toc-text">2.理解printf()的实现逻辑</span></a></li></ol></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#三、心得体会"  data-scroll-to="#三、心得体会"><span class="toc-number">1.4.</span> <span class="toc-text">三、心得体会</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-1"><a rel="nofollow" class="toc-link" href="#Lab2实验报告"  data-scroll-to="#Lab2实验报告"><span class="toc-number">1.</span> <span class="toc-text">Lab2实验报告</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#一、思考题"  data-scroll-to="#一、思考题"><span class="toc-number">1.1.</span> <span class="toc-text">一、思考题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-2-1"  data-scroll-to="#Thinking-2-1"><span class="toc-number">1.1.1.</span> <span class="toc-text">Thinking 2.1</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-2-2"  data-scroll-to="#Thinking-2-2"><span class="toc-number">1.1.2.</span> <span class="toc-text">Thinking 2.2</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-2-3"  data-scroll-to="#Thinking-2-3"><span class="toc-number">1.1.3.</span> <span class="toc-text">Thinking 2.3</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-2-4"  data-scroll-to="#Thinking-2-4"><span class="toc-number">1.1.4.</span> <span class="toc-text">Thinking 2.4</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-2-5"  data-scroll-to="#Thinking-2-5"><span class="toc-number">1.1.5.</span> <span class="toc-text">Thinking 2.5</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-2-6"  data-scroll-to="#Thinking-2-6"><span class="toc-number">1.1.6.</span> <span class="toc-text">Thinking 2.6</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-A-1"  data-scroll-to="#Thinking-A-1"><span class="toc-number">1.1.7.</span> <span class="toc-text">Thinking A.1</span></a></li></ol></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#二、实验难点"  data-scroll-to="#二、实验难点"><span class="toc-number">1.2.</span> <span class="toc-text">二、实验难点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#1-针对MOS中实现的链表的理解"  data-scroll-to="#1-针对MOS中实现的链表的理解"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.针对MOS中实现的链表的理解</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#2-针对页表查询机制的理解"  data-scroll-to="#2-针对页表查询机制的理解"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.针对页表查询机制的理解</span></a></li></ol></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#三、心得体会"  data-scroll-to="#三、心得体会"><span class="toc-number">1.3.</span> <span class="toc-text">三、心得体会</span></a></li></ol></li></ol>
 </div>
             </div>
         </div>
@@ -467,34 +463,75 @@
 </div>
 <div class="trm-card ">
     <article id="article-container" class="trm-publication">
-    <h1 id="Lab1-实验报告"><a href="#Lab1-实验报告" class="headerlink" title="Lab1 实验报告"></a>Lab1 实验报告</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-1-1"><a href="#Thinking-1-1" class="headerlink" title="Thinking 1.1"></a>Thinking 1.1</h3><p><img src="/OS-Lab1/image-20230307162032600.png" alt="image-20230307162032600" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+    <h1 id="Lab2实验报告"><a href="#Lab2实验报告" class="headerlink" title="Lab2实验报告"></a>Lab2实验报告</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-2-1"><a href="#Thinking-2-1" class="headerlink" title="Thinking 2.1"></a>Thinking 2.1</h3><p><img src="/OS-Lab2/image-20230313185228470.png" alt="image-20230313185228470" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>答：虚拟地址。</p>
+<h3 id="Thinking-2-2"><a href="#Thinking-2-2" class="headerlink" title="Thinking 2.2"></a>Thinking 2.2</h3><p><img src="/OS-Lab2/image-20230313201950429.png" alt="image-20230313201950429" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>答：</p>
-<p>执行 <code>gcc -E hello.c</code>后部分代码如下</p>
-<p><img src="/OS-Lab1/image-20230307165945706.png" alt="image-20230307165945706" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
-<p>执行 <code>objdump -DS hello.o &gt; test.txt</code>后main代码如下</p>
-<p><img src="/OS-Lab1/image-20230307170756988.png" alt="image-20230307170756988" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
-<p>执行  <code>gcc hello.o -o hello</code></p>
-<p><code>objdump -DS hello &gt; test.txt</code>后main代码如下</p>
-<p><img src="/OS-Lab1/image-20230307171209595.png" alt="image-20230307171209595" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
-<p>执行 <code>mips-linux-gnu-gcc -E hello.c</code>后部分代码如下 <img src="/OS-Lab1/image-20230307172039400.png" alt="image-20230307172039400" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
-<p>使用 <code>MIPS</code> 交叉编译器编译为 <code>hello.o</code> 文件<img src="/OS-Lab1/image-20230307172309239.png" alt="image-20230307172309239" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
-<p>通过链接器获得可执行文件hello<img src="/OS-Lab1/image-20230307172449826.png" alt="image-20230307172449826" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
-<h3 id="Thinking-1-2-尚未完成"><a href="#Thinking-1-2-尚未完成" class="headerlink" title="Thinking 1.2 (尚未完成)"></a>Thinking 1.2 (尚未完成)</h3><p><img src="/OS-Lab1/image-20230307223351897.png" alt="image-20230307223351897" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
-<p>执行 <code>readelf -h readelf</code> 后结果<img src="/OS-Lab1/image-20230307174623570.png" alt="image-20230307174623570" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
-<p>执行 <code>readelf -h ./target/mos</code> 后结果</p>
-<p><img src="/OS-Lab1/image-20230307223426781.png" alt="image-20230307223426781" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
-<p>执行<code>readelf -h hello</code>后结果</p>
-<p><img src="/OS-Lab1/image-20230310155202946.png" alt="image-20230310155202946" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
-<p>思考：由于内核文件是大端存储，我们写的文件无法访问，而我们写的文件是小端存储，可以访问。</p>
-<h3 id="Thinking-1-3"><a href="#Thinking-1-3" class="headerlink" title="Thinking 1.3"></a>Thinking 1.3</h3><p><img src="/OS-Lab1/image-20230307223408328.png" alt="image-20230307223408328" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>使用宏来实现列表，增加了代码的可复用性和可读性。</p>
+<p>单向链表：如果是删除项或者在某一项前插入项，则需要从头遍历链表。而如果是在某一项后插入项则可以直接插入。</p>
+<p>循环链表：同样是单向的，因此删除和插入与单向链表相同。但由于其首尾相连，因此直接可以在链表尾部插入。</p>
+<p>双向链表：元素可以获得其前后两项。因此删除和前后插入时间复杂度为O(1)。</p>
+<h3 id="Thinking-2-3"><a href="#Thinking-2-3" class="headerlink" title="Thinking 2.3"></a>Thinking 2.3</h3><p><img src="/OS-Lab2/image-20230313203427637.png" alt="image-20230313203427637" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>答:C是正确展开结构。pp_link是List_Entry链表项，而lh_first应当指向结构体的地址，所以是指针。</p>
+<h3 id="Thinking-2-4"><a href="#Thinking-2-4" class="headerlink" title="Thinking 2.4"></a>Thinking 2.4</h3><p><img src="/OS-Lab2/image-20230315153652900.png" alt="image-20230315153652900" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
 <p>答：</p>
-<p>MIP体系结构启动时，启动入口地址为<code>0xBFC00000</code>，位于kseg1地址段内，因此MMU将虚拟地址的高三位清零成为物理地址，其为<code>0x1FC00000</code>，而该地址已经在硬件上确定位置，之后执行Bootoader，将Linux内核镜像拷贝到RAM中，此时因为Exercise 1.2中我们已在<code>kernel.lds</code>中指定了各个节的加载位置，并且以<code>Entry(_start)</code>指定了内核的入口，保证内核入口可被正确跳转到。</p>
-<h2 id="二、实验难点"><a href="#二、实验难点" class="headerlink" title="二、实验难点"></a>二、实验难点</h2><h2 id="1-理解指针对于ELF文件中段（Segments）和节（Sections）位置下数据的获取"><a href="#1-理解指针对于ELF文件中段（Segments）和节（Sections）位置下数据的获取" class="headerlink" title="1.理解指针对于ELF文件中段（Segments）和节（Sections）位置下数据的获取"></a>1.理解指针对于ELF文件中段（Segments）和节（Sections）位置下数据的获取</h2><p>针对这个问题，首先要对ELF的结构进行深入理解</p>
-<p><img src="/OS-Lab1/image-20230308200006484.png" alt="image-20230308200006484" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
-<p>若要读取某个<code>section</code>中的数据，首先需要从<code>ELF header</code>中找到节头表(<code>section header</code>)以及文件头的偏移<code>e_phoff</code>，将文件头地址与其相加即可获得节表的位置。还可以在文件头中获取节大小以及节数量从而通过指针移动遍历所有节。段的查找以及遍历与之相同。(PS:<strong><code>section</code>的增长方向与<code>segment</code>相反</strong>)</p>
-<h3 id="2-理解printf-的实现逻辑"><a href="#2-理解printf-的实现逻辑" class="headerlink" title="2.理解printf()的实现逻辑"></a>2.理解printf()的实现逻辑</h3><p>通过实验，我们可以知道<code>printf()</code>的实现原理就是遍历字符串，如果遇到<code>\0</code>或者<code>%</code>就将之前的字符串打印，<code>\0</code>则结束函数，<code>%</code>则进行输出格式的判断，输出格式串为 <code>%[flags][width][length]&lt;specifier&gt;</code> ，判断后代入参数从而进行不同的输出。</p>
-<h2 id="三、心得体会"><a href="#三、心得体会" class="headerlink" title="三、心得体会"></a>三、心得体会</h2><p>本次Lab主要收获在于掌握操作系统启动的流程、理解ELF文件的结构功能以及实现<code>printf()</code>函数。</p>
-<p>实验的额外收获在于掌握了如何在vscode上搭建跳板机，从而实现在vscode上完成实验，实现实验文件可视化以及掌握ssh连接逻辑（）。</p>
+<p>1.统一虚拟地址在不同的地址空间中通常映射到不同的物理地址。如果没有ASID加以区分地址空间，则一般情况下虚拟地址都会被映射到错误的物理地址。</p>
+<p>2.ASID占6位，可有2^6 &#x3D; 64个值，因此R3000中可容纳最多64个不同地址空间。</p>
+<h3 id="Thinking-2-5"><a href="#Thinking-2-5" class="headerlink" title="Thinking 2.5"></a>Thinking 2.5</h3><p><img src="/OS-Lab2/image-20230315160318303.png" alt="image-20230315160318303" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>答：</p>
+<p>1.tlb_invalidate调用了tlb_out.</p>
+<p>2.在页表更新时如果存在对应旧页表项则将其删除。</p>
+<p>3.首先将查找的虚拟地址存入EntryHi寄存器，之后调用tlbp进行查找。查找过后将索引写入CP0的Index中。</p>
+<p>如果索引值小于0（即没有找到），则直接跳转至最后。如果索引值大于等于0，则将索引对应的TLB清空（即向 EntryHi 和EntryLo 中写入 0, 随后使用 tlbwi 指令，将 EntryHi 和 EntryLo 中的值写入索引指定的表项）。在函数最后需要将EntryHi寄存器中的值恢复为原值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">LEAF(tlb_out)</span><br><span class="line">.set noreorder</span><br><span class="line">	mfc0    t0, CP0_ENTRYHI</span><br><span class="line">	mtc0    a0, CP0_ENTRYHI</span><br><span class="line">	nop</span><br><span class="line">	/* Step 1: Use &#x27;tlbp&#x27; to probe TLB entry */</span><br><span class="line">	/* Exercise 2.8: Your code here. (1/2) */</span><br><span class="line"></span><br><span class="line">	tlbp</span><br><span class="line"></span><br><span class="line">	nop</span><br><span class="line">	/* Step 2: Fetch the probe result from CP0.Index */</span><br><span class="line">	mfc0    t1, CP0_INDEX</span><br><span class="line">.set reorder</span><br><span class="line">	bltz    t1, NO_SUCH_ENTRY</span><br><span class="line">.set noreorder</span><br><span class="line">	mtc0    zero, CP0_ENTRYHI</span><br><span class="line">	mtc0    zero, CP0_ENTRYLO0</span><br><span class="line">	nop</span><br><span class="line">	/* Step 3: Use &#x27;tlbwi&#x27; to write CP0.EntryHi/Lo into TLB at CP0.Index  */</span><br><span class="line">	/* Exercise 2.8: Your code here. (2/2) */</span><br><span class="line"></span><br><span class="line">	tlbwi</span><br><span class="line"></span><br><span class="line">.set reorder</span><br><span class="line"></span><br><span class="line">NO_SUCH_ENTRY:</span><br><span class="line">	mtc0    t0, CP0_ENTRYHI</span><br><span class="line">	j       ra</span><br><span class="line">END(tlb_out)</span><br></pre></td></tr></table></figure>
+
+<h3 id="Thinking-2-6"><a href="#Thinking-2-6" class="headerlink" title="Thinking 2.6"></a>Thinking 2.6</h3><p><img src="/OS-Lab2/image-20230315171156456.png" alt="image-20230315171156456" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<ol>
+<li></li>
+</ol>
+<p>MIPS主要采用页式管理系统，而X86采用段页式管理系统。</p>
+<p>TLB不命中时，X86由硬件MMU以<code>CR3</code>为当前进程的PGD基址，索引获得PFN后，直接输出PA。于此同时MMU会填充TLB以加快下次转换的速度。而MIPS 会触发TLB Refill 异常，内核的 <code>tlb_refill_handler</code> 会以 <code>pgd_current</code> 为当前进程的 <code>PGD</code> 基址，索引获得转换失败的虚址对应的 <code>PTE</code>，并将其填入TLB，然后CPU再用刚刚转换失败的虚拟地址重新访问以下TLB。</p>
+<h3 id="Thinking-A-1"><a href="#Thinking-A-1" class="headerlink" title="Thinking A.1"></a>Thinking A.1</h3><p><img src="/OS-Lab2/image-20230315194114814.png" alt="image-20230315194114814" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>答：</p>
+<ol>
+<li></li>
+</ol>
+<p>总虚拟地址空间为<code>512G = 0x8000000000</code></p>
+<p>页面大小为4KB,字长为8B，因此每级页目录中也页表项个数为4KB&#x2F;8B &#x3D; 512项</p>
+<p>因此3级页表项总数为<code>2^27</code> 项，每项对应大小为<code>0x8000000000 / 2^27 = 0x1000</code></p>
+<p>第三级页表项对应第二级页表项为 <code>PTbase / 0x1000</code> 个页表项	</p>
+<p>第三级页表占用空间为 <code>2^27 * （64 / 8） = 0x40000000</code></p>
+<p>第三级页表对应第二级页表目录项为<code>（64 / 8）* PTbase / 0x1000</code></p>
+<p>第二级页表项基地址（三级页表页目录的基地址）为<code>PMDbase = PTbase + （64 / 8）* PTbase / 0x1000</code></p>
+<ol start="2">
+<li></li>
+</ol>
+<p>第二级页表总页表项个数： <code>5122 = 218 (项)</code></p>
+<p>每个页表项对应地址空间大小： <code>0x400000000 / 218 = 0x1000</code></p>
+<p>第二级页表对应一级页表项： 第 <code>(PMDbase - PTbase) / 0x1000</code> 个页表项</p>
+<p>第二级页表占用空间： <code>(64 / 8) * 218 = 0x200000</code></p>
+<p>第二级页表对应地址空间： <code>(PMDbase) ~ (PMDbase + 0x200000)</code></p>
+<p>第二级页表对应第一级页表页目录项： <code>(64 / 8) * ((PMDbase - PTbase) / 0x1000)</code></p>
+<p>因此第一级页表项基地址： <code>PGDbase = (PMDbase + (64 / 8) * ((PMDbase - PTbase) / 0x1000))</code></p>
+<p>第一级页表总页表项个数： <code>512 = 29 (项)</code></p>
+<p>每个页表项对应地址空间大小： <code>0x200000 / 29 = 0x1000</code></p>
+<p>第一级页表对应根页表项： 第 <code>(PGDbase - PMDbase) / 0x1000</code> 个页表项</p>
+<p>第一级页表占用空间： <code>(64 / 8) * 29 = 0x1000</code></p>
+<p>第一级页表对应地址空间： <code>(PGDbase) ~ (PGDbase + 0x1000)</code></p>
+<p>因此，映射到页目录自身的页目录项的地址为 <code>PGDbase + (64 / 8) * ((PGDbase - PMDbase) / 0x1000)</code></p>
+<h2 id="二、实验难点"><a href="#二、实验难点" class="headerlink" title="二、实验难点"></a>二、实验难点</h2><h3 id="1-针对MOS中实现的链表的理解"><a href="#1-针对MOS中实现的链表的理解" class="headerlink" title="1.针对MOS中实现的链表的理解"></a>1.针对MOS中实现的链表的理解</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> LIST_ENTRY(type) \</span></span><br><span class="line"><span class="meta">struct &#123; 	</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">type</span> *<span class="title">le_next</span>;</span> <span class="comment">/* next element */</span> \</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">type</span> **<span class="title">le_prev</span>;</span> <span class="comment">/* address of previous next element */</span> \</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以上是针对链表的定义。</p>
+<p><img src="/OS-Lab2/image-20230315192612038.png" alt="image-20230315192612038" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>可以看出这个链表是双向的链表。但是其与普通双向链表有所不同。一般双向链表的元素可以直接访问其前后的元素，而这个链表的元素智能直接访问其后的元素，但不能直接访问其前面的元素。但le_prev的加入使得此链表可在O(1)的开销下进行链表的增删操作。</p>
+<h3 id="2-针对页表查询机制的理解"><a href="#2-针对页表查询机制的理解" class="headerlink" title="2.针对页表查询机制的理解"></a>2.针对页表查询机制的理解</h3><p>在实验中，我们使用二级页表查询机制实现内存管理。其原理就是使用页表的页表进行索引，通过减少页表数量减少页表对内存的占用。</p>
+<p><img src="/OS-Lab2/image-20230315192959177.png" alt="image-20230315192959177" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>如图所示，虚拟地址为32位，其被分为3个部分，分别为：</p>
+<p>1.一级页表偏移量（31-22位），通过此表项号取得一级页表基地址，其中一级页表存放二级页表的首地址。</p>
+<p>2.二级页表偏移量（21-12位），通过此表项号取得二级页表基地址，其中二级页表存放虚拟地址对应物理页框的首地址。</p>
+<p>3.页内偏移量（11-0位），通过此表项号取得物理页框内偏移量，将物理页框首地址与偏移量相加得到所求物理地址。</p>
+<h2 id="三、心得体会"><a href="#三、心得体会" class="headerlink" title="三、心得体会"></a>三、心得体会</h2><p>本次实验代码阅读量较大，理解定义函数与宏之后进行操作更加轻松。</p>
+<p>本次实验主要学习操作系统启动时内存调用管理，并且了解虚拟内存以及TLB管理机制。</p>
+<p>实验消耗时间较上次增加很多，但深入理解了指针与操作系统内存管理等内容，总体来讲获益很多。</p>
 
 </article>
     
@@ -511,7 +548,7 @@
     
         <div class="col-lg-6">
     <div class="trm-blog-card trm-scroll-animation" data-scroll data-scroll-offset="40">
-        <a href="/2023/03/16/OS-Lab0/" class="trm-cover-frame trm-anima-link">
+        <a href="/2023/03/16/OS-Lab1/" class="trm-cover-frame trm-anima-link">
             
             
                 <img alt="cover" class="no-fancybox" src="https://www.logosc.cn/uploads/resources/2018/11/29/1543459457_thumb.jpg">
@@ -525,44 +562,8 @@
                 </a>
             </div>
             <h5>
-                <a href="/2023/03/16/OS-Lab0/" class="trm-anima-link">
-                    OS-Lab0
-                </a>
-            </h5>
-            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
-            <ul class="trm-card-data trm-label">
-                <li>23/03/16</li>
-                <li>23:32</li>
-                
-                    <li>508</li>
-                
-                
-                    <li>1</li>
-                
-            </ul>
-        </div>
-    </div>
-</div>
-    
-    
-        <div class="col-lg-6">
-    <div class="trm-blog-card trm-scroll-animation" data-scroll data-scroll-offset="40">
-        <a href="/2023/03/16/OS-Lab2/" class="trm-cover-frame trm-anima-link">
-            
-            
-                <img alt="cover" class="no-fancybox" src="https://www.logosc.cn/uploads/resources/2018/11/29/1543459457_thumb.jpg">
-            
-        </a>
-        
-        <div class="trm-card-descr">
-            <div class="trm-label trm-category trm-mb-20">
-                <a href=" /categories/OS/">
-                    OS
-                </a>
-            </div>
-            <h5>
-                <a href="/2023/03/16/OS-Lab2/" class="trm-anima-link">
-                    OS-Lab2
+                <a href="/2023/03/16/OS-Lab1/" class="trm-anima-link">
+                    OS-Lab1
                 </a>
             </h5>
             <div class="trm-divider trm-mb-20 trm-mt-20"></div>
@@ -570,15 +571,16 @@
                 <li>23/03/16</li>
                 <li>20:46</li>
                 
-                    <li>1.6k</li>
+                    <li>644</li>
                 
                 
-                    <li>5</li>
+                    <li>2</li>
                 
             </ul>
         </div>
     </div>
 </div>
+    
     
 </div>
 
