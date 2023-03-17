@@ -7,12 +7,12 @@
 <meta name="full-screen" content="yes">
 <meta name="theme-color" content="#317EFB" />
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
-<meta name="description" content="Lab0实验报告一、思考题Thinking 0.1 执行命令 git status &gt; Untracked.txt后结果：  执行命令 git status &gt; Stage.txt后结果：  再执行命令 git status &gt; Modified.txt  结果与和第一次执行 add 命令之前的 status 不一样。原因是第一次add之前文件并没有进入暂存区和版本库，状态为未跟">
+<meta name="description" content="Lab0实验报告一、思考题Thinking 0.1  执行命令 git status &gt; Untracked.txt后结果：   执行命令 git status &gt; Stage.txt后结果：   再执行命令 git status &gt; Modified.txt   结果与和第一次执行 add 命令之前的 status 不一样。原因是第一次add之前文件并没有进入暂存区和版本库，状">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OS-Lab0">
 <meta property="og:url" content="https://xenonga.github.io/2023/03/16/OS-Lab0/index.html">
 <meta property="og:site_name" content="Xenon的小破站">
-<meta property="og:description" content="Lab0实验报告一、思考题Thinking 0.1 执行命令 git status &gt; Untracked.txt后结果：  执行命令 git status &gt; Stage.txt后结果：  再执行命令 git status &gt; Modified.txt  结果与和第一次执行 add 命令之前的 status 不一样。原因是第一次add之前文件并没有进入暂存区和版本库，状态为未跟">
+<meta property="og:description" content="Lab0实验报告一、思考题Thinking 0.1  执行命令 git status &gt; Untracked.txt后结果：   执行命令 git status &gt; Stage.txt后结果：   再执行命令 git status &gt; Modified.txt   结果与和第一次执行 add 命令之前的 status 不一样。原因是第一次add之前文件并没有进入暂存区和版本库，状">
 <meta property="og:locale">
 <meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
 <meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
@@ -33,7 +33,7 @@
 <meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
 <meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
 <meta property="article:published_time" content="2023-03-16T15:32:25.000Z">
-<meta property="article:modified_time" content="2023-03-16T15:37:26.823Z">
+<meta property="article:modified_time" content="2023-03-17T06:29:54.689Z">
 <meta property="article:author" content="Jiaxuan Gao">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://xenonga.github.io/img/404.jpg">
@@ -87,7 +87,7 @@
 
 <!-- Variable -->
 <script>window.ASYNC_CONFIG = {"hostname":"xenonga.github.io","author":"Jiaxuan Gao","root":"/","typed_text":["a SE Learner"],"theme_version":"2.0.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"rabbit-32×32.png","icon16":"rabbit-16×16.png","icon32":"rabbit-32×32.png","appleTouchIcon":"rabbit-32×32.png","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false}};</script>
-<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2023-03-16 23:37:26"};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2023-03-17 14:29:54"};</script>
 
 <!-- Theme mode css -->
 <link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.0.3" id="trm-switch-style">
@@ -462,41 +462,59 @@
 </div>
 <div class="trm-card ">
     <article id="article-container" class="trm-publication">
-    <h1 id="Lab0实验报告"><a href="#Lab0实验报告" class="headerlink" title="Lab0实验报告"></a>Lab0实验报告</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-0-1"><a href="#Thinking-0-1" class="headerlink" title="Thinking 0.1"></a>Thinking 0.1</h3><p><img src="/OS-Lab0/image-20230302094105207.png" alt="image-20230302094105207" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+    <h1 id="Lab0实验报告"><a href="#Lab0实验报告" class="headerlink" title="Lab0实验报告"></a>Lab0实验报告</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-0-1"><a href="#Thinking-0-1" class="headerlink" title="Thinking 0.1"></a>Thinking 0.1</h3><img src="/2023/03/16/OS-Lab0/image-20230302094105207.png" class="" title="image-20230302094105207" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
 <p>执行命令 <code>git status &gt; Untracked.txt</code>后结果：</p>
-<p><img src="/OS-Lab0/image-20230302094857589.png" alt="image-20230302094857589" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<img src="/2023/03/16/OS-Lab0/image-20230302094857589.png" class="" title="image-20230302094857589" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
 <p>执行命令 <code>git status &gt; Stage.txt</code>后结果：</p>
-<p><img src="/OS-Lab0/image-20230302095424834.png" alt="image-20230302095424834" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<img src="/2023/03/16/OS-Lab0/image-20230302095424834.png" class="" title="image-20230302095424834" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
 <p>再执行命令 <code>git status &gt; Modified.txt</code></p>
-<p><img src="/OS-Lab0/image-20230302100716209.png" alt="image-20230302100716209" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<img src="/2023/03/16/OS-Lab0/image-20230302100716209.png" class="" title="image-20230302100716209" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
 <p>结果与和第一次执行 add 命令之前的 status 不一样。原因是第一次add之前文件并没有进入暂存区和版本库，状态为未跟踪（Untracked），但执行<code>cat Modified.txt</code>时文件README.txt已经加入版本库中，此时对README.txt进行修改，其与版本库中内容不一致，状态显示为修改（modified）。</p>
-<h3 id="Thinking-0-2"><a href="#Thinking-0-2" class="headerlink" title="Thinking 0.2"></a>Thinking 0.2</h3><p><img src="/OS-Lab0/image-20230302101025422.png" alt="image-20230302101025422" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
-<p><img src="/OS-Lab0/image-20230302101044530.png" alt="image-20230302101044530" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="Thinking-0-2"><a href="#Thinking-0-2" class="headerlink" title="Thinking 0.2"></a>Thinking 0.2</h3><img src="/2023/03/16/OS-Lab0/image-20230302101025422.png" class="" title="image-20230302101025422" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/03/16/OS-Lab0/image-20230302101044530.png" class="" title="image-20230302101044530" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
 <p>Add the file 和 Stage the file 对应 git add 指令</p>
 <p>Commit 对应 git commit 指令</p>
-<h3 id="Thinking-0-3"><a href="#Thinking-0-3" class="headerlink" title="Thinking 0.3"></a>Thinking 0.3</h3><p><img src="/OS-Lab0/image-20230302101315074.png" alt="image-20230302101315074" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="Thinking-0-3"><a href="#Thinking-0-3" class="headerlink" title="Thinking 0.3"></a>Thinking 0.3</h3><img src="/2023/03/16/OS-Lab0/image-20230302101315074.png" class="" title="image-20230302101315074" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
 <ol>
 <li>执行 <code>git checkout -- print.c</code> 指令。</li>
 <li>执行 <code>git reset HEAD print.c</code> 指令，再执行<code>git checkout -- print.c</code>命令。</li>
 <li>执行 <code>git rm --cached hello.txt</code>命令。</li>
 </ol>
-<h3 id="Thinking-0-4"><a href="#Thinking-0-4" class="headerlink" title="Thinking 0.4"></a>Thinking 0.4</h3><p><img src="/OS-Lab0/image-20230302103308164.png" alt="image-20230302103308164" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
-<p><img src="/OS-Lab0/image-20230302103826383.png" alt="image-20230302103826383" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="Thinking-0-4"><a href="#Thinking-0-4" class="headerlink" title="Thinking 0.4"></a>Thinking 0.4</h3><img src="/2023/03/16/OS-Lab0/image-20230302103308164.png" class="" title="image-20230302103308164" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/03/16/OS-Lab0/image-20230302103826383.png" class="" title="image-20230302103826383" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
 <p>提交三次后提交日志</p>
-<p><img src="/OS-Lab0/image-20230302103925867.png" alt="image-20230302103925867" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<img src="/2023/03/16/OS-Lab0/image-20230302103925867.png" class="" title="image-20230302103925867" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
 <p>版本回退后提交日志</p>
 <p>执行命令<code>git reset --hard cc3f90dd4759b0316fb0c9741a28c9b5756ec904</code>后提交日志</p>
-<p><img src="/OS-Lab0/image-20230302104037476.png" alt="image-20230302104037476" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<img src="/2023/03/16/OS-Lab0/image-20230302104037476.png" class="" title="image-20230302104037476" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
 <p>执行命令<code>git reset --hard 59add749262989777dcc81ebc235ba94610370d3</code>后提交日志</p>
-<p><img src="/OS-Lab0/image-20230302104216596.png" alt="image-20230302104216596" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<img src="/2023/03/16/OS-Lab0/image-20230302104216596.png" class="" title="image-20230302104216596" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
 <p>结论：git reset指令可以通过移动HEAD回退到历史任意版本并更新暂存区以及版本库的版本，添加 –hard 参数后会将工作目录中的文件覆盖，如果工作目录中的文件未提交的情况下使用 git reset –hard 指令则会导致当前未暂存的内容无法找回。</p>
-<h3 id="Thinking-0-5"><a href="#Thinking-0-5" class="headerlink" title="Thinking 0.5"></a>Thinking 0.5</h3><p><img src="/OS-Lab0/image-20230302104632136.png" alt="image-20230302104632136" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<h3 id="Thinking-0-5"><a href="#Thinking-0-5" class="headerlink" title="Thinking 0.5"></a>Thinking 0.5</h3><img src="/2023/03/16/OS-Lab0/image-20230302104632136.png" class="" title="image-20230302104632136" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
 <p>结果如下</p>
-<p><img src="/OS-Lab0/image-20230302104811920.png" alt="image-20230302104811920" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
-<h3 id="Thinking-0-6"><a href="#Thinking-0-6" class="headerlink" title="Thinking 0.6"></a>Thinking 0.6</h3><p><img src="/OS-Lab0/image-20230302104837808.png" alt="image-20230302104837808" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
-<p><img src="/OS-Lab0/image-20230302104849212.png" alt="image-20230302104849212" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
-<p><img src="/OS-Lab0/image-20230302114256383.png" alt="image-20230302114256383" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>command中内容</p>
-<p><img src="/OS-Lab0/image-20230302114341262.png" alt="image-20230302114341262" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<img src="/2023/03/16/OS-Lab0/image-20230302104811920.png" class="" title="image-20230302104811920" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h3 id="Thinking-0-6"><a href="#Thinking-0-6" class="headerlink" title="Thinking 0.6"></a>Thinking 0.6</h3><img src="/2023/03/16/OS-Lab0/image-20230302104837808.png" class="" title="image-20230302104837808" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/03/16/OS-Lab0/image-20230302104849212.png" class="" title="image-20230302104849212" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/03/16/OS-Lab0/image-20230302114256383.png" class="" title="image-20230302114256383" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>command中内容
+
+<img src="/2023/03/16/OS-Lab0/image-20230302114341262.png" class="" title="image-20230302114341262" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
 <p>result 中内容</p>
 <p>回答：有区别。</p>
 <p>在命令行指令中有被引号包裹的命令时，会优先执行该指令并将被包裹的内容替换为输出。</p>
