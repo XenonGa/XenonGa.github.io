@@ -7,12 +7,12 @@
 <meta name="full-screen" content="yes">
 <meta name="theme-color" content="#317EFB" />
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
-<meta name="description" content="第二次实验文档*基础部分（必选）* 任务1资源中的 homework 文件夹给出了一个模仿百度主页的网页（index.html），可是这个网页缺少了 CSS 和 JS 文件，你需要把附件文件夹中的 CSS 和 JS 代码引入到网页中 任务1完成截图：    只需在head部分添加以下代码    任务2修改附件中的 index.js，使得点击搜索按钮后，浏览器会弹窗显示所搜索的内容。但是当搜索框为空">
+<meta name="description" content="第二次实验文档*基础部分（必选）*   任务3修改 index.html，使 热榜 部分的样式其尽可能与下方相似，相关的图片放在了 img 文件夹下，其中把“《你的学号》”换成你真实的学号（例如 21373000），如有必要可以注释原有的代码，但不要删除，因为后续的任务还会用到 任务3完成截图：   方法：分别设置float为left和right即可实现左右同时对齐。   任务4修改 index.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="软工_Lab2">
 <meta property="og:url" content="https://xenonga.github.io/2023/03/20/%E8%BD%AF%E5%B7%A5-Lab2/index.html">
 <meta property="og:site_name" content="Xenon的小破站">
-<meta property="og:description" content="第二次实验文档*基础部分（必选）* 任务1资源中的 homework 文件夹给出了一个模仿百度主页的网页（index.html），可是这个网页缺少了 CSS 和 JS 文件，你需要把附件文件夹中的 CSS 和 JS 代码引入到网页中 任务1完成截图：    只需在head部分添加以下代码    任务2修改附件中的 index.js，使得点击搜索按钮后，浏览器会弹窗显示所搜索的内容。但是当搜索框为空">
+<meta property="og:description" content="第二次实验文档*基础部分（必选）*   任务3修改 index.html，使 热榜 部分的样式其尽可能与下方相似，相关的图片放在了 img 文件夹下，其中把“《你的学号》”换成你真实的学号（例如 21373000），如有必要可以注释原有的代码，但不要删除，因为后续的任务还会用到 任务3完成截图：   方法：分别设置float为left和right即可实现左右同时对齐。   任务4修改 index.">
 <meta property="og:locale">
 <meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
 <meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
@@ -38,14 +38,8 @@
 <meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
 <meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
 <meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
-<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
-<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
-<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
-<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
-<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
-<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
 <meta property="article:published_time" content="2023-03-20T02:14:30.000Z">
-<meta property="article:modified_time" content="2023-03-20T02:20:04.350Z">
+<meta property="article:modified_time" content="2023-03-20T02:27:14.548Z">
 <meta property="article:author" content="Jiaxuan Gao">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://xenonga.github.io/img/404.jpg">
@@ -99,7 +93,7 @@
 
 <!-- Variable -->
 <script>window.ASYNC_CONFIG = {"hostname":"xenonga.github.io","author":"Jiaxuan Gao","root":"/","typed_text":["a SE Learner"],"theme_version":"2.0.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"rabbit-32×32.png","icon16":"rabbit-16×16.png","icon32":"rabbit-32×32.png","appleTouchIcon":"rabbit-32×32.png","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false}};</script>
-<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2023-03-20 10:20:04"};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2023-03-20 10:27:14"};</script>
 
 <!-- Theme mode css -->
 <link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.0.3" id="trm-switch-style">
@@ -428,7 +422,7 @@
             </div>
             <div name="tabs-toc" class="trm-tabs-item active">
                 <div class="post-toc">
-    <ol class="toc"><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#第二次实验文档"  data-scroll-to="#第二次实验文档"><span class="toc-number">1.</span> <span class="toc-text">第二次实验文档</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#任务1"  data-scroll-to="#任务1"><span class="toc-number">1.1.</span> <span class="toc-text">任务1</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#任务2"  data-scroll-to="#任务2"><span class="toc-number">1.2.</span> <span class="toc-text">任务2</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#任务3"  data-scroll-to="#任务3"><span class="toc-number">1.3.</span> <span class="toc-text">任务3</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#任务4"  data-scroll-to="#任务4"><span class="toc-number">1.4.</span> <span class="toc-text">任务4</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#第二次实验文档"  data-scroll-to="#第二次实验文档"><span class="toc-number">1.</span> <span class="toc-text">第二次实验文档</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#任务3"  data-scroll-to="#任务3"><span class="toc-number">1.1.</span> <span class="toc-text">任务3</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#任务4"  data-scroll-to="#任务4"><span class="toc-number">1.2.</span> <span class="toc-text">任务4</span></a></li></ol></li></ol>
 </div>
             </div>
         </div>
@@ -465,27 +459,6 @@
 <div class="trm-card ">
     <article id="article-container" class="trm-publication">
     <h2 id="第二次实验文档"><a href="#第二次实验文档" class="headerlink" title="第二次实验文档"></a>第二次实验文档</h2><p><em><strong>*基础部分（必选）*</strong></em></p>
-<h3 id="任务1"><a href="#任务1" class="headerlink" title="任务1"></a>任务1</h3><p>资源中的 <code>homework</code> 文件夹给出了一个模仿百度主页的网页（<code>index.html</code>），可是这个网页缺少了 CSS 和 JS 文件，你需要把附件文件夹中的 CSS 和 JS 代码引入到网页中</p>
-<p>任务1完成截图：</p>
-<img src="/2023/03/20/%E8%BD%AF%E5%B7%A5-Lab2/wps1-16792787693852.jpg" class="" onerror='this.onerror=null;this.src="/img/404.jpg"'> 
-
-<p>只需在head部分添加以下代码</p>
-<img src="/2023/03/20/%E8%BD%AF%E5%B7%A5-Lab2/wps2-16792787693853.jpg" class="" onerror='this.onerror=null;this.src="/img/404.jpg"'> 
-
-<h3 id="任务2"><a href="#任务2" class="headerlink" title="任务2"></a>任务2</h3><p>修改附件中的 <code>index.js</code>，使得点击搜索按钮后，浏览器会弹窗显示所搜索的内容。但是当搜索框为空的时候，点击搜索按钮后，浏览器会弹窗显示“请输入搜索内容”</p>
-<p>任务2搜索框为空的截图：</p>
-<img src="/2023/03/20/%E8%BD%AF%E5%B7%A5-Lab2/wps3-16792787693841.jpg" class="" onerror='this.onerror=null;this.src="/img/404.jpg"'> 
-
-<p>任务2点击后的截图：</p>
-<img src="/2023/03/20/%E8%BD%AF%E5%B7%A5-Lab2/wps4-16792787693854.jpg" class="" onerror='this.onerror=null;this.src="/img/404.jpg"'> 
-
-<p>任务2搜索框有内容的截图：</p>
-<img src="/2023/03/20/%E8%BD%AF%E5%B7%A5-Lab2/wps5-16792787693855.jpg" class="" onerror='this.onerror=null;this.src="/img/404.jpg"'> 
-
-<p>任务2再次点击后的截图：</p>
-<img src="/2023/03/20/%E8%BD%AF%E5%B7%A5-Lab2/wps6-16792787693857.jpg" class="" onerror='this.onerror=null;this.src="/img/404.jpg"'> 
-
-<p>实现过程：利用<code>Document</code>对象找到<code>input</code>并获取其<code>value</code>，并判断其是否长度为0，进行不同情况输出即可</p>
 <img src="/2023/03/20/%E8%BD%AF%E5%B7%A5-Lab2/image-20230318165327519-16792787693856.png" class="" title="image-20230318165327519" onerror='this.onerror=null;this.src="/img/404.jpg"'>
 
 <h3 id="任务3"><a href="#任务3" class="headerlink" title="任务3"></a>任务3</h3><p>修改 <code>index.html</code>，使 <strong>热榜</strong> 部分的样式其尽可能与下方相似，相关的图片放在了 <code>img</code> 文件夹下，其中把“《你的学号》”换成你真实的学号（例如 <code>21373000</code>），如有必要可以注释原有的代码，但不要删除，因为后续的任务还会用到</p>
