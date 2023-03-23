@@ -7,12 +7,12 @@
 <meta name="full-screen" content="yes">
 <meta name="theme-color" content="#317EFB" />
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
-<meta name="description" content="Lab2实验报告一、思考题Thinking 2.1  答：虚拟地址。 Thinking 2.2  答： 使用宏来实现列表，增加了代码的可复用性和可读性。 单向链表：如果是删除项或者在某一项前插入项，则需要从头遍历链表。而如果是在某一项后插入项则可以直接插入。 循环链表：同样是单向的，因此删除和插入与单向链表相同。但由于其首尾相连，因此直接可以在链表尾部插入。 双向链表：元素可以获得其前后两项。因此">
+<meta name="description" content="数据库第二次实验Task 1Q1  代码： 123456create table department(    d_id int not null primary key,    d_name  varchar(100),    d_floor int);  1234567891011121314CREATE TABLE staff (  s_id int,  s_name varchar(100">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OS-Lab2">
-<meta property="og:url" content="https://xenonga.github.io/2023/03/16/OS-Lab2/index.html">
+<meta property="og:title" content="数据管理技术 Lab_2">
+<meta property="og:url" content="https://xenonga.github.io/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/index.html">
 <meta property="og:site_name" content="Xenon的小破站">
-<meta property="og:description" content="Lab2实验报告一、思考题Thinking 2.1  答：虚拟地址。 Thinking 2.2  答： 使用宏来实现列表，增加了代码的可复用性和可读性。 单向链表：如果是删除项或者在某一项前插入项，则需要从头遍历链表。而如果是在某一项后插入项则可以直接插入。 循环链表：同样是单向的，因此删除和插入与单向链表相同。但由于其首尾相连，因此直接可以在链表尾部插入。 双向链表：元素可以获得其前后两项。因此">
+<meta property="og:description" content="数据库第二次实验Task 1Q1  代码： 123456create table department(    d_id int not null primary key,    d_name  varchar(100),    d_floor int);  1234567891011121314CREATE TABLE staff (  s_id int,  s_name varchar(100">
 <meta property="og:locale">
 <meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
 <meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
@@ -23,16 +23,41 @@
 <meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
 <meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
 <meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
-<meta property="article:published_time" content="2023-03-16T12:46:25.000Z">
-<meta property="article:modified_time" content="2023-03-17T06:30:22.486Z">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="article:published_time" content="2023-03-23T09:10:27.000Z">
+<meta property="article:modified_time" content="2023-03-23T09:13:57.531Z">
 <meta property="article:author" content="Jiaxuan Gao">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://xenonga.github.io/img/404.jpg">
 
-    <meta name="keywords" content="内存管理">
+    <meta name="keywords" content="select">
 
 
-<title >OS-Lab2</title>
+<title >数据管理技术 Lab_2</title>
 
 <!-- Favicon -->
 
@@ -78,7 +103,7 @@
 
 <!-- Variable -->
 <script>window.ASYNC_CONFIG = {"hostname":"xenonga.github.io","author":"Jiaxuan Gao","root":"/","typed_text":["a SE Learner"],"theme_version":"2.0.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"rabbit-32×32.png","icon16":"rabbit-16×16.png","icon32":"rabbit-32×32.png","appleTouchIcon":"rabbit-32×32.png","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false}};</script>
-<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2023-03-17 14:30:22"};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2023-03-23 17:13:57"};</script>
 
 <!-- Theme mode css -->
 <link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.0.3" id="trm-switch-style">
@@ -254,7 +279,7 @@
     <div class="trm-banner" data-scroll data-scroll-direction="vertical">
     
     <!-- banner cover -->
-    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" data-scroll data-scroll-direction="vertical" data-scroll-speed="-3" src="https://pic1.zhimg.com/v2-b3c2c6745b9421a13a3c4706b19223b3_r.jpg">
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" data-scroll data-scroll-direction="vertical" data-scroll-speed="-3" src="/img/banner.png">
     <!-- banner cover end -->
     
 
@@ -270,10 +295,10 @@
                     <!-- banner title -->
                     <div class="trm-banner-text ">
                         <div class="trm-label trm-mb-20">
-                            Hi my new friend!
+                            NEWS LETTER
                         </div>
                         <h1 class="trm-mb-30 trm-hsmb-font">
-                            OS-Lab2
+                            数据管理技术 Lab_2
                         </h1>
 
                         
@@ -407,7 +432,7 @@
             </div>
             <div name="tabs-toc" class="trm-tabs-item active">
                 <div class="post-toc">
-    <ol class="toc"><li class="toc-item toc-level-1"><a rel="nofollow" class="toc-link" href="#Lab2实验报告"  data-scroll-to="#Lab2实验报告"><span class="toc-number">1.</span> <span class="toc-text">Lab2实验报告</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#一、思考题"  data-scroll-to="#一、思考题"><span class="toc-number">1.1.</span> <span class="toc-text">一、思考题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-2-1"  data-scroll-to="#Thinking-2-1"><span class="toc-number">1.1.1.</span> <span class="toc-text">Thinking 2.1</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-2-2"  data-scroll-to="#Thinking-2-2"><span class="toc-number">1.1.2.</span> <span class="toc-text">Thinking 2.2</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-2-3"  data-scroll-to="#Thinking-2-3"><span class="toc-number">1.1.3.</span> <span class="toc-text">Thinking 2.3</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-2-4"  data-scroll-to="#Thinking-2-4"><span class="toc-number">1.1.4.</span> <span class="toc-text">Thinking 2.4</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-2-5"  data-scroll-to="#Thinking-2-5"><span class="toc-number">1.1.5.</span> <span class="toc-text">Thinking 2.5</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-2-6"  data-scroll-to="#Thinking-2-6"><span class="toc-number">1.1.6.</span> <span class="toc-text">Thinking 2.6</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-A-1"  data-scroll-to="#Thinking-A-1"><span class="toc-number">1.1.7.</span> <span class="toc-text">Thinking A.1</span></a></li></ol></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#二、实验难点"  data-scroll-to="#二、实验难点"><span class="toc-number">1.2.</span> <span class="toc-text">二、实验难点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#1-针对MOS中实现的链表的理解"  data-scroll-to="#1-针对MOS中实现的链表的理解"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.针对MOS中实现的链表的理解</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#2-针对页表查询机制的理解"  data-scroll-to="#2-针对页表查询机制的理解"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.针对页表查询机制的理解</span></a></li></ol></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#三、心得体会"  data-scroll-to="#三、心得体会"><span class="toc-number">1.3.</span> <span class="toc-text">三、心得体会</span></a></li></ol></li></ol>
+    <ol class="toc"><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#数据库第二次实验"  data-scroll-to="#数据库第二次实验"><span class="toc-number">1.</span> <span class="toc-text">数据库第二次实验</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Task-1"  data-scroll-to="#Task-1"><span class="toc-number">1.1.</span> <span class="toc-text">Task 1</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Task-2"  data-scroll-to="#Task-2"><span class="toc-number">1.2.</span> <span class="toc-text">Task 2</span></a></li></ol></li></ol>
 </div>
             </div>
         </div>
@@ -425,13 +450,13 @@
     <div class="col-sm-4">
         <div class="trm-card trm-label trm-label-light text-center">
             <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
-            03/16
+            03/23
         </div>
     </div>
     <div class="col-sm-4">
         <div class="trm-card trm-label trm-label-light text-center">
             <i class="iconfont far fa-clock trm-icon"></i><br>
-            20:46
+            17:10
         </div>
     </div>
     <div class="col-sm-4">
@@ -443,84 +468,97 @@
 </div>
 <div class="trm-card ">
     <article id="article-container" class="trm-publication">
-    <h1 id="Lab2实验报告"><a href="#Lab2实验报告" class="headerlink" title="Lab2实验报告"></a>Lab2实验报告</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-2-1"><a href="#Thinking-2-1" class="headerlink" title="Thinking 2.1"></a>Thinking 2.1</h3><img src="/2023/03/16/OS-Lab2/image-20230313185228470.png" class="" title="image-20230313185228470" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+    <h2 id="数据库第二次实验"><a href="#数据库第二次实验" class="headerlink" title="数据库第二次实验"></a>数据库第二次实验</h2><h3 id="Task-1"><a href="#Task-1" class="headerlink" title="Task 1"></a>Task 1</h3><h4 id="Q1"><a href="#Q1" class="headerlink" title="Q1"></a>Q1</h4><img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323102220375.png" class="" title="image-20230323102220375" onerror='this.onerror=null;this.src="/img/404.jpg"'>
 
-<p>答：虚拟地址。</p>
-<h3 id="Thinking-2-2"><a href="#Thinking-2-2" class="headerlink" title="Thinking 2.2"></a>Thinking 2.2</h3><img src="/2023/03/16/OS-Lab2/image-20230313201950429.png" class="" title="image-20230313201950429" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+<p>代码：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> department</span><br><span class="line">(</span><br><span class="line">    d_id <span class="type">int</span> <span class="keyword">not</span> <span class="keyword">null</span> <span class="keyword">primary</span> key,</span><br><span class="line">    d_name  <span class="type">varchar</span>(<span class="number">100</span>),</span><br><span class="line">    d_floor <span class="type">int</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 
-<p>答：</p>
-<p>使用宏来实现列表，增加了代码的可复用性和可读性。</p>
-<p>单向链表：如果是删除项或者在某一项前插入项，则需要从头遍历链表。而如果是在某一项后插入项则可以直接插入。</p>
-<p>循环链表：同样是单向的，因此删除和插入与单向链表相同。但由于其首尾相连，因此直接可以在链表尾部插入。</p>
-<p>双向链表：元素可以获得其前后两项。因此删除和前后插入时间复杂度为O(1)。</p>
-<h3 id="Thinking-2-3"><a href="#Thinking-2-3" class="headerlink" title="Thinking 2.3"></a>Thinking 2.3</h3><img src="/2023/03/16/OS-Lab2/image-20230313203427637.png" class="" title="image-20230313203427637" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>答:C是正确展开结构。pp_link是List_Entry链表项，而lh_first应当指向结构体的地址，所以是指针。
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> staff (</span><br><span class="line">  s_id <span class="type">int</span>,</span><br><span class="line">  s_name <span class="type">varchar</span>(<span class="number">100</span>) <span class="keyword">not</span> <span class="keyword">null</span>,</span><br><span class="line">  s_salary <span class="type">int</span>,</span><br><span class="line">  s_absence <span class="type">int</span> <span class="keyword">default</span> <span class="number">0</span>,</span><br><span class="line">  s_birthday <span class="type">date</span>,</span><br><span class="line">  s_marriage tinyint(<span class="number">1</span>),</span><br><span class="line">  d_id <span class="type">int</span>,</span><br><span class="line">  <span class="keyword">PRIMARY</span> KEY (`s_id`),</span><br><span class="line">  KEY `fk_d_id` (`d_id`),</span><br><span class="line">  <span class="keyword">CHECK</span> ( s_salary<span class="operator">&gt;=</span><span class="number">2000</span> ),</span><br><span class="line">  <span class="keyword">CONSTRAINT</span> `fk_d_id` <span class="keyword">FOREIGN</span> KEY (`d_id`) <span class="keyword">REFERENCES</span> `department` (`d_id`)</span><br><span class="line">);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h3 id="Thinking-2-4"><a href="#Thinking-2-4" class="headerlink" title="Thinking 2.4"></a>Thinking 2.4</h3><img src="/2023/03/16/OS-Lab2/image-20230315153652900.png" class="" title="image-20230315153652900" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+<h4 id="Q2"><a href="#Q2" class="headerlink" title="Q2"></a>Q2</h4><img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323104101276.png" class="" title="image-20230323104101276" onerror='this.onerror=null;this.src="/img/404.jpg"'>
 
-<p>答：</p>
-<p>1.统一虚拟地址在不同的地址空间中通常映射到不同的物理地址。如果没有ASID加以区分地址空间，则一般情况下虚拟地址都会被映射到错误的物理地址。</p>
-<p>2.ASID占6位，可有2^6 &#x3D; 64个值，因此R3000中可容纳最多64个不同地址空间。</p>
-<h3 id="Thinking-2-5"><a href="#Thinking-2-5" class="headerlink" title="Thinking 2.5"></a>Thinking 2.5</h3><img src="/2023/03/16/OS-Lab2/image-20230315160318303.png" class="" title="image-20230315160318303" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+<p>表 <code>department</code>数据如下：</p>
+<img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323104134571.png" class="" title="image-20230323104134571" onerror='this.onerror=null;this.src="/img/404.jpg"'>
 
-<p>答：</p>
-<p>1.tlb_invalidate调用了tlb_out.</p>
-<p>2.在页表更新时如果存在对应旧页表项则将其删除。</p>
-<p>3.首先将查找的虚拟地址存入EntryHi寄存器，之后调用tlbp进行查找。查找过后将索引写入CP0的Index中。</p>
-<p>如果索引值小于0（即没有找到），则直接跳转至最后。如果索引值大于等于0，则将索引对应的TLB清空（即向 EntryHi 和EntryLo 中写入 0, 随后使用 tlbwi 指令，将 EntryHi 和 EntryLo 中的值写入索引指定的表项）。在函数最后需要将EntryHi寄存器中的值恢复为原值。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">LEAF(tlb_out)</span><br><span class="line">.set noreorder</span><br><span class="line">	mfc0    t0, CP0_ENTRYHI</span><br><span class="line">	mtc0    a0, CP0_ENTRYHI</span><br><span class="line">	nop</span><br><span class="line">	/* Step 1: Use &#x27;tlbp&#x27; to probe TLB entry */</span><br><span class="line">	/* Exercise 2.8: Your code here. (1/2) */</span><br><span class="line"></span><br><span class="line">	tlbp</span><br><span class="line"></span><br><span class="line">	nop</span><br><span class="line">	/* Step 2: Fetch the probe result from CP0.Index */</span><br><span class="line">	mfc0    t1, CP0_INDEX</span><br><span class="line">.set reorder</span><br><span class="line">	bltz    t1, NO_SUCH_ENTRY</span><br><span class="line">.set noreorder</span><br><span class="line">	mtc0    zero, CP0_ENTRYHI</span><br><span class="line">	mtc0    zero, CP0_ENTRYLO0</span><br><span class="line">	nop</span><br><span class="line">	/* Step 3: Use &#x27;tlbwi&#x27; to write CP0.EntryHi/Lo into TLB at CP0.Index  */</span><br><span class="line">	/* Exercise 2.8: Your code here. (2/2) */</span><br><span class="line"></span><br><span class="line">	tlbwi</span><br><span class="line"></span><br><span class="line">.set reorder</span><br><span class="line"></span><br><span class="line">NO_SUCH_ENTRY:</span><br><span class="line">	mtc0    t0, CP0_ENTRYHI</span><br><span class="line">	j       ra</span><br><span class="line">END(tlb_out)</span><br></pre></td></tr></table></figure>
+<p>表 <code>staff</code>数据如下，其中有3条不符合要求的数据。</p>
+<img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323104802721.png" class="" title="image-20230323104802721" onerror='this.onerror=null;this.src="/img/404.jpg"'>
 
-<h3 id="Thinking-2-6"><a href="#Thinking-2-6" class="headerlink" title="Thinking 2.6"></a>Thinking 2.6</h3><img src="/2023/03/16/OS-Lab2/image-20230315171156456.png" class="" title="image-20230315171156456" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+<p>第二行名字为空值，报错如下</p>
+<img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323104855458.png" class="" title="image-20230323104855458" onerror='this.onerror=null;this.src="/img/404.jpg"'>
 
-<ol>
-<li></li>
-</ol>
-<p>MIPS主要采用页式管理系统，而X86采用段页式管理系统。</p>
-<p>TLB不命中时，X86由硬件MMU以<code>CR3</code>为当前进程的PGD基址，索引获得PFN后，直接输出PA。于此同时MMU会填充TLB以加快下次转换的速度。而MIPS 会触发TLB Refill 异常，内核的 <code>tlb_refill_handler</code> 会以 <code>pgd_current</code> 为当前进程的 <code>PGD</code> 基址，索引获得转换失败的虚址对应的 <code>PTE</code>，并将其填入TLB，然后CPU再用刚刚转换失败的虚拟地址重新访问以下TLB。</p>
-<h3 id="Thinking-A-1"><a href="#Thinking-A-1" class="headerlink" title="Thinking A.1"></a>Thinking A.1</h3><img src="/2023/03/16/OS-Lab2/image-20230315194114814.png" class="" title="image-20230315194114814" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+<p>第四行薪水低于2000，报错如下</p>
+<img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323105007971.png" class="" title="image-20230323105007971" onerror='this.onerror=null;this.src="/img/404.jpg"'>
 
-<p>答：</p>
-<ol>
-<li></li>
-</ol>
-<p>总虚拟地址空间为<code>512G = 0x8000000000</code></p>
-<p>页面大小为4KB,字长为8B，因此每级页目录中也页表项个数为4KB&#x2F;8B &#x3D; 512项</p>
-<p>因此3级页表项总数为<code>2^27</code> 项，每项对应大小为<code>0x8000000000 / 2^27 = 0x1000</code></p>
-<p>第三级页表项对应第二级页表项为 <code>PTbase / 0x1000</code> 个页表项	</p>
-<p>第三级页表占用空间为 <code>2^27 * （64 / 8） = 0x40000000</code></p>
-<p>第三级页表对应第二级页表目录项为<code>（64 / 8）* PTbase / 0x1000</code></p>
-<p>第二级页表项基地址（三级页表页目录的基地址）为<code>PMDbase = PTbase + （64 / 8）* PTbase / 0x1000</code></p>
-<ol start="2">
-<li></li>
-</ol>
-<p>第二级页表总页表项个数： <code>5122 = 218 (项)</code></p>
-<p>每个页表项对应地址空间大小： <code>0x400000000 / 218 = 0x1000</code></p>
-<p>第二级页表对应一级页表项： 第 <code>(PMDbase - PTbase) / 0x1000</code> 个页表项</p>
-<p>第二级页表占用空间： <code>(64 / 8) * 218 = 0x200000</code></p>
-<p>第二级页表对应地址空间： <code>(PMDbase) ~ (PMDbase + 0x200000)</code></p>
-<p>第二级页表对应第一级页表页目录项： <code>(64 / 8) * ((PMDbase - PTbase) / 0x1000)</code></p>
-<p>因此第一级页表项基地址： <code>PGDbase = (PMDbase + (64 / 8) * ((PMDbase - PTbase) / 0x1000))</code></p>
-<p>第一级页表总页表项个数： <code>512 = 29 (项)</code></p>
-<p>每个页表项对应地址空间大小： <code>0x200000 / 29 = 0x1000</code></p>
-<p>第一级页表对应根页表项： 第 <code>(PGDbase - PMDbase) / 0x1000</code> 个页表项</p>
-<p>第一级页表占用空间： <code>(64 / 8) * 29 = 0x1000</code></p>
-<p>第一级页表对应地址空间： <code>(PGDbase) ~ (PGDbase + 0x1000)</code></p>
-<p>因此，映射到页目录自身的页目录项的地址为 <code>PGDbase + (64 / 8) * ((PGDbase - PMDbase) / 0x1000)</code></p>
-<h2 id="二、实验难点"><a href="#二、实验难点" class="headerlink" title="二、实验难点"></a>二、实验难点</h2><h3 id="1-针对MOS中实现的链表的理解"><a href="#1-针对MOS中实现的链表的理解" class="headerlink" title="1.针对MOS中实现的链表的理解"></a>1.针对MOS中实现的链表的理解</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> LIST_ENTRY(type) \</span></span><br><span class="line"><span class="meta">struct &#123; 	</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">type</span> *<span class="title">le_next</span>;</span> <span class="comment">/* next element */</span> \</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">type</span> **<span class="title">le_prev</span>;</span> <span class="comment">/* address of previous next element */</span> \</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>第八行外键插入一个不存在的值，报错如下</p>
+<img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323105042198.png" class="" title="image-20230323105042198" onerror='this.onerror=null;this.src="/img/404.jpg"'>
 
-<p>以上是针对链表的定义。</p>
-<img src="/2023/03/16/OS-Lab2/image-20230315192612038.png" class="" title="image-20230315192612038" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+<p>修改所有错误后数据如下</p>
+<img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323115622592.png" class="" title="image-20230323115622592" onerror='this.onerror=null;this.src="/img/404.jpg"'>
 
-<p>可以看出这个链表是双向的链表。但是其与普通双向链表有所不同。一般双向链表的元素可以直接访问其前后的元素，而这个链表的元素智能直接访问其后的元素，但不能直接访问其前面的元素。但le_prev的加入使得此链表可在O(1)的开销下进行链表的增删操作。</p>
-<h3 id="2-针对页表查询机制的理解"><a href="#2-针对页表查询机制的理解" class="headerlink" title="2.针对页表查询机制的理解"></a>2.针对页表查询机制的理解</h3><p>在实验中，我们使用二级页表查询机制实现内存管理。其原理就是使用页表的页表进行索引，通过减少页表数量减少页表对内存的占用。</p>
-<img src="/2023/03/16/OS-Lab2/image-20230315192959177.png" class="" title="image-20230315192959177" loading="lazy" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+<p>尝试删除 <code>department</code>中的 <code>财务部</code>，报错如下</p>
+<img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323105252548.png" class="" title="image-20230323105252548" onerror='this.onerror=null;this.src="/img/404.jpg"'>
 
-<p>如图所示，虚拟地址为32位，其被分为3个部分，分别为：</p>
-<p>1.一级页表偏移量（31-22位），通过此表项号取得一级页表基地址，其中一级页表存放二级页表的首地址。</p>
-<p>2.二级页表偏移量（21-12位），通过此表项号取得二级页表基地址，其中二级页表存放虚拟地址对应物理页框的首地址。</p>
-<p>3.页内偏移量（11-0位），通过此表项号取得物理页框内偏移量，将物理页框首地址与偏移量相加得到所求物理地址。</p>
-<h2 id="三、心得体会"><a href="#三、心得体会" class="headerlink" title="三、心得体会"></a>三、心得体会</h2><p>本次实验代码阅读量较大，理解定义函数与宏之后进行操作更加轻松。</p>
-<p>本次实验主要学习操作系统启动时内存调用管理，并且了解虚拟内存以及TLB管理机制。</p>
-<p>实验消耗时间较上次增加很多，但深入理解了指针与操作系统内存管理等内容，总体来讲获益很多。</p>
+<h3 id="Task-2"><a href="#Task-2" class="headerlink" title="Task 2"></a>Task 2</h3><img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323114802129.png" class="" title="image-20230323114802129" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="Q3"><a href="#Q3" class="headerlink" title="Q3"></a>Q3</h4><img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323115148957.png" class="" title="image-20230323115148957" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>语句和结果如下</p>
+<img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323114932427.png" class="" title="image-20230323114932427" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="Q4"><a href="#Q4" class="headerlink" title="Q4"></a>Q4</h4><img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323115156397.png" class="" title="image-20230323115156397" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>语句和结果如下</p>
+<img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323115020009.png" class="" title="image-20230323115020009" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="Q5"><a href="#Q5" class="headerlink" title="Q5"></a>Q5</h4><img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323115210981.png" class="" title="image-20230323115210981" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>语句和结果如下</p>
+<img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323115137020.png" class="" title="image-20230323115137020" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="Q6"><a href="#Q6" class="headerlink" title="Q6"></a>Q6</h4><img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323115232702.png" class="" title="image-20230323115232702" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>查询部门1工资</p>
+<img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323115442570.png" class="" title="image-20230323115442570" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>查询所有部门的工资</p>
+<img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323115522003.png" class="" title="image-20230323115522003" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="Q7"><a href="#Q7" class="headerlink" title="Q7"></a>Q7</h4><img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323115656164-16795438170061.png" class="" title="image-20230323115656164" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>语句和结果如下</p>
+<img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323115743478.png" class="" title="image-20230323115743478" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="Q8"><a href="#Q8" class="headerlink" title="Q8"></a>Q8</h4><img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323115824661.png" class="" title="image-20230323115824661" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>语句和结果如下</p>
+<img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323152853178.png" class="" title="image-20230323152853178" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="Q9"><a href="#Q9" class="headerlink" title="Q9"></a>Q9</h4><img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323153234896.png" class="" title="image-20230323153234896" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>命令和结果如下</p>
+<img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323153306312.png" class="" title="image-20230323153306312" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="Q10"><a href="#Q10" class="headerlink" title="Q10"></a>Q10</h4><img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323153342947.png" class="" title="image-20230323153342947" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>命令和结果如下</p>
+<img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323160616147.png" class="" title="image-20230323160616147" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323160628293.png" class="" title="image-20230323160628293" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="Q11"><a href="#Q11" class="headerlink" title="Q11"></a>Q11</h4><img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323160755072.png" class="" title="image-20230323160755072" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>命令和结果如下</p>
+<img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323161452686.png" class="" title="image-20230323161452686" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="Q12"><a href="#Q12" class="headerlink" title="Q12"></a>Q12</h4><img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323163352973.png" class="" title="image-20230323163352973" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>命令和结果如下</p>
+<img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323163116967.png" class="" title="image-20230323163116967" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="Q13"><a href="#Q13" class="headerlink" title="Q13"></a>Q13</h4><img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323163335208.png" class="" title="image-20230323163335208" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/image-20230323170400937.png" class="" title="image-20230323170400937" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
 
 </article>
     
@@ -535,9 +573,10 @@
         </h5>
     </div>
     
+    
         <div class="col-lg-6">
     <div class="trm-blog-card trm-scroll-animation" data-scroll data-scroll-offset="40">
-        <a href="/2023/03/16/OS-Lab1/" class="trm-cover-frame trm-anima-link">
+        <a href="/2023/03/20/%E8%BD%AF%E5%B7%A5-Lab2/" class="trm-cover-frame trm-anima-link">
             
             
                 <img alt="cover" class="no-fancybox" src="https://www.logosc.cn/uploads/resources/2018/11/29/1543459457_thumb.jpg">
@@ -546,30 +585,29 @@
         
         <div class="trm-card-descr">
             <div class="trm-label trm-category trm-mb-20">
-                <a href=" /categories/OS/">
-                    OS
+                <a href=" /categories/SoftwareEngineering/">
+                    SoftwareEngineering
                 </a>
             </div>
             <h5>
-                <a href="/2023/03/16/OS-Lab1/" class="trm-anima-link">
-                    OS-Lab1
+                <a href="/2023/03/20/%E8%BD%AF%E5%B7%A5-Lab2/" class="trm-anima-link">
+                    软工_Lab2
                 </a>
             </h5>
             <div class="trm-divider trm-mb-20 trm-mt-20"></div>
             <ul class="trm-card-data trm-label">
-                <li>23/03/16</li>
-                <li>20:46</li>
+                <li>23/03/20</li>
+                <li>10:14</li>
                 
-                    <li>640</li>
+                    <li>885</li>
                 
                 
-                    <li>2</li>
+                    <li>3</li>
                 
             </ul>
         </div>
     </div>
 </div>
-    
     
 </div>
 
