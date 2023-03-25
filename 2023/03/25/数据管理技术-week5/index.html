@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="SQL测验题一、现有关系模式如下：  学生（学号，姓名，性别）；课程（课程号，课程名，教师姓名）； 选课表（课程号，学号，成绩） 1． 检索年龄大于20岁的男生的学号和姓名。 123select 学号, 姓名 from 学生where 年龄 &gt; 20;  2． 检索选修了姓刘的老师所教授的课程的女学生的姓名。 1234select 姓名from 学生, 课程, 选课表where 学生.学号">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据管理技术-week5">
+<meta property="og:url" content="https://xenonga.github.io/2023/03/25/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-week5/index.html">
+<meta property="og:site_name" content="Xenon的小破站">
+<meta property="og:description" content="SQL测验题一、现有关系模式如下：  学生（学号，姓名，性别）；课程（课程号，课程名，教师姓名）； 选课表（课程号，学号，成绩） 1． 检索年龄大于20岁的男生的学号和姓名。 123select 学号, 姓名 from 学生where 年龄 &gt; 20;  2． 检索选修了姓刘的老师所教授的课程的女学生的姓名。 1234select 姓名from 学生, 课程, 选课表where 学生.学号">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-03-25T02:08:16.000Z">
+<meta property="article:modified_time" content="2023-03-25T02:08:54.341Z">
+<meta property="article:author" content="Jiaxuan Gao">
+<meta name="twitter:card" content="summary">
+
+    <meta name="keywords" content="sql">
+
+
+<title >数据管理技术-week5</title>
+
+<!-- Favicon -->
+
+    <link href='/rabbit-16%C3%9716.png?v=2.0.3' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"xenonga.github.io","author":"Jiaxuan Gao","root":"/","typed_text":["a SE Learner"],"theme_version":"2.0.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"rabbit-32×32.png","icon16":"rabbit-16×16.png","icon32":"rabbit-32×32.png","appleTouchIcon":"rabbit-32×32.png","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2023-03-25 10:08:54"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.0.3" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" data-scroll-container style="opacity: 0">
+          <div data-scroll-section id="content" class="trm-scroll-section">
+
+            <div class="locomotive-scroll__sticky-target" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none;"></div>
+
+            <!-- top bar -->
+            <header class="trm-top-bar" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/rabbit-32%C3%9732.png">
+    
+    
+        <div class="trm-logo-text">
+            Xe<span>non</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    主页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a  href="/categories/OS/" target="">
+                            OS
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/SoftwareEngineering/" target="">
+                            软件工程
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/DataBase/" target="">
+                            数据管理技术
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/about/" target="">
+                    关于
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner" data-scroll data-scroll-direction="vertical">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" data-scroll data-scroll-direction="vertical" data-scroll-speed="-3" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container" data-scroll data-scroll-direction="vertical" data-scroll-speed="0">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            数据管理技术-week5
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2023
+                                    </span
+                                ></li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <a href="#about-triger" data-scroll-to="#about-triger" data-scroll-offset="-130" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </a>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div id="page-sidebar" class="col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    
+
+<div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card" data-scroll data-scroll-repeat data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="60"> 
+    
+        <div class="trm-user-tabs" id="sidebar-tabs">
+           <div class="trm-tabs-nav trm-mb-40" id="trm-tabs-nav">
+                <div data-to="tabs-user" class="trm-tabs-nav-item">
+                    <i class="iconfont fas fa-user-alt"></i>
+                </div>
+                <div data-to="tabs-toc" class="trm-tabs-nav-item active">
+                    <i class="iconfont fas fa-th-list"></i>
+                </div>
+           </div>
+            <div name="tabs-user" class="trm-tabs-item">
+                <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/rabbit.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        Xenon的小破站
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+                <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/XenonGa/" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+        <a href="https://gitee.com/X2283509194" title="gitee" rel="nofollow" target="_blank">
+            <i class="iconfont iconfont cg-gitee"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+                <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                地球
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                城市:
+            </div>
+            <div class="trm-label trm-label-light">
+                北京
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                20
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+                
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:2283509194@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+            </div>
+            <div name="tabs-toc" class="trm-tabs-item active">
+                <div class="post-toc">
+    <ol class="toc"><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#SQL测验题"  data-scroll-to="#SQL测验题"><span class="toc-number">1.</span> <span class="toc-text">SQL测验题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#一、"  data-scroll-to="#一、"><span class="toc-number">1.1.</span> <span class="toc-text">一、</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#二、"  data-scroll-to="#二、"><span class="toc-number">1.2.</span> <span class="toc-text">二、</span></a></li></ol></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#课本习题-P130-5"  data-scroll-to="#课本习题-P130-5"><span class="toc-number">2.</span> <span class="toc-text">课本习题, P130, 5</span></a></li></ol>
+</div>
+            </div>
+        </div>
+    
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div id="page-content" class="col-lg-8">
+                <div class="trm-content" id="trm-content">
+                    <div data-scroll data-scroll-repeat data-scroll-offset="500" id="about-triger"></div>
+
+                    <div id="post-info" class="row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            03/25
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            10:08
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Xenon
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h2 id="SQL测验题"><a href="#SQL测验题" class="headerlink" title="SQL测验题"></a>SQL测验题</h2><h3 id="一、"><a href="#一、" class="headerlink" title="一、"></a>一、</h3><p>现有关系模式如下： </p>
+<p>学生（学号，姓名，性别）；课程（课程号，课程名，教师姓名）；</p>
+<p>选课表（课程号，学号，成绩）</p>
+<p>1． 检索年龄大于20岁的男生的学号和姓名。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 学号, 姓名 </span><br><span class="line"><span class="keyword">from</span> 学生</span><br><span class="line"><span class="keyword">where</span> 年龄 <span class="operator">&gt;</span> <span class="number">20</span>;</span><br></pre></td></tr></table></figure>
+
+<p>2． 检索选修了姓刘的老师所教授的课程的女学生的姓名。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 姓名</span><br><span class="line"><span class="keyword">from</span> 学生, 课程, 选课表</span><br><span class="line"><span class="keyword">where</span> 学生.学号 <span class="operator">=</span> 选课表.学号 <span class="keyword">and</span> 课程.课程号 <span class="operator">=</span> 选课表.课程号</span><br><span class="line"><span class="keyword">and</span> 教师姓名 <span class="keyword">like</span> <span class="string">&#x27;刘%&#x27;</span> <span class="keyword">and</span> 性别 <span class="operator">=</span> <span class="string">&#x27;女&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>3． 检索李想同学不学的课程的课程号和课程名。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 课程号, 课程名</span><br><span class="line"><span class="keyword">from</span> 课程</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">not</span> <span class="keyword">exists</span>(</span><br><span class="line">    <span class="keyword">select</span> <span class="operator">*</span> </span><br><span class="line">    <span class="keyword">from</span> 学生, 选课表</span><br><span class="line">    <span class="keyword">where</span> 学生.学号 <span class="operator">=</span> 选课表.学号 课程.课程号 <span class="operator">=</span> 选课表.课程号 <span class="keyword">and</span></span><br><span class="line">    学生.姓名 <span class="operator">=</span> <span class="string">&#x27;李想&#x27;</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>4． 检索至少选修了两门课程的学生的学号。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 学号</span><br><span class="line"><span class="keyword">from</span> 选课表 <span class="keyword">as</span> <span class="keyword">first</span>, 选课表 <span class="keyword">as</span> <span class="keyword">second</span></span><br><span class="line"><span class="keyword">where</span> first.学号 <span class="operator">=</span> second.学号 <span class="keyword">and</span> first.课程号 <span class="operator">!=</span> second.学号;</span><br></pre></td></tr></table></figure>
+
+<p>5． 求刘老师所教授课程的每门课的平均成绩。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 课程.课程号, <span class="built_in">avg</span>(选课表.成绩)</span><br><span class="line"><span class="keyword">from</span> 课程, 选课表</span><br><span class="line"><span class="keyword">where</span> 课程.课程号 <span class="operator">=</span> 选课表.课程号 <span class="keyword">and</span> 课程.教师姓名 <span class="keyword">like</span> <span class="string">&#x27;刘%&#x27;</span></span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> 课程.课程号;</span><br></pre></td></tr></table></figure>
+
+<p>6． 假设不存在重修的情况，请统计每门课的选修人数(选课人数超过两人的课程才统计)。要求显示课程号和人数，查询结果按人数降序排列，若人数相同，按课程号升序排列。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 课程.课程号, <span class="built_in">count</span>(选课表.学号)</span><br><span class="line"><span class="keyword">from</span> 课程, 选课表</span><br><span class="line"><span class="keyword">where</span> 课程.课程号 <span class="operator">=</span> 选课表.课程号</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> 课程.课程号</span><br><span class="line"><span class="keyword">having</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="operator">&gt;</span> <span class="number">2</span></span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">desc</span>, 课程.课程号;</span><br></pre></td></tr></table></figure>
+
+<p>7． 求年龄大于所有女生年龄的男生的姓名和年龄。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 姓名, 年龄</span><br><span class="line"><span class="keyword">from</span> 学生</span><br><span class="line"><span class="keyword">where</span> 性别 <span class="operator">=</span> <span class="string">&#x27;男&#x27;</span> <span class="keyword">and</span> 年龄 <span class="operator">&lt;</span> (</span><br><span class="line">	<span class="keyword">select</span> <span class="built_in">max</span>(年龄)</span><br><span class="line">    <span class="keyword">from</span> 学生</span><br><span class="line">    <span class="keyword">where</span> 性别 <span class="operator">=</span> <span class="string">&#x27;女&#x27;</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>8． 假定不存在重修的情况，求选修了所有课程的学生的学号姓名。(可以不用相关子查询做)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 学生.姓名, 学生.学号</span><br><span class="line"><span class="keyword">from</span> 学生, 选课表</span><br><span class="line"><span class="keyword">where</span> 学生.学号 <span class="operator">=</span> 选课表.学号</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> 学生.学号</span><br><span class="line"><span class="keyword">having</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="operator">=</span> (</span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>)</span><br><span class="line">    <span class="keyword">from</span> 课程</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>9． 查询重修次数在2次以上的学生学号，课程号，重修次数</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 学生.姓名, 学生.学号, <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">as</span> 重修次数</span><br><span class="line"><span class="keyword">from</span> 学生, 选课表</span><br><span class="line"><span class="keyword">where</span> 学生.学号 <span class="operator">=</span> 选课表.学号</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> 学生.学号, 选课表.课程号</span><br><span class="line"><span class="keyword">having</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="operator">&gt;</span> <span class="number">2</span>;					</span><br></pre></td></tr></table></figure>
+
+<p>10． 查询重修学生人数最多的课程号，课程名，教师姓名</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 课程.课程号, 课程.课程名, 课程.教师姓名</span><br><span class="line"><span class="keyword">from</span> 课程, 选课表</span><br><span class="line"><span class="keyword">where</span> 课程.课程号 <span class="operator">=</span> 选课表.课程号</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> 课程.课程号</span><br><span class="line"><span class="keyword">having</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="operator">=</span> (</span><br><span class="line">	<span class="keyword">select</span> <span class="built_in">max</span>(args)</span><br><span class="line">    <span class="keyword">from</span> (</span><br><span class="line">    	<span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">as</span> args</span><br><span class="line">        <span class="keyword">from</span> 选课表</span><br><span class="line">        <span class="keyword">group</span> <span class="keyword">by</span> 选课表.课程号</span><br><span class="line">    ) tmp_table</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h3 id="二、"><a href="#二、" class="headerlink" title="二、"></a>二、</h3><p>学生（学号，姓名，年龄，性别，班级）</p>
+<p>课程（课程号，课程名，先修课程号，学分）注意：此表的主键是(课程号)</p>
+<p>选课（学号，课程号，教师号，成绩）</p>
+<p>教师（教师号，教师名称）</p>
+<ol>
+<li><p>查找李力的所有不及格的课程名称和成绩，按成绩降序排列</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 选课.课程名, 选课.成绩</span><br><span class="line"><span class="keyword">from</span> 学生, 选课</span><br><span class="line"><span class="keyword">where</span> 学生.学号 <span class="operator">=</span> 选课.学号 <span class="keyword">and</span> 学生.姓名 <span class="operator">=</span> <span class="string">&#x27;李力&#x27;</span> <span class="keyword">and</span> 选课.成绩 <span class="operator">&lt;</span> <span class="number">60</span></span><br><span class="line"><span class="keyword">order</span> <span class="keyword">by</span> 选课.成绩 <span class="keyword">desc</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>列出每门课的学分，选修的学生人数，及学生成绩的平均分</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 课程.学分, <span class="built_in">count</span>(学生.学号) <span class="keyword">as</span> 学生人数, avg（选课.成绩）</span><br><span class="line"><span class="keyword">from</span> 学生, 课程, 选课</span><br><span class="line"><span class="keyword">where</span> 学生.学号 <span class="operator">=</span> 选课.学号 <span class="keyword">and</span> 选课.课程号 <span class="operator">=</span> 课程.课程号</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> 课程.课程号;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>选出所修课程总学分在10分以下的学生（注：不及格的课程没有学分）。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 学生.学号, 学生.姓名</span><br><span class="line"><span class="keyword">from</span> 学生, 课程, 选课</span><br><span class="line"><span class="keyword">where</span> 学生.学号 <span class="operator">=</span> 选课.学号 <span class="keyword">and</span> 选课.课程号 <span class="operator">=</span> 课程.课程号 <span class="keyword">and</span> 选课.成绩 <span class="operator">&gt;=</span> <span class="number">60</span></span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> 学生.学号</span><br><span class="line"><span class="keyword">having</span> <span class="built_in">sum</span>(课程.学分) <span class="operator">&lt;</span> <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>选出选课门数最多的学生学号及选课数量</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 学生.学号, <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">as</span> 选课数量</span><br><span class="line"><span class="keyword">from</span> 学生, 课程, 选课</span><br><span class="line"><span class="keyword">where</span> 学生.学号 <span class="operator">=</span> 选课.学号 <span class="keyword">and</span> 选课.课程号 <span class="operator">=</span> 课程.课程号</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> 学生.学号</span><br><span class="line"><span class="keyword">having</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="operator">&gt;=</span> <span class="keyword">all</span>(</span><br><span class="line">    <span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>)</span><br><span class="line">    <span class="keyword">from</span> 学生, 课程, 选课</span><br><span class="line">    <span class="keyword">where</span> 学生.学号 <span class="operator">=</span> 选课.学号 <span class="keyword">and</span> 选课.课程号 <span class="operator">=</span> 课程.课程号</span><br><span class="line">    <span class="keyword">group</span> <span class="keyword">by</span> 学生.学号</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>列出每门课的最高分及获得该分数的学生</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 选课.成绩, 学生.学号, 学生.姓名</span><br><span class="line"><span class="keyword">from</span> 学生, 选课</span><br><span class="line"><span class="keyword">where</span> 学生.学号 <span class="operator">=</span> 选课.学号</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> 选课.课程号</span><br><span class="line"><span class="keyword">having</span> 选课.成绩 <span class="operator">=</span> <span class="built_in">max</span>(选课.成绩);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>选出物理课得分比所有男学生的物理课平均分高的学生姓名</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 学生.姓名</span><br><span class="line"><span class="keyword">from</span> 学生, 课程, 选课</span><br><span class="line"><span class="keyword">where</span> 学生.学号 <span class="operator">=</span> 选课.学号 <span class="keyword">and</span> 选课.课程号 <span class="operator">=</span> 课程.课程号 <span class="keyword">and</span> 课程名 <span class="operator">=</span> <span class="string">&#x27;物理&#x27;</span></span><br><span class="line"><span class="keyword">having</span> 选课.成绩 <span class="operator">&gt;</span> (</span><br><span class="line">	<span class="keyword">select</span> <span class="built_in">avg</span>(选课.成绩)</span><br><span class="line">    <span class="keyword">from</span> 学生, 课程, 选课</span><br><span class="line">    <span class="keyword">where</span> 学生.学号 <span class="operator">=</span> 选课.学号 <span class="keyword">and</span> 选课.课程号 <span class="operator">=</span> 课程.课程号 <span class="keyword">and</span> 课程名 <span class="operator">=</span> <span class="string">&#x27;物理&#x27;</span></span><br><span class="line">    <span class="keyword">and</span> 学生.性别 <span class="operator">=</span> <span class="string">&#x27;男&#x27;</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>选出修习过物理课的直接先修课的学生</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> 学生.学号, 学生.姓名</span><br><span class="line"><span class="keyword">from</span> 学生, 课程, 选课</span><br><span class="line"><span class="keyword">where</span> 学生.学号 <span class="operator">=</span> 选课.学号 <span class="keyword">and</span> 选课.课程号 <span class="operator">=</span> 课程.课程号 </span><br><span class="line"><span class="keyword">and</span> 课程.课程号 <span class="operator">=</span> (</span><br><span class="line">	<span class="keyword">select</span> 课程.先修课程号</span><br><span class="line">    <span class="keyword">from</span> 课程</span><br><span class="line">    <span class="keyword">where</span> 课程.课程名 <span class="operator">=</span> <span class="string">&#x27;物理&#x27;</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>选出有两门以上先修课的课程（包括直接先修课、间接先修课）(用课程表)</p>
+</li>
+</ol>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="operator">*</span> </span><br><span class="line"><span class="keyword">from</span> 课程 <span class="keyword">as</span> c1</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">exists</span>(</span><br><span class="line">	<span class="keyword">select</span> <span class="operator">*</span> </span><br><span class="line">    <span class="keyword">from</span> 课程 <span class="keyword">as</span> c2, 课程 <span class="keyword">as</span> c3</span><br><span class="line">    <span class="keyword">where</span> c1.先修课程号 <span class="operator">=</span> c2.课程号 <span class="keyword">and</span> c2.先修课程号 <span class="operator">=</span> c3.课程号</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h2 id="课本习题-P130-5"><a href="#课本习题-P130-5" class="headerlink" title="课本习题, P130, 5"></a>课本习题, P130, 5</h2><p>1.找出所有供应商的姓名和所在城市</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> sname, city</span><br><span class="line"><span class="keyword">from</span> s;</span><br></pre></td></tr></table></figure>
+
+<p>2.找出所有零件的名称、颜色、重量</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> pname, color, weight</span><br><span class="line"><span class="keyword">from</span> p;</span><br></pre></td></tr></table></figure>
+
+<p>3.找出使用供应商<code>S1</code>所供应零件的工程号码</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> jno</span><br><span class="line"><span class="keyword">from</span> spj</span><br><span class="line"><span class="keyword">where</span> sno <span class="operator">=</span> <span class="string">&#x27;J2&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>4.找出工程项目<code>J2</code>使用的各种零件的名称及其数量</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> p.pname, spj.qty</span><br><span class="line"><span class="keyword">from</span> p, spj</span><br><span class="line"><span class="keyword">where</span> p.pno <span class="operator">=</span> spj.pno <span class="keyword">and</span> spj.pno <span class="operator">=</span> <span class="string">&#x27;J2&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>5.找出上海厂商供应的所有零件号码</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> pno</span><br><span class="line"><span class="keyword">from</span> spj</span><br><span class="line"><span class="keyword">where</span> sno <span class="keyword">in</span> (</span><br><span class="line">	<span class="keyword">select</span> sno</span><br><span class="line">    <span class="keyword">from</span> s</span><br><span class="line">    <span class="keyword">where</span> sity <span class="operator">=</span> <span class="string">&#x27;上海&#x27;</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>6.找出使用上海产的零件的工程名称</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> jname</span><br><span class="line"><span class="keyword">from</span> j, spj, s</span><br><span class="line"><span class="keyword">where</span> j.jno <span class="operator">=</span> spj.jno <span class="keyword">and</span> spj.sno <span class="operator">=</span> s.sno <span class="keyword">and</span> s.city <span class="operator">=</span> <span class="string">&#x27;上海&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>7.找出没有使用天津产的零件的工程号码</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> jno</span><br><span class="line"><span class="keyword">from</span> j</span><br><span class="line"><span class="keyword">where</span> <span class="keyword">not</span> <span class="keyword">exists</span> (</span><br><span class="line">	<span class="keyword">select</span> <span class="operator">*</span></span><br><span class="line">    <span class="keyword">from</span> spj, s</span><br><span class="line">    <span class="keyword">where</span> j.jno <span class="operator">=</span> spj.jno <span class="keyword">and</span> spj.sno <span class="operator">=</span> s.sno <span class="keyword">and</span> s.city <span class="operator">=</span> <span class="string">&#x27;天津&#x27;</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+
+</article>
+    
+    
+</div>
+<div id="post-next-prev" class="row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-blog-card trm-scroll-animation" data-scroll data-scroll-offset="40">
+        <a href="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/" class="trm-cover-frame trm-anima-link">
+            
+            
+                <img alt="cover" class="no-fancybox" src="https://www.logosc.cn/uploads/resources/2018/11/29/1543459457_thumb.jpg">
+            
+        </a>
+        
+        <div class="trm-card-descr">
+            <div class="trm-label trm-category trm-mb-20">
+                <a href=" /categories/DataBase/">
+                    DataBase
+                </a>
+            </div>
+            <h5>
+                <a href="/2023/03/23/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-2/" class="trm-anima-link">
+                    数据管理技术 Lab_2
+                </a>
+            </h5>
+            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>23/03/23</li>
+                <li>17:10</li>
+                
+                    <li>252</li>
+                
+                
+                    <li>1</li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation" data-scroll data-scroll-offset="50">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2023- 2023</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">Xenon的小破站</span>
+        </div>
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.3.0
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                主题 - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.0.3
+            </span>
+        </div>
+      
+
+     
+
+     
+</footer>
+ 
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            <div class="trm-fixed-container" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="单栏和双栏切换" onclick="asyncFun.switchSingleColumn()">
+            <i class="iconfont fas fa-arrows-alt-h"></i>
+        </div>
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+          </div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.0.3"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.0.3"></script>
+
+  <!-- 《页面点击小红心 -->
+  <!-- -->
+  <!-- 页面点击小红心》 -->
+
+  <!--鼠标点击烟花爆炸效果，需要引入jQuery-->
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+    <script type="text/javascript" src="/js/fireworks.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+
+</html>
