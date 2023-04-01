@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="Lab3实验报告一、思考题Thinking 3.1  答: UVPT位于kuseg中，是在0x7fc0 0000 - 0x8000 0000的大小为4MB的区域，其作用是保存用户进程页表信息。PADDR(e-&gt;env_pgdir)是进程页目录所在物理地址，e-&gt;env_pgdir[PDX(UVPT)] &#x3D; PADDR(e-&gt;env_pgdir) | PTE_V代表页目录中第PDX">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS-Lab3">
+<meta property="og:url" content="https://xenonga.github.io/2023/04/01/OS-Lab3/index.html">
+<meta property="og:site_name" content="Xenon的小破站">
+<meta property="og:description" content="Lab3实验报告一、思考题Thinking 3.1  答: UVPT位于kuseg中，是在0x7fc0 0000 - 0x8000 0000的大小为4MB的区域，其作用是保存用户进程页表信息。PADDR(e-&gt;env_pgdir)是进程页目录所在物理地址，e-&gt;env_pgdir[PDX(UVPT)] &#x3D; PADDR(e-&gt;env_pgdir) | PTE_V代表页目录中第PDX">
+<meta property="og:locale">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="article:published_time" content="2023-04-01T03:24:27.000Z">
+<meta property="article:modified_time" content="2023-04-01T03:26:47.562Z">
+<meta property="article:author" content="Jiaxuan Gao">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xenonga.github.io/img/404.jpg">
+
+    <meta name="keywords" content="进程创建, 进程切换, 进程调度">
+
+
+<title >OS-Lab3</title>
+
+<!-- Favicon -->
+
+    <link href='/rabbit-16%C3%9716.png?v=2.0.3' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"xenonga.github.io","author":"Jiaxuan Gao","root":"/","typed_text":["a SE Learner"],"theme_version":"2.0.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"rabbit-32×32.png","icon16":"rabbit-16×16.png","icon32":"rabbit-32×32.png","appleTouchIcon":"rabbit-32×32.png","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2023-04-01 11:26:47"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.0.3" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" data-scroll-container style="opacity: 0">
+          <div data-scroll-section id="content" class="trm-scroll-section">
+
+            <div class="locomotive-scroll__sticky-target" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none;"></div>
+
+            <!-- top bar -->
+            <header class="trm-top-bar" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/rabbit-32%C3%9732.png">
+    
+    
+        <div class="trm-logo-text">
+            Xe<span>non</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    主页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a  href="/categories/OS/" target="">
+                            OS
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/SoftwareEngineering/" target="">
+                            软件工程
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/DataBase/" target="">
+                            数据管理技术
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/about/" target="">
+                    关于
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner" data-scroll data-scroll-direction="vertical">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" data-scroll data-scroll-direction="vertical" data-scroll-speed="-3" src="https://pic1.zhimg.com/v2-b3c2c6745b9421a13a3c4706b19223b3_r.jpg">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container" data-scroll data-scroll-direction="vertical" data-scroll-speed="0">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            Hi my new friend!
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            OS-Lab3
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2023
+                                    </span
+                                ></li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <a href="#about-triger" data-scroll-to="#about-triger" data-scroll-offset="-130" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </a>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div id="page-sidebar" class="col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    
+
+<div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card" data-scroll data-scroll-repeat data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="60"> 
+    
+        <div class="trm-user-tabs" id="sidebar-tabs">
+           <div class="trm-tabs-nav trm-mb-40" id="trm-tabs-nav">
+                <div data-to="tabs-user" class="trm-tabs-nav-item">
+                    <i class="iconfont fas fa-user-alt"></i>
+                </div>
+                <div data-to="tabs-toc" class="trm-tabs-nav-item active">
+                    <i class="iconfont fas fa-th-list"></i>
+                </div>
+           </div>
+            <div name="tabs-user" class="trm-tabs-item">
+                <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/rabbit.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        Xenon的小破站
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+                <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/XenonGa/" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+        <a href="https://gitee.com/X2283509194" title="gitee" rel="nofollow" target="_blank">
+            <i class="iconfont iconfont cg-gitee"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+                <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                地球
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                城市:
+            </div>
+            <div class="trm-label trm-label-light">
+                北京
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                20
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+                
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:2283509194@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+            </div>
+            <div name="tabs-toc" class="trm-tabs-item active">
+                <div class="post-toc">
+    <ol class="toc"><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#Lab3实验报告"  data-scroll-to="#Lab3实验报告"><span class="toc-number">1.</span> <span class="toc-text">Lab3实验报告</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#一、思考题"  data-scroll-to="#一、思考题"><span class="toc-number">1.1.</span> <span class="toc-text">一、思考题</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#二、实验难点"  data-scroll-to="#二、实验难点"><span class="toc-number">1.2.</span> <span class="toc-text">二、实验难点</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#三、心得体会"  data-scroll-to="#三、心得体会"><span class="toc-number">1.3.</span> <span class="toc-text">三、心得体会</span></a></li></ol></li></ol>
+</div>
+            </div>
+        </div>
+    
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div id="page-content" class="col-lg-8">
+                <div class="trm-content" id="trm-content">
+                    <div data-scroll data-scroll-repeat data-scroll-offset="500" id="about-triger"></div>
+
+                    <div id="post-info" class="row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            04/01
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            11:24
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Xenon
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h2 id="Lab3实验报告"><a href="#Lab3实验报告" class="headerlink" title="Lab3实验报告"></a>Lab3实验报告</h2><h3 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h3><h4 id="Thinking-3-1"><a href="#Thinking-3-1" class="headerlink" title="Thinking 3.1"></a>Thinking 3.1</h4><img src="/2023/04/01/OS-Lab3/image-20230327204851993.png" class="" title="image-20230327204851993" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>答:</p>
+<p><code>UVPT</code>位于<code>kuseg</code>中，是在<code>0x7fc0 0000</code> - <code>0x8000 0000</code>的大小为4MB的区域，其作用是保存用户进程页表信息。<code>PADDR(e-&gt;env_pgdir)</code>是进程页目录所在物理地址，<code>e-&gt;env_pgdir[PDX(UVPT)] = PADDR(e-&gt;env_pgdir) | PTE_V</code>代表页目录中第<code>PDX(UVPT)</code>项映射到了页目录本身的地址，因此代码实现了自映射。</p>
+<h4 id="Thinking-3-2"><a href="#Thinking-3-2" class="headerlink" title="Thinking 3.2"></a>Thinking 3.2</h4><img src="/2023/04/01/OS-Lab3/image-20230328174857750.png" class="" title="image-20230328174857750" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>答：</p>
+<p><code>data</code> 在函数<code>load_icode_mapper</code>和<code>elf_load_seg</code>中用到。</p>
+<p>作用：通过该指针可以得到页目录的的虚拟地址，从而将ELF加载到合适位置。</p>
+<p>没有这个参数不可以。</p>
+<p>这个参数联系了<code>load_icode_mapper</code>、<code>elf_load_seg</code>和<code>load_icode</code>三个函数，这个参数可以使<code>elf_load_seg</code>更加灵活，可以调用不同的<code>map_page</code>函数从而实现不同操作。而这些不同的<code>map_page</code>函数可能调用不同的数据辅助映射，而由于<code>data</code>是 <code>void *</code>类型，可以强制转换同时没有影响。</p>
+<h4 id="Thinking-3-3"><a href="#Thinking-3-3" class="headerlink" title="Thinking 3.3"></a>Thinking 3.3</h4><img src="/2023/04/01/OS-Lab3/image-20230328200941569.png" class="" title="image-20230328200941569" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p><code>va</code>与<code>va+bin_size</code>相对位置如下</p>
+<img src="/2023/04/01/OS-Lab3/4fc5a69a93f97048e415e33bccfd31f.jpg" class="" title="4fc5a69a93f97048e415e33bccfd31f" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p><code>va+bin_size</code>与<code>va+sg_size</code>相对位置如下</p>
+<img src="/2023/04/01/OS-Lab3/3519b53e75e1fc8c1cef39a1503a727.jpg" class="" title="3519b53e75e1fc8c1cef39a1503a727" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="Thinking-3-4"><a href="#Thinking-3-4" class="headerlink" title="Thinking 3.4"></a>Thinking 3.4</h4><img src="/2023/04/01/OS-Lab3/image-20230328223632976.png" class="" title="image-20230328223632976" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>答：</p>
+<p>虚拟地址。</p>
+<h4 id="Thinking-3-5"><a href="#Thinking-3-5" class="headerlink" title="Thinking 3.5"></a>Thinking 3.5</h4><img src="/2023/04/01/OS-Lab3/image-20230331185059885.png" class="" title="image-20230331185059885" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<ul>
+<li><p><code>handle_int</code>位于<code>kern/genex.S</code>中</p>
+<p>通过阅读代码可知，<code>BUILD_HANDLER</code>是一个可以用于定义异常处理函数的宏。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.macro BUILD_HANDLER exception handler</span><br><span class="line">NESTED(handle_\exception, TF_SIZE, zero)</span><br><span class="line">	move    a0, sp</span><br><span class="line">	jal     \handler</span><br><span class="line">	j       ret_from_exception</span><br><span class="line">END(handle_\exception)</span><br><span class="line">.endm</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>exception</code>是<code>handle_()</code>括号中内容，<code>handler</code>是引用的处理函数。</p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">BUILD_HANDLER tlb do_tlb_refill</span><br><span class="line"></span><br><span class="line">#if !defined(LAB) || LAB &gt;= 4</span><br><span class="line">BUILD_HANDLER mod do_tlb_mod</span><br><span class="line">BUILD_HANDLER sys do_syscall</span><br><span class="line">#endif</span><br></pre></td></tr></table></figure>
+
+<p>根据以上代码可以知道其余异常处理函数的实现位置</p>
+<ul>
+<li><code>handle_mod</code>引用的函数 <code>do_tlb_mod</code>定义在 <code>kern/tlbex.c</code>中</li>
+<li><code>handle_tlb</code>引用的函数<code>do_tlb_refill</code>定义在 <code>kern/tlb_asm.S</code>中</li>
+<li><code>handle_sys</code>引用的函数<code>do_syscall</code>是系统调用函数。</li>
+</ul>
+<h4 id="Thinking-3-6"><a href="#Thinking-3-6" class="headerlink" title="Thinking 3.6"></a>Thinking 3.6</h4><img src="/2023/04/01/OS-Lab3/image-20230331231105844.png" class="" title="image-20230331231105844" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p><code>enable_irq</code>代码和分析如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">LEAF(enable_irq)</span><br><span class="line">	li      t0, (STATUS_CU0 | STATUS_IM4 | STATUS_IEc)</span><br><span class="line">	# 将SR寄存器的CU0， IM4， 和IEc位置1</span><br><span class="line">	# CU0：“协同处理器0可用”：能够在用户模式下使用一些名义上的特权指令</span><br><span class="line">	# IM4：4号中断可以被响应</span><br><span class="line">	# IEc：开启中断</span><br><span class="line">	mtc0    t0, CP0_STATUS</span><br><span class="line">	# 将以上内容写到CP0的Status Register中</span><br><span class="line">	jr      ra</span><br><span class="line">	# 返回</span><br><span class="line">END(enable_irq)</span><br></pre></td></tr></table></figure>
+
+<p><code>timer_irq</code>代码和分析如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">timer_irq:</span><br><span class="line">	sw      zero, (KSEG1 | DEV_RTC_ADDRESS | DEV_RTC_INTERRUPT_ACK)</span><br><span class="line">	# 在地址0xb5000110写0以响应时钟中断</span><br><span class="line">	li      a0, 0</span><br><span class="line">	# 将第一个参数设置为0</span><br><span class="line">	j       schedule</span><br><span class="line">	# 跳转至schedule函数</span><br></pre></td></tr></table></figure>
+
+<h4 id="Thinking-3-7"><a href="#Thinking-3-7" class="headerlink" title="Thinking 3.7"></a>Thinking 3.7</h4><img src="/2023/04/01/OS-Lab3/image-20230401000917582.png" class="" title="image-20230401000917582" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>实验设置静态变量<code>count</code>记录当前进程<code>curenv</code>剩余的时间片数量。每过一个时钟中断<code>count--</code>代表其消耗了一个时间片，当<code>count</code>等于0时代表这一进程的时间片已经耗尽，触发进程切换。系统保存上下文，跳转至<code>schedule</code>函数。</p>
+<p><code>schedule</code>函数进行判断：</p>
+<p>若参数<code>yield</code>为0且进程时间片没有耗尽且进程是<code>RUNNABLE</code>状态，则继续执行该进程。</p>
+<p>若参数<code>yield</code>不为0或进程时间片耗尽或进程不是<code>RUNNABLE</code>状态，此时如果当前有进程执行，则将其插入队尾，等待之后执行。之后选择队列中第一个进程，将<code>count</code>设置为其优先级(即<code>env_pri</code>)，调用<code>env_run</code>使其运行。</p>
+<h3 id="二、实验难点"><a href="#二、实验难点" class="headerlink" title="二、实验难点"></a>二、实验难点</h3><h4 id="1-将进程加载到内存"><a href="#1-将进程加载到内存" class="headerlink" title="1.将进程加载到内存"></a>1.将进程加载到内存</h4><img src="/2023/04/01/OS-Lab3/image-20230401105915680.png" class="" title="image-20230401105915680" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">elf_load_seg</span><span class="params">(Elf32_Phdr *ph, <span class="type">const</span> <span class="type">void</span> *bin, <span class="type">elf_mapper_t</span> map_page, <span class="type">void</span> *data)</span> &#123;</span><br><span class="line">	u_long va = ph-&gt;p_vaddr;</span><br><span class="line">	<span class="type">size_t</span> bin_size = ph-&gt;p_filesz;</span><br><span class="line">	<span class="type">size_t</span> sgsize = ph-&gt;p_memsz;</span><br><span class="line">	u_int perm = PTE_V;</span><br><span class="line">	<span class="keyword">if</span> (ph-&gt;p_flags &amp; PF_W) &#123;</span><br><span class="line">		perm |= PTE_D;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="type">int</span> r;</span><br><span class="line">	<span class="type">size_t</span> i;</span><br><span class="line">	u_long offset = va - ROUNDDOWN(va, BY2PG);</span><br><span class="line">	<span class="keyword">if</span> (offset != <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> ((r = map_page(data, va, offset, perm, bin, MIN(bin_size, BY2PG - offset))) !=</span><br><span class="line">		    <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span> r;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 1: load all content of bin into memory. */</span></span><br><span class="line">	<span class="keyword">for</span> (i = offset ? MIN(bin_size, BY2PG - offset) : <span class="number">0</span>; i &lt; bin_size; i += BY2PG) &#123;</span><br><span class="line">		<span class="keyword">if</span> ((r = map_page(data, va + i, <span class="number">0</span>, perm, bin + i, MIN(bin_size - i, BY2PG))) != <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span> r;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 2: alloc pages to reach `sgsize` when `bin_size` &lt; `sgsize`. */</span></span><br><span class="line">	<span class="keyword">while</span> (i &lt; sgsize) &#123;</span><br><span class="line">		<span class="keyword">if</span> ((r = map_page(data, va + i, <span class="number">0</span>, perm, <span class="literal">NULL</span>, MIN(bin_size - i, BY2PG))) != <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span> r;</span><br><span class="line">		&#125;</span><br><span class="line">		i += BY2PG;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>理解<code>elf_load_seg</code>函数即可了解操作系统如何将进程写入内存。值得注意的是该函数是单页加载的。该函数将此过程分为三个部分执行：</p>
+<ul>
+<li>如果<code>va</code>并不是页对齐的，则加载到至多下一页的起始地址。如果是页对齐则不需要第一步过程。</li>
+<li>以页为单位将进程加载入内存。</li>
+<li>如果该段在文件中的内容的大小达不到为填入这段内容新分配的页面大小(即<code>bin_size</code> &lt; <code>sg_size</code>)，那么余下的部分用 0 来填充。</li>
+</ul>
+<p>在实现回调函数<code>load_icode_mapper</code>时，需要注意在加载时地址以页操作，将页使用<code>page2kva</code>函数转化成内核虚拟地址再进行操作。</p>
+<h4 id="2-时钟中断的过程"><a href="#2-时钟中断的过程" class="headerlink" title="2.时钟中断的过程"></a>2.时钟中断的过程</h4><ul>
+<li>发生异常</li>
+<li>处理器进入异常分发程序（本试验中是<code>exc_gen_entry</code>函数，位于<code>kern/entry.S</code>）,从异常向量组<code>exception_handlers</code>，定位对应异常处理函数。</li>
+<li>中断处理程序<code>handle_int</code>判断 <code>Cause</code> 寄存器是不是对应的 4 号中断位引发的中断，如果是，则执行<br>中断服务函数 <code>timer_irq</code>。</li>
+<li>中断服务函数 <code>timer_irq</code>响应时钟中断，并进入调度程序<code>schedule</code>调度新进程。</li>
+<li>调度程序<code>schedule</code>将时间片用尽的进程换为新进程，调用进程切换函数<code>env_run</code>使其运行。</li>
+<li>进程切换函数<code>env_run</code>将原进程上下文保存，将新进程寄存器状态写入cpu中，实现进程切换。</li>
+</ul>
+<h3 id="三、心得体会"><a href="#三、心得体会" class="headerlink" title="三、心得体会"></a>三、心得体会</h3><p>本次实验主要学习了进程创建、加载、调度，理解CP0寄存器构成以及中断异常的处理过程，学习内容丰富，收获很多。</p>
+
+</article>
+    
+    
+</div>
+<div id="post-next-prev" class="row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-blog-card trm-scroll-animation" data-scroll data-scroll-offset="40">
+        <a href="/2023/03/30/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-3/" class="trm-cover-frame trm-anima-link">
+            
+            
+                <img alt="cover" class="no-fancybox" src="https://www.logosc.cn/uploads/resources/2018/11/29/1543459457_thumb.jpg">
+            
+        </a>
+        
+        <div class="trm-card-descr">
+            <div class="trm-label trm-category trm-mb-20">
+                <a href=" /categories/DataBase/">
+                    DataBase
+                </a>
+            </div>
+            <h5>
+                <a href="/2023/03/30/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-3/" class="trm-anima-link">
+                    数据管理技术-Lab-3
+                </a>
+            </h5>
+            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>23/03/30</li>
+                <li>12:19</li>
+                
+                    <li>379</li>
+                
+                
+                    <li>2</li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation" data-scroll data-scroll-offset="50">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2023- 2023</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">Xenon的小破站</span>
+        </div>
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.3.0
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                主题 - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.0.3
+            </span>
+        </div>
+      
+
+     
+
+     
+</footer>
+ 
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            <div class="trm-fixed-container" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="单栏和双栏切换" onclick="asyncFun.switchSingleColumn()">
+            <i class="iconfont fas fa-arrows-alt-h"></i>
+        </div>
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+          </div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.0.3"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.0.3"></script>
+
+  <!-- 《页面点击小红心 -->
+  <!-- -->
+  <!-- 页面点击小红心》 -->
+
+  <!--鼠标点击烟花爆炸效果，需要引入jQuery-->
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+    <script type="text/javascript" src="/js/fireworks.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+
+</html>
