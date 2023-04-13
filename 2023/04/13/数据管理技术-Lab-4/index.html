@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="数据管理技术Lab4实验报告Task1  导入结果表customer   表food   表order   Q1查询与CID&#x3D;1的顾客同一个城市的所有顾客ID 代码如下 12345select CIDfrom customerwhere City &#x3D; (select City              from customer              where CID &#x3D; 1);">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据管理技术-Lab-4">
+<meta property="og:url" content="https://xenonga.github.io/2023/04/13/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-4/index.html">
+<meta property="og:site_name" content="Xenon的小破站">
+<meta property="og:description" content="数据管理技术Lab4实验报告Task1  导入结果表customer   表food   表order   Q1查询与CID&#x3D;1的顾客同一个城市的所有顾客ID 代码如下 12345select CIDfrom customerwhere City &#x3D; (select City              from customer              where CID &#x3D; 1);">
+<meta property="og:locale">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="article:published_time" content="2023-04-13T01:47:52.000Z">
+<meta property="article:modified_time" content="2023-04-13T01:48:52.302Z">
+<meta property="article:author" content="Jiaxuan Gao">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xenonga.github.io/img/404.jpg">
+
+    <meta name="keywords" content="DML">
+
+
+<title >数据管理技术-Lab-4</title>
+
+<!-- Favicon -->
+
+    <link href='/rabbit-16%C3%9716.png?v=2.0.3' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"xenonga.github.io","author":"Jiaxuan Gao","root":"/","typed_text":["a SE Learner"],"theme_version":"2.0.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"rabbit-32×32.png","icon16":"rabbit-16×16.png","icon32":"rabbit-32×32.png","appleTouchIcon":"rabbit-32×32.png","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2023-04-13 09:48:52"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.0.3" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" data-scroll-container style="opacity: 0">
+          <div data-scroll-section id="content" class="trm-scroll-section">
+
+            <div class="locomotive-scroll__sticky-target" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none;"></div>
+
+            <!-- top bar -->
+            <header class="trm-top-bar" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/rabbit-32%C3%9732.png">
+    
+    
+        <div class="trm-logo-text">
+            Xe<span>non</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    主页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a  href="/categories/OS/" target="">
+                            OS
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/SoftwareEngineering/" target="">
+                            软件工程
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/DataBase/" target="">
+                            数据管理技术
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/about/" target="">
+                    关于
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner" data-scroll data-scroll-direction="vertical">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" data-scroll data-scroll-direction="vertical" data-scroll-speed="-3" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container" data-scroll data-scroll-direction="vertical" data-scroll-speed="0">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            数据管理技术-Lab-4
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2023
+                                    </span
+                                ></li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <a href="#about-triger" data-scroll-to="#about-triger" data-scroll-offset="-130" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </a>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div id="page-sidebar" class="col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    
+
+<div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card" data-scroll data-scroll-repeat data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="60"> 
+    
+        <div class="trm-user-tabs" id="sidebar-tabs">
+           <div class="trm-tabs-nav trm-mb-40" id="trm-tabs-nav">
+                <div data-to="tabs-user" class="trm-tabs-nav-item">
+                    <i class="iconfont fas fa-user-alt"></i>
+                </div>
+                <div data-to="tabs-toc" class="trm-tabs-nav-item active">
+                    <i class="iconfont fas fa-th-list"></i>
+                </div>
+           </div>
+            <div name="tabs-user" class="trm-tabs-item">
+                <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/rabbit.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        Xenon的小破站
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+                <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/XenonGa/" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+        <a href="https://gitee.com/X2283509194" title="gitee" rel="nofollow" target="_blank">
+            <i class="iconfont iconfont cg-gitee"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+                <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                地球
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                城市:
+            </div>
+            <div class="trm-label trm-label-light">
+                北京
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                20
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+                
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:2283509194@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+            </div>
+            <div name="tabs-toc" class="trm-tabs-item active">
+                <div class="post-toc">
+    <ol class="toc"><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#数据管理技术Lab4实验报告"  data-scroll-to="#数据管理技术Lab4实验报告"><span class="toc-number">1.</span> <span class="toc-text">数据管理技术Lab4实验报告</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Task1"  data-scroll-to="#Task1"><span class="toc-number">1.1.</span> <span class="toc-text">Task1</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Task2"  data-scroll-to="#Task2"><span class="toc-number">1.2.</span> <span class="toc-text">Task2</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Task3"  data-scroll-to="#Task3"><span class="toc-number">1.3.</span> <span class="toc-text">Task3</span></a></li></ol></li></ol>
+</div>
+            </div>
+        </div>
+    
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div id="page-content" class="col-lg-8">
+                <div class="trm-content" id="trm-content">
+                    <div data-scroll data-scroll-repeat data-scroll-offset="500" id="about-triger"></div>
+
+                    <div id="post-info" class="row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            04/13
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            09:47
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Xenon
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h2 id="数据管理技术Lab4实验报告"><a href="#数据管理技术Lab4实验报告" class="headerlink" title="数据管理技术Lab4实验报告"></a>数据管理技术Lab4实验报告</h2><h3 id="Task1"><a href="#Task1" class="headerlink" title="Task1"></a>Task1</h3><img src="/2023/04/13/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-4/image-20230412191022096.png" class="" title="image-20230412191022096" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="导入结果"><a href="#导入结果" class="headerlink" title="导入结果"></a>导入结果</h4><p>表<code>customer</code></p>
+<img src="/2023/04/13/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-4/image-20230412191747890.png" class="" title="image-20230412191747890" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>表<code>food</code></p>
+<img src="/2023/04/13/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-4/image-20230412191802031.png" class="" title="image-20230412191802031" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>表<code>order</code></p>
+<img src="/2023/04/13/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-4/image-20230412191821998.png" class="" title="image-20230412191821998" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="Q1"><a href="#Q1" class="headerlink" title="Q1"></a>Q1</h4><p>查询与CID&#x3D;1的顾客同一个城市的所有顾客ID</p>
+<p>代码如下</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> CID</span><br><span class="line"><span class="keyword">from</span> customer</span><br><span class="line"><span class="keyword">where</span> City <span class="operator">=</span> (<span class="keyword">select</span> City</span><br><span class="line">              <span class="keyword">from</span> customer</span><br><span class="line">              <span class="keyword">where</span> CID <span class="operator">=</span> <span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<p>结果如下</p>
+<img src="/2023/04/13/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-4/image-20230412191933676.png" class="" title="image-20230412191933676" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="Q2"><a href="#Q2" class="headerlink" title="Q2"></a>Q2</h4><p>查询购买过所有省份（Food表中出现过的City）的食物的顾客ID</p>
+<p>代码如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> customer.CID</span><br><span class="line"><span class="keyword">from</span> customer, food, orders</span><br><span class="line"><span class="keyword">where</span> customer.CID <span class="operator">=</span> orders.CID</span><br><span class="line"><span class="keyword">and</span> food.FID <span class="operator">=</span> orders.FID</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> customer.CID</span><br><span class="line"><span class="keyword">having</span> <span class="built_in">count</span>(<span class="keyword">distinct</span> food.City) <span class="operator">=</span> <span class="number">9</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>结果如下(导入数据中没有符合的项所以加了几条数据)</p>
+<img src="/2023/04/13/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-4/image-20230412193138298.png" class="" title="image-20230412193138298" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="Q3"><a href="#Q3" class="headerlink" title="Q3"></a>Q3</h4><p>查询至少购买过ID为4的顾客买过的全部食物的顾客ID</p>
+<p>代码如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> od1.CID <span class="keyword">from</span> orders <span class="keyword">as</span> od1</span><br><span class="line"><span class="keyword">where</span> od1.CID <span class="operator">!=</span> <span class="number">4</span></span><br><span class="line"><span class="keyword">and</span> <span class="keyword">not</span> <span class="keyword">exists</span>(</span><br><span class="line">    <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> orders <span class="keyword">as</span> od2</span><br><span class="line">    <span class="keyword">where</span> od2.CID <span class="operator">=</span> <span class="number">4</span></span><br><span class="line">    <span class="keyword">and</span> <span class="keyword">not</span> <span class="keyword">exists</span>(</span><br><span class="line">        <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> orders <span class="keyword">as</span> od3</span><br><span class="line">        <span class="keyword">where</span> od3.CID <span class="operator">=</span> od1.CID</span><br><span class="line">        <span class="keyword">and</span> od3.FID <span class="operator">=</span> od2.FID</span><br><span class="line">        )</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+
+<p>结果如下</p>
+<img src="/2023/04/13/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-4/image-20230412195750714.png" class="" title="image-20230412195750714" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h3 id="Task2"><a href="#Task2" class="headerlink" title="Task2"></a>Task2</h3><img src="/2023/04/13/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-4/image-20230412200255872.png" class="" title="image-20230412200255872" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="Q1-1"><a href="#Q1-1" class="headerlink" title="Q1"></a>Q1</h4><p>创建一个新表Sales，字段为：Food ID（主键） 数字型，食物名（非空）字符型 长度20，总销量 数字型。查询每种食物的总销量，将结果插入表中。（两条SQL语句，一条为create语句，一条为insert语句）。</p>
+<p>创建：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> Sales(</span><br><span class="line">    Food_ID <span class="type">int</span> <span class="keyword">primary</span> key ,</span><br><span class="line">    Food_name <span class="type">char</span>(<span class="number">20</span>) <span class="keyword">not</span> <span class="keyword">null</span> ,</span><br><span class="line">    amount <span class="type">int</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>结果</p>
+<img src="/2023/04/13/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-4/image-20230412200340301.png" class="" title="image-20230412200340301" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>查询插入：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> sales</span><br><span class="line"><span class="keyword">select</span> food.FID, Name, a.quantity</span><br><span class="line"><span class="keyword">from</span> food,(</span><br><span class="line">    <span class="keyword">select</span> FID <span class="keyword">as</span> q_fid, <span class="built_in">sum</span>(quantity) <span class="keyword">as</span> quantity</span><br><span class="line">    <span class="keyword">from</span> orders</span><br><span class="line">    <span class="keyword">group</span> <span class="keyword">by</span> orders.FID</span><br><span class="line">    <span class="keyword">order</span> <span class="keyword">by</span> orders.FID</span><br><span class="line">    )a</span><br><span class="line"><span class="keyword">where</span> q_fid <span class="operator">=</span> food.FID</span><br></pre></td></tr></table></figure>
+
+<p>结果</p>
+<img src="/2023/04/13/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-4/image-20230412203016746.png" class="" title="image-20230412203016746" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="Q2-1"><a href="#Q2-1" class="headerlink" title="Q2"></a>Q2</h4><p>向Order表添加一条交易记录，内容自定义，并更新对应食物的总销量字段（两条SQL语句）</p>
+<p>添加代码：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> lab4.orders (OID, CID, FID, Quantity) <span class="keyword">VALUES</span> (<span class="number">24</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">10</span>);</span><br></pre></td></tr></table></figure>
+
+<p>结果</p>
+<img src="/2023/04/13/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-4/image-20230412203237106.png" class="" title="image-20230412203237106" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>更新字段代码：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> sales</span><br><span class="line"><span class="keyword">set</span> amount <span class="operator">=</span> (<span class="keyword">select</span> <span class="built_in">sum</span>(Quantity)</span><br><span class="line">              <span class="keyword">from</span> orders</span><br><span class="line">              <span class="keyword">where</span> orders.FID <span class="operator">=</span> <span class="number">3</span>)</span><br><span class="line"><span class="keyword">where</span> Food_ID <span class="operator">=</span> <span class="number">3</span>;</span><br></pre></td></tr></table></figure>
+
+<p>结果</p>
+<img src="/2023/04/13/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-4/image-20230412204531699.png" class="" title="image-20230412204531699" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="Q3-1"><a href="#Q3-1" class="headerlink" title="Q3"></a>Q3</h4><p>为新表添加一个评分字段（数字型），要求分数范围限定为0-10，并设置默认值6</p>
+<p>代码：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> sales</span><br><span class="line">    <span class="keyword">add</span> score <span class="type">int</span> <span class="keyword">default</span> <span class="number">6</span>,</span><br><span class="line">    <span class="keyword">check</span> ((score <span class="operator">&gt;=</span> <span class="number">0</span>) <span class="keyword">and</span> (score <span class="operator">&lt;=</span> <span class="number">10</span>))</span><br><span class="line">;</span><br></pre></td></tr></table></figure>
+
+<p>结果</p>
+<img src="/2023/04/13/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-4/image-20230412205312466.png" class="" title="image-20230412205312466" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h3 id="Task3"><a href="#Task3" class="headerlink" title="Task3"></a>Task3</h3><img src="/2023/04/13/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-4/image-20230412205454310.png" class="" title="image-20230412205454310" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="Q1-2"><a href="#Q1-2" class="headerlink" title="Q1"></a>Q1</h4><p>建立购买过重庆或四川食物的顾客视图Shu-view（包含Customer中CID，City）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">view</span> `Shu<span class="operator">-</span><span class="keyword">view</span>` <span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> customer.CID, customer.City</span><br><span class="line"><span class="keyword">from</span> food, orders, customer</span><br><span class="line"><span class="keyword">where</span> customer.CID <span class="operator">=</span> orders.CID</span><br><span class="line">  <span class="keyword">and</span> orders.FID <span class="operator">=</span> food.FID</span><br><span class="line">  <span class="keyword">and</span> (food.City <span class="operator">=</span> <span class="string">&#x27;四川&#x27;</span> <span class="keyword">or</span> food.City <span class="operator">=</span> <span class="string">&#x27;重庆&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>结果</p>
+<img src="/2023/04/13/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-4/image-20230412231103291.png" class="" title="image-20230412231103291" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="Q2-2"><a href="#Q2-2" class="headerlink" title="Q2"></a>Q2</h4><p>查询购买过重庆或四川食物的顾客中订单总消费最高的顾客CID（使用视图Shu-view，思考使用视图的好处）</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="keyword">distinct</span> `shu<span class="operator">-</span><span class="keyword">view</span>`.CID</span><br><span class="line"><span class="keyword">from</span> `shu<span class="operator">-</span><span class="keyword">view</span>`, orders, food</span><br><span class="line"><span class="keyword">where</span> `shu<span class="operator">-</span><span class="keyword">view</span>`.CID <span class="operator">=</span> orders.CID</span><br><span class="line"><span class="keyword">and</span> orders.FID <span class="operator">=</span> food.FID</span><br><span class="line"><span class="keyword">group</span> <span class="keyword">by</span> `shu<span class="operator">-</span><span class="keyword">view</span>`.CID</span><br><span class="line"><span class="keyword">having</span> <span class="built_in">sum</span>(Quantity <span class="operator">*</span> Price) <span class="operator">&gt;=</span> <span class="keyword">all</span> (</span><br><span class="line">    <span class="keyword">select</span> <span class="built_in">sum</span>(Quantity <span class="operator">*</span> Price)</span><br><span class="line">    <span class="keyword">from</span> `shu<span class="operator">-</span><span class="keyword">view</span>`, orders, food</span><br><span class="line">    <span class="keyword">where</span> `shu<span class="operator">-</span><span class="keyword">view</span>`.CID <span class="operator">=</span> orders.CID</span><br><span class="line">      <span class="keyword">and</span> orders.FID <span class="operator">=</span> food.FID</span><br><span class="line">    <span class="keyword">group</span> <span class="keyword">by</span> `shu<span class="operator">-</span><span class="keyword">view</span>`.CID</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>结果</p>
+<img src="/2023/04/13/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-4/image-20230412234004012.png" class="" title="image-20230412234004012" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>使用视图的好处：可以直接从已经查好部分内容的表中与其他表查找，相当于省去写一个子查询的步骤，精简查询代码，便于操作。</p>
+<h4 id="Q3-2"><a href="#Q3-2" class="headerlink" title="Q3"></a>Q3</h4><p>向视图Shu-view加入表项（16，湖南），能成功吗，为什么？</p>
+<p>代码：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> lab4.`shu<span class="operator">-</span><span class="keyword">view</span>` (CID, City) <span class="keyword">VALUES</span> (<span class="number">16</span>, <span class="string">&#x27;湖南&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>结果</p>
+<img src="/2023/04/13/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-4/image-20230412234233799.png" class="" title="image-20230412234233799" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>原因：表中的项都满足’’购买过重庆或四川食物’’的特点，其是根据<code>orders</code>、<code>food</code>查询得到，而该表项没有这些限制，故不能插入。</p>
+<h4 id="Q4"><a href="#Q4" class="headerlink" title="Q4"></a>Q4</h4><p>建立男性顾客的视图Male-view（包含Customer中CID，City）,并要求对该视图进行的更新操作   只涉及男性顾客。（WITH CHECK OPTION）</p>
+<p>代码如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">view</span> `Male<span class="operator">-</span><span class="keyword">view</span>` <span class="keyword">as</span></span><br><span class="line"><span class="keyword">select</span> CID, City <span class="keyword">from</span> customer</span><br><span class="line"><span class="keyword">where</span> Gender <span class="operator">=</span> <span class="string">&#x27;男&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="keyword">check</span> option ;</span><br></pre></td></tr></table></figure>
+
+<p>结果如下</p>
+<img src="/2023/04/13/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-4/image-20230412235518122.png" class="" title="image-20230412235518122" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="Q5"><a href="#Q5" class="headerlink" title="Q5"></a>Q5</h4><p>向视图Male-view加入表项（17，湖南），能成功吗，为什么？</p>
+<p>代码：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> lab4.`male<span class="operator">-</span><span class="keyword">view</span>` (CID, City) <span class="keyword">VALUES</span> (<span class="number">17</span>, <span class="string">&#x27;湖南&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>结果</p>
+<img src="/2023/04/13/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-4/image-20230412235752144.png" class="" title="image-20230412235752144" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>原因：插入的值实际上在<code>gender</code>属性是<code>NULL</code>，而不是<code>男</code>，违背了<code>check option</code>， 因此无法插入。</p>
+
+</article>
+    
+    
+</div>
+<div id="post-next-prev" class="row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-blog-card trm-scroll-animation" data-scroll data-scroll-offset="40">
+        <a href="/2023/04/09/%E8%BD%AF%E5%B7%A5Lab5-EA/" class="trm-cover-frame trm-anima-link">
+            
+            
+                <img alt="cover" class="no-fancybox" src="https://images.pexels.com/photos/13356439/pexels-photo-13356439.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2">
+            
+        </a>
+        
+        <div class="trm-card-descr">
+            <div class="trm-label trm-category trm-mb-20">
+                <a href=" /categories/SoftwareEngineering/">
+                    SoftwareEngineering
+                </a>
+            </div>
+            <h5>
+                <a href="/2023/04/09/%E8%BD%AF%E5%B7%A5Lab5-EA/" class="trm-anima-link">
+                    软工Lab5-EA
+                </a>
+            </h5>
+            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>23/04/09</li>
+                <li>19:44</li>
+                
+                    <li>1.2k</li>
+                
+                
+                    <li>3</li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation" data-scroll data-scroll-offset="50">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2023- 2023</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">Xenon的小破站</span>
+        </div>
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.3.0
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                主题 - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.0.3
+            </span>
+        </div>
+      
+
+     
+
+     
+</footer>
+ 
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            <div class="trm-fixed-container" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="单栏和双栏切换" onclick="asyncFun.switchSingleColumn()">
+            <i class="iconfont fas fa-arrows-alt-h"></i>
+        </div>
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+          </div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.0.3"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.0.3"></script>
+
+  <!-- 《页面点击小红心 -->
+  <!-- -->
+  <!-- 页面点击小红心》 -->
+
+  <!--鼠标点击烟花爆炸效果，需要引入jQuery-->
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+    <script type="text/javascript" src="/js/fireworks.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+
+</html>
