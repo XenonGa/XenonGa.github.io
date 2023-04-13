@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="Lab4实验报告一、思考题Thinking 4.1  答：  内核调用SAVE_ALL宏函数保存现场，同时这个宏函数只使用$k1、$k2两个寄存器操作，而不破坏其他寄存器的值。 不可以。在陷入内核调用后，$a0寄存器中的值已被改变为系统调用号。虽然$a1-$a3未被使用，但其也可能被改变。若想得到原始信息，应从栈中获取。 将用户进程的寄存器$a0-$a3以及用户栈中的参数a4，a5拷贝至内核寄存器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS-Lab4">
+<meta property="og:url" content="https://xenonga.github.io/2023/04/13/OS-Lab4/index.html">
+<meta property="og:site_name" content="Xenon的小破站">
+<meta property="og:description" content="Lab4实验报告一、思考题Thinking 4.1  答：  内核调用SAVE_ALL宏函数保存现场，同时这个宏函数只使用$k1、$k2两个寄存器操作，而不破坏其他寄存器的值。 不可以。在陷入内核调用后，$a0寄存器中的值已被改变为系统调用号。虽然$a1-$a3未被使用，但其也可能被改变。若想得到原始信息，应从栈中获取。 将用户进程的寄存器$a0-$a3以及用户栈中的参数a4，a5拷贝至内核寄存器">
+<meta property="og:locale">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="article:published_time" content="2023-04-13T11:38:14.000Z">
+<meta property="article:modified_time" content="2023-04-13T11:39:42.004Z">
+<meta property="article:author" content="Jiaxuan Gao">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xenonga.github.io/img/404.jpg">
+
+    <meta name="keywords" content="系统调用, 进程通信, fork">
+
+
+<title >OS-Lab4</title>
+
+<!-- Favicon -->
+
+    <link href='/rabbit-16%C3%9716.png?v=2.0.3' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"xenonga.github.io","author":"Jiaxuan Gao","root":"/","typed_text":["a SE Learner"],"theme_version":"2.0.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"rabbit-32×32.png","icon16":"rabbit-16×16.png","icon32":"rabbit-32×32.png","appleTouchIcon":"rabbit-32×32.png","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2023-04-13 19:39:42"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.0.3" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" data-scroll-container style="opacity: 0">
+          <div data-scroll-section id="content" class="trm-scroll-section">
+
+            <div class="locomotive-scroll__sticky-target" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none;"></div>
+
+            <!-- top bar -->
+            <header class="trm-top-bar" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/rabbit-32%C3%9732.png">
+    
+    
+        <div class="trm-logo-text">
+            Xe<span>non</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    主页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a  href="/categories/OS/" target="">
+                            OS
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/SoftwareEngineering/" target="">
+                            软件工程
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/DataBase/" target="">
+                            数据管理技术
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/about/" target="">
+                    关于
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner" data-scroll data-scroll-direction="vertical">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" data-scroll data-scroll-direction="vertical" data-scroll-speed="-3" src="https://pic1.zhimg.com/v2-b3c2c6745b9421a13a3c4706b19223b3_r.jpg">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container" data-scroll data-scroll-direction="vertical" data-scroll-speed="0">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            Hi my new friend!
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            OS-Lab4
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2023
+                                    </span
+                                ></li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <a href="#about-triger" data-scroll-to="#about-triger" data-scroll-offset="-130" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </a>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div id="page-sidebar" class="col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    
+
+<div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card" data-scroll data-scroll-repeat data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="60"> 
+    
+        <div class="trm-user-tabs" id="sidebar-tabs">
+           <div class="trm-tabs-nav trm-mb-40" id="trm-tabs-nav">
+                <div data-to="tabs-user" class="trm-tabs-nav-item">
+                    <i class="iconfont fas fa-user-alt"></i>
+                </div>
+                <div data-to="tabs-toc" class="trm-tabs-nav-item active">
+                    <i class="iconfont fas fa-th-list"></i>
+                </div>
+           </div>
+            <div name="tabs-user" class="trm-tabs-item">
+                <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/rabbit.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        Xenon的小破站
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+                <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/XenonGa/" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+        <a href="https://gitee.com/X2283509194" title="gitee" rel="nofollow" target="_blank">
+            <i class="iconfont iconfont cg-gitee"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+                <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                地球
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                城市:
+            </div>
+            <div class="trm-label trm-label-light">
+                北京
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                20
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+                
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:2283509194@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+            </div>
+            <div name="tabs-toc" class="trm-tabs-item active">
+                <div class="post-toc">
+    <ol class="toc"><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#Lab4实验报告"  data-scroll-to="#Lab4实验报告"><span class="toc-number">1.</span> <span class="toc-text">Lab4实验报告</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#一、思考题"  data-scroll-to="#一、思考题"><span class="toc-number">1.1.</span> <span class="toc-text">一、思考题</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#二、实验难点"  data-scroll-to="#二、实验难点"><span class="toc-number">1.2.</span> <span class="toc-text">二、实验难点</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#三、心得体会"  data-scroll-to="#三、心得体会"><span class="toc-number">1.3.</span> <span class="toc-text">三、心得体会</span></a></li></ol></li></ol>
+</div>
+            </div>
+        </div>
+    
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div id="page-content" class="col-lg-8">
+                <div class="trm-content" id="trm-content">
+                    <div data-scroll data-scroll-repeat data-scroll-offset="500" id="about-triger"></div>
+
+                    <div id="post-info" class="row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            04/13
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            19:38
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Xenon
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h2 id="Lab4实验报告"><a href="#Lab4实验报告" class="headerlink" title="Lab4实验报告"></a>Lab4实验报告</h2><h3 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h3><h4 id="Thinking-4-1"><a href="#Thinking-4-1" class="headerlink" title="Thinking 4.1"></a>Thinking 4.1</h4><img src="/2023/04/13/OS-Lab4/image-20230410195232279.png" class="" title="image-20230410195232279" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>答：</p>
+<ul>
+<li>内核调用<code>SAVE_ALL</code>宏函数保存现场，同时这个宏函数只使用<code>$k1</code>、<code>$k2</code>两个寄存器操作，而不破坏其他寄存器的值。</li>
+<li>不可以。在陷入内核调用后，<code>$a0</code>寄存器中的值已被改变为系统调用号。虽然<code>$a1</code>-<code>$a3</code>未被使用，但其也可能被改变。若想得到原始信息，应从栈中获取。</li>
+<li>将用户进程的寄存器<code>$a0</code>-<code>$a3</code>以及用户栈中的参数a4，a5拷贝至内核寄存器<code>$a0</code>-<code>$a3</code>和内核栈。</li>
+<li>设置<code>tf-&gt;cp0_epc</code>+4，以便从内核调用返回用户态是可以正确执行调用后的下一条指令。</li>
+</ul>
+<h4 id="Thinking-4-2"><a href="#Thinking-4-2" class="headerlink" title="Thinking 4.2"></a>Thinking 4.2</h4><img src="/2023/04/13/OS-Lab4/image-20230410204100670.png" class="" title="image-20230410204100670" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>答：</p>
+<p>一个存在于<code>env_free_list</code>的进程控制块在被<code>env_alloc</code>函数调用时会被分配一个独一无二的<code>envid</code>，在其被<code>env_free</code>函数调用时会重新插入进<code>env_free_list</code>。当这个进程控制块被<code>env_alloc</code>函数再次调用时，其会被分配另一个<code>envid</code>。实质上这个进程控制块控制两个不同的进程。而当第一个<code>envid</code>被传入<code>envid2env</code>函数时，寻找的目标进程是第一个进程，函数会找到这个进程控制块，而此时该进程控制块控制着另一个进程，因此找到的是第二个进程。如果没有这步判断，函数找到的进程控制块可能不对应<code>envid</code>。</p>
+<h4 id="Thinking-4-3"><a href="#Thinking-4-3" class="headerlink" title="Thinking 4.3"></a>Thinking 4.3</h4><img src="/2023/04/13/OS-Lab4/image-20230412153240848.png" class="" title="image-20230412153240848" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>答：</p>
+<p><code>mkenvid()</code>函数代码如下:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">u_int <span class="title function_">mkenvid</span><span class="params">(<span class="keyword">struct</span> Env *e)</span> &#123;</span><br><span class="line">	<span class="type">static</span> u_int i = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">return</span> ((++i) &lt;&lt; (<span class="number">1</span> + LOG2NENV)) | (e - envs);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可见因为有 <code>(++i) &lt;&lt; (1 + LOG2NENV))</code>，该函数不可能返回0 。</p>
+<p>而在<code>envid2env()</code>函数中</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(envid == <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		*penv = curenv;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果传入的<code>envid</code>值为0，则会返回当前进程的进程控制块的指针。因此可以通过传入0值来直接获得当前进程控制块的指针，便于访问。</p>
+<h4 id="Thinking-4-4"><a href="#Thinking-4-4" class="headerlink" title="Thinking 4.4"></a>Thinking 4.4</h4><img src="/2023/04/13/OS-Lab4/image-20230412161920559.png" class="" title="image-20230412161920559" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>答：</p>
+<p>在子进程被调度时，上下文环境初于<code>fork()</code>函数内，虽然会返回值，但子进程没有真正意义上完整地调用<code>fork()</code>函数，因此<code>fork()</code>函数只在父进程中被调用了一次，但是在父进程中返回子进程的<code>envid</code>，在子进程中返回0，故选择C。</p>
+<h4 id="Thinking-4-5"><a href="#Thinking-4-5" class="headerlink" title="Thinking 4.5"></a>Thinking 4.5</h4><img src="/2023/04/13/OS-Lab4/image-20230412170150398.png" class="" title="image-20230412170150398" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>内存布局图如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">o     4G -----------&gt;  +----------------------------+------------0x100000000</span><br><span class="line">o                      |       ...                  |  kseg2</span><br><span class="line">o      KSEG2    -----&gt; +----------------------------+------------0xc000 0000</span><br><span class="line">o                      |          Devices           |  kseg1</span><br><span class="line">o      KSEG1    -----&gt; +----------------------------+------------0xa000 0000</span><br><span class="line">o                      |      Invalid Memory        |   /|\</span><br><span class="line">o                      +----------------------------+----|-------Physical Memory Max</span><br><span class="line">o                      |       ...                  |  kseg0</span><br><span class="line">o      KSTACKTOP-----&gt; +----------------------------+----|-------0x8040 0000-------end</span><br><span class="line">o                      |       Kernel Stack         |    | KSTKSIZE            /|\</span><br><span class="line">o                      +----------------------------+----|------                |</span><br><span class="line">o                      |       Kernel Text          |    |                    PDMAP</span><br><span class="line">o      KERNBASE -----&gt; +----------------------------+----|-------0x8001 0000    |</span><br><span class="line">o                      |      Exception Entry       |   \|/                    \|/</span><br><span class="line">o      ULIM     -----&gt; +----------------------------+------------0x8000 0000-------</span><br><span class="line">o                      |         User VPT           |     PDMAP                /|\</span><br><span class="line">o      UVPT     -----&gt; +----------------------------+------------0x7fc0 0000    |</span><br><span class="line">o                      |           pages            |     PDMAP                 |</span><br><span class="line">o      UPAGES   -----&gt; +----------------------------+------------0x7f80 0000    |</span><br><span class="line">o                      |           envs             |     PDMAP                 |</span><br><span class="line">o  UTOP,UENVS   -----&gt; +----------------------------+------------0x7f40 0000    |</span><br><span class="line">o  UXSTACKTOP -/       |     user exception stack   |     BY2PG                 |</span><br><span class="line">o                      +----------------------------+------------0x7f3f f000    |</span><br><span class="line">o                      |                            |     BY2PG                 |</span><br><span class="line">o      USTACKTOP ----&gt; +----------------------------+------------0x7f3f e000    |</span><br><span class="line">o                      |     normal user stack      |     BY2PG                 |</span><br><span class="line">o                      +----------------------------+------------0x7f3f d000    |</span><br><span class="line">a                      |                            |                           |</span><br><span class="line">a                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                           |</span><br><span class="line">a                      .                            .                           |</span><br><span class="line">a                      .                            .                         kuseg</span><br><span class="line">a                      .                            .                           |</span><br><span class="line">a                      |~~~~~~~~~~~~~~~~~~~~~~~~~~~~|                           |</span><br><span class="line">a                      |                            |                           |</span><br><span class="line">o       UTEXT   -----&gt; +----------------------------+------------0x0040 0000    |</span><br><span class="line">o                      |      reserved for COW      |     BY2PG                 |</span><br><span class="line">o       UCOW    -----&gt; +----------------------------+------------0x003f f000    |</span><br><span class="line">o                      |   reversed for temporary   |     BY2PG                 |</span><br><span class="line">o       UTEMP   -----&gt; +----------------------------+------------0x003f e000    |</span><br><span class="line">o                      |       invalid memory       |                          \|/</span><br><span class="line">a     0 ------------&gt;  +----------------------------+ ----------------------------</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><code>env_init()</code>函数部分内容如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">base_pgdir = (Pde *)page2kva(p);</span><br><span class="line">map_segment(base_pgdir, <span class="number">0</span>, PADDR(pages), UPAGES, ROUND(npage * <span class="keyword">sizeof</span>(<span class="keyword">struct</span> Page), BY2PG), PTE_G);</span><br><span class="line">map_segment(base_pgdir, <span class="number">0</span>, PADDR(envs), UENVS, ROUND(NENV * <span class="keyword">sizeof</span>(<span class="keyword">struct</span> Env), BY2PG, PTE_G);</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>由该函数可知，<code>UNEVS</code>和<code>UPAGES</code>这两段内容在函数内被映射到<code>base_pgdir</code>中，在之后的<code>env_setup_vm()</code>函数中被复制到所有<code>env</code>的<code>env_pgdir</code>中，因此不需要复制。<code>UVPT</code>这段内容是进程的页表，不可以从父进程复制。</li>
+<li>对于<code>USTACKTOP</code>-<code>UTOP</code>之间的内容，在<code>[USTACKTOP， UXSTACKTOP - BY2PG)</code>是无效内存，而在<code>[UXSTACKTOP - BY2PG, UXSTACKTOP)</code>是用户缺页异常处理栈，不同进程该栈不同，因此该段内容不需要复制。</li>
+<li>对于<code>USTACKTOP</code>以下的内容，需要复制到子进程中。</li>
+</ul>
+<h4 id="Thinking-4-6"><a href="#Thinking-4-6" class="headerlink" title="Thinking 4.6"></a>Thinking 4.6</h4><img src="/2023/04/13/OS-Lab4/image-20230412170223890.png" class="" title="image-20230412170223890" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>答：</p>
+<p><code>vpt</code>和<code>vpd</code>定义如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> vpt ((volatile Pte *)UVPT)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> vpd ((volatile Pde *)(UVPT + (PDX(UVPT) &lt;&lt; PGSHIFT)))</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>容易看出<code>vpt</code>是指向用户地址空间中页表地址的指针，<code>vpd</code>是指向用户地址空间中页目录地址的指针。</li>
+<li>使用：以<code>vpt</code>为例，<code>vpt</code>是页表地址，将其与虚拟地址中获得的偏移量相加得到指向指定页表项的指针，即可访问页表项。</li>
+<li><code>vpd</code>指向<code>UVPT + (PDX(UVPT) &lt;&lt; PGSHIFT)</code>，而这个地址在<code>UVPT</code>以上4MB空间内，这说明页目录被映射到页表中的某一个项，代表着页目录中必有一个页表项映射到自身，这体现了自映射设计。</li>
+<li>不可以。页表维护是操作系统完成的，而进程处于用户态，只有访问的权限。</li>
+</ul>
+<h4 id="Thinking-4-7"><a href="#Thinking-4-7" class="headerlink" title="Thinking 4.7"></a>Thinking 4.7</h4><img src="/2023/04/13/OS-Lab4/image-20230413112022350.png" class="" title="image-20230413112022350" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>答：</p>
+<ul>
+<li>在内核态中，CPU因为中断屏蔽位被置为1而不支持异常重入。但由于MOS的微内核结构，对于<code>COW</code>的处理是部分在用户态下完成的，因此处理的全过程不能保证中断屏蔽位是1，因此可能出现异常重入。在运行<code>do_tlb_mod</code> 函数时，外部请求时钟中断，由于此时 <code>CPU</code> 处于内核态会屏蔽中断， <code>do_tlb_mod</code> 函数会被原子地执行完，设置好异常栈和 <code>cp0</code> ，返回用户态后，时钟中断发生，进行进程调度；当再一次执行这一进程时，首先由 <code>env_run</code> 使得 <code>CPU</code> 上下文恢复至时钟中断发生前的状态，此后立即在用户态下进行 <code>COW</code> 的缺页异常处理；这一过程可以视作一次 “中断重入” ；总之，在 <code>do_tlb_mod</code> 的处理过程中，如果触发了新的 <code>do_tlb_mod</code> ，就会出现这种中断重入。在用户态中，页写入异常处理函数是由用户态程序通过调用<code>sys_set_user_tlb_mod_entry()</code>指定自己的页写入异常处理函数。如果用户程序自定义的页写入异常处理函数写了一些新的全局变量，则会导致异常重入。</li>
+<li>由于MOS的微内核结构，缺页错误交给用户进程处理，而用户进程无法访问内核空间的数据，因此需要将现场保存在用户空间。</li>
+</ul>
+<h4 id="Thinking-4-8"><a href="#Thinking-4-8" class="headerlink" title="Thinking 4.8"></a>Thinking 4.8</h4><img src="/2023/04/13/OS-Lab4/image-20230413152114200.png" class="" title="image-20230413152114200" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>减小内核的体积，符合微内核架构思想。减少关中断时间，提高了中断处理的效率。减少了内核出错的可能，利于系统的稳定。</p>
+<h4 id="Thinking-4-9"><a href="#Thinking-4-9" class="headerlink" title="Thinking 4.9"></a>Thinking 4.9</h4><img src="/2023/04/13/OS-Lab4/image-20230413160252524.png" class="" title="image-20230413160252524" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<ul>
+<li>子进程执行的起始点是从<code>syscall_exofork()</code>返回用户态后的第一条指令，因此应在这之前父进程设置好自己的缺页处理机制。如果放在<code>syscall_exofork()</code>之后，则子进程会再次执行<code>syscall_set_tlb_mod_entry()</code>为<code>env_user_tlb_mod_entry</code>赋值并且为<code>cow_entry</code>分配空间，但是这实际上在子进程执行前就已经完成，所有造成了额外的资源开销。</li>
+<li>如果放在写时复制保护机制完成后才执行，则会导致父进程进行<code>duppage</code>时遇到<code>COW</code>缺页异常时没有处理函数处理，导致页写入异常处理机制无法建立。</li>
+</ul>
+<h3 id="二、实验难点"><a href="#二、实验难点" class="headerlink" title="二、实验难点"></a>二、实验难点</h3><h4 id="1-系统调用流程"><a href="#1-系统调用流程" class="headerlink" title="1.系统调用流程"></a>1.系统调用流程</h4><img src="/2023/04/13/OS-Lab4/image-20230413184911503.png" class="" title="image-20230413184911503" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<ul>
+<li><code>syscall_*</code>调用<code>msyscall</code>函数，使系统陷入内核态</li>
+<li>CPU进入内核态，通过异常分发程序的分发进入异常服务函数<code>handle_sys</code>。</li>
+<li><code>handle_sys</code>函数根据传入的系统调用号执行相应的<code>sys_*</code>函数</li>
+<li>结束系统调用，返回用户态。</li>
+</ul>
+<h4 id="2-fork流程"><a href="#2-fork流程" class="headerlink" title="2.fork流程"></a>2.fork流程</h4><img src="/2023/04/13/OS-Lab4/image-20230413190030829.png" class="" title="image-20230413190030829" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<ul>
+<li>父进程通过<code>syscall_set_tlb_mod_entry</code>设置自己的<code>TLB MOD</code>异常处理函数。</li>
+<li>调用<code>syscall_exofork</code>函数创建子进程。</li>
+<li>父进程使用 <code>duppage</code>将需要给子进程共享的页复制给子进程，标记<code>COW</code>并建立写时复制机制。</li>
+<li>父进程通过<code>syscall_set_tlb_mod_entry</code>设置子进程的<code>TLB MOD</code>异常处理函数。</li>
+<li>父进程通过<code>syscall_set_env_status</code>设置子进程的状态为可运行，此时子进程就已经可以运行了。</li>
+</ul>
+<h4 id="3-页写入异常处理流程"><a href="#3-页写入异常处理流程" class="headerlink" title="3.页写入异常处理流程"></a>3.页写入异常处理流程</h4><img src="/2023/04/13/OS-Lab4/image-20230413192214871.png" class="" title="image-20230413192214871" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<ul>
+<li>用户程序触发页写入异常，陷入内核，<code>exception_handlers</code>分发异常。</li>
+<li>进入异常处理函数 <code>handle_mod</code>。</li>
+<li>跳转到<code>do_tlb_mod</code>函数，其将现场保存在异常处理栈中，设置 <code>a0</code> 和 <code>EPC</code> 寄存器的值，返回用户态。</li>
+<li>跳转到 <code>env_user_tlb_mod_entry</code> 域存储的用户异常处理函数的地址（实验中为<code>cow_entry</code>）。</li>
+<li>页写入异常处理完成，跳转回用户程序。</li>
+</ul>
+<h3 id="三、心得体会"><a href="#三、心得体会" class="headerlink" title="三、心得体会"></a>三、心得体会</h3><p>在本次实验中我掌握了系统调用的概念以及流程、了解进程间通信机制(IPC)、学习页写入异常处理流程等，深入理解了进程间的协作以及创建子进程，并且理解了微内核架构下内核态与用户态相互联系和转换，收获很多。</p>
+
+</article>
+    
+    
+</div>
+<div id="post-next-prev" class="row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-blog-card trm-scroll-animation" data-scroll data-scroll-offset="40">
+        <a href="/2023/04/13/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-4/" class="trm-cover-frame trm-anima-link">
+            
+            
+                <img alt="cover" class="no-fancybox" src="https://images.pexels.com/photos/16027424/pexels-photo-16027424.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
+            
+        </a>
+        
+        <div class="trm-card-descr">
+            <div class="trm-label trm-category trm-mb-20">
+                <a href=" /categories/DataBase/">
+                    DataBase
+                </a>
+            </div>
+            <h5>
+                <a href="/2023/04/13/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-4/" class="trm-anima-link">
+                    数据管理技术-Lab-4
+                </a>
+            </h5>
+            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>23/04/13</li>
+                <li>09:47</li>
+                
+                    <li>879</li>
+                
+                
+                    <li>3</li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation" data-scroll data-scroll-offset="50">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2023- 2023</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">Xenon的小破站</span>
+        </div>
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.3.0
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                主题 - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.0.3
+            </span>
+        </div>
+      
+
+     
+
+     
+</footer>
+ 
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            <div class="trm-fixed-container" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="单栏和双栏切换" onclick="asyncFun.switchSingleColumn()">
+            <i class="iconfont fas fa-arrows-alt-h"></i>
+        </div>
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+          </div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.0.3"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.0.3"></script>
+
+  <!-- 《页面点击小红心 -->
+  <!-- -->
+  <!-- 页面点击小红心》 -->
+
+  <!--鼠标点击烟花爆炸效果，需要引入jQuery-->
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+    <script type="text/javascript" src="/js/fireworks.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+
+</html>
