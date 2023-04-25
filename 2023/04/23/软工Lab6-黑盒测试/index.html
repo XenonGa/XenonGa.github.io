@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="软工Lab6-黑盒测试题目现有一个判断判断身份证号是否合法的程序，请利用黑盒测试技术来找出里面若干 bug。 中国居民身份证号码编码规则 1. 第一、二位表示省（自治区、直辖市、特别行政区）。 2. 第三、四位表示市（地级市、自治州、盟及国家直辖市所属市辖区和县的汇总码）。 3. 第五、六位表示县（市辖区、县级市、旗）。 4. 第七到十四位表示出生年月日（单数字月日左侧用 0 补齐）。 5. 第十">
+<meta property="og:type" content="article">
+<meta property="og:title" content="软工Lab6-黑盒测试">
+<meta property="og:url" content="https://xenonga.github.io/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/index.html">
+<meta property="og:site_name" content="Xenon的小破站">
+<meta property="og:description" content="软工Lab6-黑盒测试题目现有一个判断判断身份证号是否合法的程序，请利用黑盒测试技术来找出里面若干 bug。 中国居民身份证号码编码规则 1. 第一、二位表示省（自治区、直辖市、特别行政区）。 2. 第三、四位表示市（地级市、自治州、盟及国家直辖市所属市辖区和县的汇总码）。 3. 第五、六位表示县（市辖区、县级市、旗）。 4. 第七到十四位表示出生年月日（单数字月日左侧用 0 补齐）。 5. 第十">
+<meta property="og:locale">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="article:published_time" content="2023-04-23T15:06:39.000Z">
+<meta property="article:modified_time" content="2023-04-23T15:08:07.619Z">
+<meta property="article:author" content="Jiaxuan Gao">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xenonga.github.io/img/404.jpg">
+
+    <meta name="keywords" content="黑盒">
+
+
+<title >软工Lab6-黑盒测试</title>
+
+<!-- Favicon -->
+
+    <link href='/rabbit-16%C3%9716.png?v=2.0.3' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"xenonga.github.io","author":"Jiaxuan Gao","root":"/","typed_text":["a SE Learner"],"theme_version":"2.0.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"rabbit-32×32.png","icon16":"rabbit-16×16.png","icon32":"rabbit-32×32.png","appleTouchIcon":"rabbit-32×32.png","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2023-04-23 23:08:07"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.0.3" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" data-scroll-container style="opacity: 0">
+          <div data-scroll-section id="content" class="trm-scroll-section">
+
+            <div class="locomotive-scroll__sticky-target" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none;"></div>
+
+            <!-- top bar -->
+            <header class="trm-top-bar" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/rabbit-32%C3%9732.png">
+    
+    
+        <div class="trm-logo-text">
+            Xe<span>non</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    主页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a  href="/categories/OS/" target="">
+                            OS
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/SoftwareEngineering/" target="">
+                            软件工程
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/DataBase/" target="">
+                            数据管理技术
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/about/" target="">
+                    关于
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner" data-scroll data-scroll-direction="vertical">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" data-scroll data-scroll-direction="vertical" data-scroll-speed="-3" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container" data-scroll data-scroll-direction="vertical" data-scroll-speed="0">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            软工Lab6-黑盒测试
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2023
+                                    </span
+                                ></li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <a href="#about-triger" data-scroll-to="#about-triger" data-scroll-offset="-130" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </a>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div id="page-sidebar" class="col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    
+
+<div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card" data-scroll data-scroll-repeat data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="60"> 
+    
+        <div class="trm-user-tabs" id="sidebar-tabs">
+           <div class="trm-tabs-nav trm-mb-40" id="trm-tabs-nav">
+                <div data-to="tabs-user" class="trm-tabs-nav-item">
+                    <i class="iconfont fas fa-user-alt"></i>
+                </div>
+                <div data-to="tabs-toc" class="trm-tabs-nav-item active">
+                    <i class="iconfont fas fa-th-list"></i>
+                </div>
+           </div>
+            <div name="tabs-user" class="trm-tabs-item">
+                <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/rabbit.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        Xenon的小破站
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+                <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/XenonGa/" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+        <a href="https://gitee.com/X2283509194" title="gitee" rel="nofollow" target="_blank">
+            <i class="iconfont iconfont cg-gitee"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+                <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                地球
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                城市:
+            </div>
+            <div class="trm-label trm-label-light">
+                北京
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                20
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+                
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:2283509194@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+            </div>
+            <div name="tabs-toc" class="trm-tabs-item active">
+                <div class="post-toc">
+    <ol class="toc"><li class="toc-item toc-level-1"><a rel="nofollow" class="toc-link" href="#软工Lab6-黑盒测试"  data-scroll-to="#软工Lab6-黑盒测试"><span class="toc-number">1.</span> <span class="toc-text">软工Lab6-黑盒测试</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#题目"  data-scroll-to="#题目"><span class="toc-number">1.1.</span> <span class="toc-text">题目</span></a></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#等价类划分"  data-scroll-to="#等价类划分"><span class="toc-number">1.2.</span> <span class="toc-text">等价类划分</span></a></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#测试用例"  data-scroll-to="#测试用例"><span class="toc-number">1.3.</span> <span class="toc-text">测试用例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#有效等价类："  data-scroll-to="#有效等价类："><span class="toc-number">1.3.1.</span> <span class="toc-text">有效等价类：</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#无效等价类："  data-scroll-to="#无效等价类："><span class="toc-number">1.3.2.</span> <span class="toc-text">无效等价类：</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#用例测试"  data-scroll-to="#用例测试"><span class="toc-number">1.3.3.</span> <span class="toc-text">用例测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#bug总结"  data-scroll-to="#bug总结"><span class="toc-number">1.4.</span> <span class="toc-text">bug总结</span></a></li></ol></li></ol>
+</div>
+            </div>
+        </div>
+    
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div id="page-content" class="col-lg-8">
+                <div class="trm-content" id="trm-content">
+                    <div data-scroll data-scroll-repeat data-scroll-offset="500" id="about-triger"></div>
+
+                    <div id="post-info" class="row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            04/23
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            23:06
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Xenon
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="软工Lab6-黑盒测试"><a href="#软工Lab6-黑盒测试" class="headerlink" title="软工Lab6-黑盒测试"></a>软工Lab6-黑盒测试</h1><h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p><strong>现有一个判断判断身份证号是否合法的程序，请利用黑盒测试技术来找出里面若干</strong> <strong>bug</strong>。</p>
+<p><strong>中国居民身份证号码编码规则</strong></p>
+<p><strong>1.</strong> <strong>第一、二位表示省（自治区、直辖市、特别行政区）。</strong></p>
+<p><strong>2.</strong> <strong>第三、四位表示市（地级市、自治州、盟及国家直辖市所属市辖区和县的汇总码）。</strong></p>
+<p><strong>3.</strong> <strong>第五、六位表示县（市辖区、县级市、旗）。</strong></p>
+<p><strong>4.</strong> <strong>第七到十四位表示出生年月日（单数字月日左侧用</strong> <strong>0</strong> <strong>补齐）。</strong></p>
+<p><strong>5.</strong> <strong>第十五到十七位表示顺序码。对同地区、同年、月、日出生的人员编定的顺序号。其中第十七位奇数</strong></p>
+<p><strong>分给男性，偶数分给女性。</strong></p>
+<p><strong>6.</strong> <strong>第十八位表示校验码。</strong></p>
+<p><strong>校验码计算规则：</strong></p>
+<p><strong>1.</strong> <strong>根据以下权重计算出</strong> <strong>1-17</strong> <strong>位的加权和：</strong></p>
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230415160421858.png" class="" title="image-20230415160421858" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p><strong>2.</strong> <strong>将加权和取模</strong> <strong>11</strong>；</p>
+<p><strong>3.</strong> <strong>按照下表对应：</strong></p>
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230415160442916.png" class="" title="image-20230415160442916" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p><strong>其中</strong> <strong>X</strong> <strong>既可以大写，也可以小写。</strong></p>
+<p><strong>注意事项：</strong></p>
+<p><strong>1.</strong> <strong>任务不涉及省、市、县、顺序码，也就是说你不需要考虑到里面可能有</strong> <strong>bug</strong>。</p>
+<p><strong>2.</strong> <strong>请使用</strong> <strong>unittest</strong> <strong>单元测试框架，代码结构已在</strong> <strong>Testing&#x2F;main.py</strong> <strong>中写好，只需增加用例和运行即可。</strong></p>
+<p><strong>3.</strong> <strong>如果身份证号码合法，</strong> <strong>exec</strong> <strong>函数会返回</strong> <strong>1</strong> <strong>，否则会返回</strong> <strong>0</strong> <strong>。</strong></p>
+<p><strong>任务目标：</strong></p>
+<p><strong>设计等价类，并利用软件测试工具测试身份证号合法性判断程序。</strong></p>
+<p><strong>评分标准：</strong></p>
+<p><strong>找出</strong> <strong>70%</strong> <strong>以上的错误满分。</strong></p>
+<h2 id="等价类划分"><a href="#等价类划分" class="headerlink" title="等价类划分"></a>等价类划分</h2><p>设计等价类划分表如下图所示：</p>
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230423192839402.png" class="" title="x&#96;" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h2 id="测试用例"><a href="#测试用例" class="headerlink" title="测试用例"></a>测试用例</h2><h3 id="有效等价类："><a href="#有效等价类：" class="headerlink" title="有效等价类："></a>有效等价类：</h3><img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230423193835929.png" class="" title="image-20230423193835929" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h3 id="无效等价类："><a href="#无效等价类：" class="headerlink" title="无效等价类："></a>无效等价类：</h3><img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230423162630555.png" class="" title="image-20230423162630555" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h3 id="用例测试"><a href="#用例测试" class="headerlink" title="用例测试"></a>用例测试</h3><h4 id="有效等价类测试"><a href="#有效等价类测试" class="headerlink" title="有效等价类测试"></a>有效等价类测试</h4><img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422092113656.png" class="" title="image-20230422092113656" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>结果：</p>
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422092301596.png" class="" title="image-20230422092301596" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>根据此错误继续设计用例测试</p>
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422095713111.png" class="" title="image-20230422095713111" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>结果：</p>
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422092301596.png" class="" title="image-20230422092301596" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422095826196.png" class="" title="image-20230422095826196" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>结果：</p>
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422092352693.png" class="" title="image-20230422092352693" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>测试得<code>month ϵ &#123;1,3,5,7,8,10,12&#125;</code>时<code>day &lt;= 29</code>的bug.（其实是闰年天数的限制限制在每一个月）</p>
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422092313506.png" class="" title="image-20230422092313506" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>结果：</p>
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422092352693.png" class="" title="image-20230422092352693" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422092406336.png" class="" title="image-20230422092406336" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>结果：</p>
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422092526734.png" class="" title="image-20230422092526734" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>根据此错误继续设计用例测试</p>
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422101546614.png" class="" title="image-20230422101546614" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>结果：</p>
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422092352693.png" class="" title="image-20230422092352693" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>测试得<code>month ϵ &#123;4,6,9,11&#125;</code>时<code>day &lt;= 29</code>的bug.最终测试得闰年所有月份的日期范围为<code>1 &lt;= day &lt;= 29</code>,非闰年所有月份的日期范围为<code>1 &lt;= day &lt;= 28</code>。</p>
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422092536484.png" class="" title="image-20230422092536484" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>结果：</p>
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422092623554.png" class="" title="image-20230422092623554" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230423191534860.png" class="" title="image-20230423191534860" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>结果：</p>
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422092713204.png" class="" title="image-20230422092713204" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230423191549689.png" class="" title="image-20230423191549689" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>结果：</p>
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422095500659.png" class="" title="image-20230422095500659" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422094810311.png" class="" title="image-20230422094810311" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>结果：</p>
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422095522324.png" class="" title="image-20230422095522324" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230423184802475.png" class="" title="image-20230423184802475" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>结果：</p>
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102148865.png" class="" title="image-20230422102148865" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>测试得存在400年的倍数年，系统无法将其判定为闰年的bug。</p>
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230423190049600.png" class="" title="image-20230423190049600" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>结果：</p>
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102148865.png" class="" title="image-20230422102148865" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>测试得18位只能存在大写X，不能存在小写x。</p>
+<h4 id="无效等价类测试"><a href="#无效等价类测试" class="headerlink" title="无效等价类测试"></a>无效等价类测试</h4><img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230423193929143.png" class="" title="image-20230423193929143" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102148865.png" class="" title="image-20230422102148865" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102157055.png" class="" title="image-20230422102157055" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102148865.png" class="" title="image-20230422102148865" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102235156.png" class="" title="image-20230422102235156" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102257683.png" class="" title="image-20230422102257683" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>测试得<code>month &lt; 1</code>的bug。</p>
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102346918.png" class="" title="image-20230422102346918" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102408935.png" class="" title="image-20230422102408935" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>测试得<code>month &gt; 12</code>的bug。</p>
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102429700.png" class="" title="image-20230422102429700" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102451867.png" class="" title="image-20230422102451867" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102458167.png" class="" title="image-20230422102458167" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102451867.png" class="" title="image-20230422102451867" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102619048.png" class="" title="image-20230422102619048" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102647217.png" class="" title="image-20230422102647217" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102654298.png" class="" title="image-20230422102654298" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102647217.png" class="" title="image-20230422102647217" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102748570.png" class="" title="image-20230422102748570" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102647217.png" class="" title="image-20230422102647217" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102810201.png" class="" title="image-20230422102810201" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102647217.png" class="" title="image-20230422102647217" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102843888.png" class="" title="image-20230422102843888" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102647217.png" class="" title="image-20230422102647217" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102917104.png" class="" title="image-20230422102917104" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102647217.png" class="" title="image-20230422102647217" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230423163118370.png" class="" title="image-20230423163118370" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102647217.png" class="" title="image-20230422102647217" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230423195020443.png" class="" title="image-20230423195020443" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102647217.png" class="" title="image-20230422102647217" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>这里False说明年份存在下限，是一个bug。</p>
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230423195058550.png" class="" title="image-20230423195058550" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102257683.png" class="" title="image-20230422102257683" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>年份超过已有年份，是一个bug。</p>
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230423195335507.png" class="" title="image-20230423195335507" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E9%BB%91%E7%9B%92%E6%B5%8B%E8%AF%95/image-20230422102257683.png" class="" title="image-20230422102257683" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>位数超过18位，是bug。</p>
+<h2 id="bug总结"><a href="#bug总结" class="headerlink" title="bug总结"></a>bug总结</h2><table>
+<thead>
+<tr>
+<th>bug编号</th>
+<th>bug内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>闰年时所有月的day范围为1 &lt;&#x3D; day &lt;&#x3D; 29,非闰年时所有月的day范围为1 &lt;&#x3D; day &lt;&#x3D; 28.</td>
+</tr>
+<tr>
+<td>2</td>
+<td>系统无法将400年的倍数年判定为闰年</td>
+</tr>
+<tr>
+<td>3</td>
+<td>18位只能存在大写X，不能存在小写x</td>
+</tr>
+<tr>
+<td>4</td>
+<td>month &lt; 1</td>
+</tr>
+<tr>
+<td>5</td>
+<td>month &gt; 12</td>
+</tr>
+<tr>
+<td>6</td>
+<td>年份存在下限</td>
+</tr>
+<tr>
+<td>7</td>
+<td>年份超过已有年份</td>
+</tr>
+<tr>
+<td>8</td>
+<td>位数超过18位</td>
+</tr>
+</tbody></table>
+
+</article>
+    
+    
+</div>
+<div id="post-next-prev" class="row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-blog-card trm-scroll-animation" data-scroll data-scroll-offset="40">
+        <a href="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E7%99%BD%E7%9B%92%E6%B5%8B%E8%AF%95/" class="trm-cover-frame trm-anima-link">
+            
+            
+                <img alt="cover" class="no-fancybox" src="https://images.pexels.com/photos/6005016/pexels-photo-6005016.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
+            
+        </a>
+        
+        <div class="trm-card-descr">
+            <div class="trm-label trm-category trm-mb-20">
+                <a href=" /categories/SoftwareEngineering/">
+                    SoftwareEngineering
+                </a>
+            </div>
+            <h5>
+                <a href="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab6-%E7%99%BD%E7%9B%92%E6%B5%8B%E8%AF%95/" class="trm-anima-link">
+                    软工Lab6-白盒测试
+                </a>
+            </h5>
+            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>23/04/23</li>
+                <li>23:06</li>
+                
+                    <li>174</li>
+                
+                
+                    <li>1</li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-blog-card trm-scroll-animation" data-scroll data-scroll-offset="40">
+        <a href="/2023/04/13/OS-Lab4/" class="trm-cover-frame trm-anima-link">
+            
+            
+                <img alt="cover" class="no-fancybox" src="https://images.pexels.com/photos/15963991/pexels-photo-15963991.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
+            
+        </a>
+        
+        <div class="trm-card-descr">
+            <div class="trm-label trm-category trm-mb-20">
+                <a href=" /categories/OS/">
+                    OS
+                </a>
+            </div>
+            <h5>
+                <a href="/2023/04/13/OS-Lab4/" class="trm-anima-link">
+                    OS-Lab4
+                </a>
+            </h5>
+            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>23/04/13</li>
+                <li>19:38</li>
+                
+                    <li>2.1k</li>
+                
+                
+                    <li>8</li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation" data-scroll data-scroll-offset="50">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2023- 2023</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">Xenon的小破站</span>
+        </div>
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.3.0
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                主题 - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.0.3
+            </span>
+        </div>
+      
+
+     
+
+     
+</footer>
+ 
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            <div class="trm-fixed-container" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="单栏和双栏切换" onclick="asyncFun.switchSingleColumn()">
+            <i class="iconfont fas fa-arrows-alt-h"></i>
+        </div>
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+          </div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.0.3"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.0.3"></script>
+
+  <!-- 《页面点击小红心 -->
+  <!-- -->
+  <!-- 页面点击小红心》 -->
+
+  <!--鼠标点击烟花爆炸效果，需要引入jQuery-->
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+    <script type="text/javascript" src="/js/fireworks.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+
+</html>
