@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="数据管理技术-大作业实验报告描述 本次期中⼤作业要求同学们从后端数据库的⻆度，对数据库进⾏设计，以及对数据库进⾏优化。本次⼤作业的⽬的是让同学们对数据库的基本原理有⼀个更加深刻的理解，同时也是为了让同学们对数据库的基本操作更加熟悉。 本次实验需要针对数据库的CURD操作以及索引进⾏后端开发，并且向应⽤层提供RESTful接⼝服务。（具体的接⼝要求下⾯详细说明） 作为⼀个可选项，同学们可以尝试将全部">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据管理技术-大作业">
+<meta property="og:url" content="https://xenonga.github.io/2023/04/27/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-%E5%A4%A7%E4%BD%9C%E4%B8%9A/index.html">
+<meta property="og:site_name" content="Xenon的小破站">
+<meta property="og:description" content="数据管理技术-大作业实验报告描述 本次期中⼤作业要求同学们从后端数据库的⻆度，对数据库进⾏设计，以及对数据库进⾏优化。本次⼤作业的⽬的是让同学们对数据库的基本原理有⼀个更加深刻的理解，同时也是为了让同学们对数据库的基本操作更加熟悉。 本次实验需要针对数据库的CURD操作以及索引进⾏后端开发，并且向应⽤层提供RESTful接⼝服务。（具体的接⼝要求下⾯详细说明） 作为⼀个可选项，同学们可以尝试将全部">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-04-27T02:11:01.000Z">
+<meta property="article:modified_time" content="2023-04-27T02:12:32.528Z">
+<meta property="article:author" content="Jiaxuan Gao">
+<meta name="twitter:card" content="summary">
+
+    <meta name="keywords" content="ORM, RESTful">
+
+
+<title >数据管理技术-大作业</title>
+
+<!-- Favicon -->
+
+    <link href='/rabbit-16%C3%9716.png?v=2.0.3' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"xenonga.github.io","author":"Jiaxuan Gao","root":"/","typed_text":["a SE Learner"],"theme_version":"2.0.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"rabbit-32×32.png","icon16":"rabbit-16×16.png","icon32":"rabbit-32×32.png","appleTouchIcon":"rabbit-32×32.png","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2023-04-27 10:12:32"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.0.3" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" data-scroll-container style="opacity: 0">
+          <div data-scroll-section id="content" class="trm-scroll-section">
+
+            <div class="locomotive-scroll__sticky-target" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none;"></div>
+
+            <!-- top bar -->
+            <header class="trm-top-bar" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/rabbit-32%C3%9732.png">
+    
+    
+        <div class="trm-logo-text">
+            Xe<span>non</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    主页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a  href="/categories/OS/" target="">
+                            OS
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/SoftwareEngineering/" target="">
+                            软件工程
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/DataBase/" target="">
+                            数据管理技术
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/about/" target="">
+                    关于
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner" data-scroll data-scroll-direction="vertical">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" data-scroll data-scroll-direction="vertical" data-scroll-speed="-3" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container" data-scroll data-scroll-direction="vertical" data-scroll-speed="0">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            数据管理技术-大作业
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2023
+                                    </span
+                                ></li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <a href="#about-triger" data-scroll-to="#about-triger" data-scroll-offset="-130" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </a>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div id="page-sidebar" class="col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    
+
+<div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card" data-scroll data-scroll-repeat data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="60"> 
+    
+        <div class="trm-user-tabs" id="sidebar-tabs">
+           <div class="trm-tabs-nav trm-mb-40" id="trm-tabs-nav">
+                <div data-to="tabs-user" class="trm-tabs-nav-item">
+                    <i class="iconfont fas fa-user-alt"></i>
+                </div>
+                <div data-to="tabs-toc" class="trm-tabs-nav-item active">
+                    <i class="iconfont fas fa-th-list"></i>
+                </div>
+           </div>
+            <div name="tabs-user" class="trm-tabs-item">
+                <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/rabbit.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        Xenon的小破站
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+                <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/XenonGa/" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+        <a href="https://gitee.com/X2283509194" title="gitee" rel="nofollow" target="_blank">
+            <i class="iconfont iconfont cg-gitee"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+                <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                地球
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                城市:
+            </div>
+            <div class="trm-label trm-label-light">
+                北京
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                20
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+                
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:2283509194@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+            </div>
+            <div name="tabs-toc" class="trm-tabs-item active">
+                <div class="post-toc">
+    <ol class="toc"><li class="toc-item toc-level-1"><a rel="nofollow" class="toc-link" href="#数据管理技术-大作业实验报告"  data-scroll-to="#数据管理技术-大作业实验报告"><span class="toc-number">1.</span> <span class="toc-text">数据管理技术-大作业实验报告</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#描述"  data-scroll-to="#描述"><span class="toc-number">1.1.</span> <span class="toc-text">描述</span></a></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#项目结构"  data-scroll-to="#项目结构"><span class="toc-number">1.2.</span> <span class="toc-text">项目结构</span></a></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#各部分功能"  data-scroll-to="#各部分功能"><span class="toc-number">1.3.</span> <span class="toc-text">各部分功能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#ORM-py"  data-scroll-to="#ORM-py"><span class="toc-number">1.3.1.</span> <span class="toc-text">ORM.py</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#RESTful-py"  data-scroll-to="#RESTful-py"><span class="toc-number">1.3.2.</span> <span class="toc-text">RESTful.py</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#insert-sh"  data-scroll-to="#insert-sh"><span class="toc-number">1.3.3.</span> <span class="toc-text">insert.sh</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#start-sh"  data-scroll-to="#start-sh"><span class="toc-number">1.3.4.</span> <span class="toc-text">start.sh</span></a></li></ol></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#使用的技术"  data-scroll-to="#使用的技术"><span class="toc-number">1.4.</span> <span class="toc-text">使用的技术</span></a></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#开发思路"  data-scroll-to="#开发思路"><span class="toc-number">1.5.</span> <span class="toc-text">开发思路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#表的创建"  data-scroll-to="#表的创建"><span class="toc-number">1.5.1.</span> <span class="toc-text">表的创建</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#触发器的创建"  data-scroll-to="#触发器的创建"><span class="toc-number">1.5.2.</span> <span class="toc-text">触发器的创建</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#数据注入"  data-scroll-to="#数据注入"><span class="toc-number">1.5.3.</span> <span class="toc-text">数据注入</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#RESTful接口的实现"  data-scroll-to="#RESTful接口的实现"><span class="toc-number">1.5.4.</span> <span class="toc-text">RESTful接口的实现</span></a></li></ol></li></ol></li></ol>
+</div>
+            </div>
+        </div>
+    
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div id="page-content" class="col-lg-8">
+                <div class="trm-content" id="trm-content">
+                    <div data-scroll data-scroll-repeat data-scroll-offset="500" id="about-triger"></div>
+
+                    <div id="post-info" class="row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            04/27
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            10:11
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Xenon
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="数据管理技术-大作业实验报告"><a href="#数据管理技术-大作业实验报告" class="headerlink" title="数据管理技术-大作业实验报告"></a>数据管理技术-大作业实验报告</h1><h2 id="描述"><a href="#描述" class="headerlink" title="描述"></a>描述</h2><ul>
+<li>本次期中⼤作业要求同学们从后端数据库的⻆度，对数据库进⾏设计，以及对数据库进⾏优化。本次⼤作业的⽬的是让同学们对数据库的基本原理有⼀个更加深刻的理解，同时也是为了让同学们对数据库的基本操作更加熟悉。</li>
+<li>本次实验需要针对数据库的CURD操作以及索引进⾏后端开发，并且向应⽤层提供RESTful接⼝服务。（具体的接⼝要求下⾯详细说明）</li>
+<li>作为⼀个可选项，同学们可以尝试将全部服务部署到docker镜像中。</li>
+</ul>
+<h2 id="项目结构"><a href="#项目结构" class="headerlink" title="项目结构"></a>项目结构</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- src</span><br><span class="line"> - ORM.py</span><br><span class="line"> - RESTful.py</span><br><span class="line">- insert.sh</span><br><span class="line">- start.sh</span><br><span class="line">- readme.md</span><br><span class="line">- 实验报告.pdf</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="各部分功能"><a href="#各部分功能" class="headerlink" title="各部分功能"></a>各部分功能</h2><h3 id="ORM-py"><a href="#ORM-py" class="headerlink" title="ORM.py"></a>ORM.py</h3><p>实现ORM框架以及CURD服务</p>
+<h3 id="RESTful-py"><a href="#RESTful-py" class="headerlink" title="RESTful.py"></a>RESTful.py</h3><p>实现RESTful服务</p>
+<h3 id="insert-sh"><a href="#insert-sh" class="headerlink" title="insert.sh"></a>insert.sh</h3><p>运行ORM.py，实现表的创建以及数据的插入。</p>
+<h3 id="start-sh"><a href="#start-sh" class="headerlink" title="start.sh"></a>start.sh</h3><p>运行RESTful.py，创建RESTful服务器。</p>
+<h2 id="使用的技术"><a href="#使用的技术" class="headerlink" title="使用的技术"></a>使用的技术</h2><ul>
+<li>通过ORM框架建立题目所需表。</li>
+<li>利用数据库CURD将数据注入到对应表中。</li>
+<li>设计RESTful接口，实现增删改查的接口提供。</li>
+<li>设计*.sh批处理文件，提供以上服务的启动脚本。</li>
+</ul>
+<h2 id="开发思路"><a href="#开发思路" class="headerlink" title="开发思路"></a>开发思路</h2><h3 id="表的创建"><a href="#表的创建" class="headerlink" title="表的创建"></a>表的创建</h3><p>利用ORM框架，定义表的相应类，这里以<code>demp_manager</code>表为例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Dept_manager</span>(db.Model) :</span><br><span class="line">    emp_no = db.Column(db.Integer, db.ForeignKey(<span class="string">&quot;employees.emp_no&quot;</span>, ondelete=<span class="string">&#x27;CASCADE&#x27;</span>), nullable=<span class="literal">False</span>)</span><br><span class="line">    dept_no = db.Column(db.CHAR(<span class="number">4</span>), db.ForeignKey(<span class="string">&quot;departments.dept_no&quot;</span>, ondelete=<span class="string">&#x27;CASCADE&#x27;</span>), nullable=<span class="literal">False</span>, index=<span class="literal">True</span>)</span><br><span class="line">    from_date = db.Column(db.Date, nullable=<span class="literal">False</span>)</span><br><span class="line">    to_date = db.Column(db.Date, nullable=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    __table_args__ = (</span><br><span class="line">        db.PrimaryKeyConstraint(<span class="string">&#x27;emp_no&#x27;</span>, <span class="string">&#x27;dept_no&#x27;</span>),</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">to_dict</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="string">&#x27;emp_no&#x27;</span> : self.emp_no,</span><br><span class="line">            <span class="string">&#x27;dept_no&#x27;</span>: self.dept_no,</span><br><span class="line">            <span class="string">&#x27;from_date&#x27;</span> : self.from_date,</span><br><span class="line">            <span class="string">&#x27;to_date&#x27;</span>: self.to_date,</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<p>类的属性即为该表的不同列。<code>db.Integer</code>为该列的数据类型定义，<code>db.ForeignKey</code>为外键的设置，<code>nullable=False</code>将该列设置为非空，<code>index=True</code>为表设置该列的索引，<code>db.PrimaryKeyConstraint</code>设置联合主键。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> app.app_context() :</span><br><span class="line">    db.drop_all()</span><br><span class="line">    db.create_all()</span><br></pre></td></tr></table></figure>
+
+<p>最终通过<code>create_all</code>创建所有表。</p>
+<h3 id="触发器的创建"><a href="#触发器的创建" class="headerlink" title="触发器的创建"></a>触发器的创建</h3><p>首先设计触发器的sql语句,以插入触发器为例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sql_trigger_insert = text(<span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">create trigger after_insert</span></span><br><span class="line"><span class="string">after insert on dept_manager</span></span><br><span class="line"><span class="string">for each row</span></span><br><span class="line"><span class="string">begin</span></span><br><span class="line"><span class="string">    insert into dept_manager_title</span></span><br><span class="line"><span class="string">    values(new.emp_no, new.from_date, new.to_date);</span></span><br><span class="line"><span class="string">end;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>调用engine的方法，执行sql语句。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> engine.connect() <span class="keyword">as</span> connect:</span><br><span class="line">    connect.execute(sql_trigger_insert)</span><br><span class="line">    connect.execute(sql_trigger_delete)</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据注入"><a href="#数据注入" class="headerlink" title="数据注入"></a>数据注入</h3><p>首先将数据从csv文件中读出，设计方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">read_csv_file</span>(<span class="params">file_path</span>):</span><br><span class="line">    rows = []</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_path, <span class="string">&#x27;r&#x27;</span>, newline=<span class="string">&#x27;&#x27;</span>) <span class="keyword">as</span> csvfile:</span><br><span class="line">        reader = csv.DictReader(csvfile)</span><br><span class="line">        <span class="keyword">for</span> row <span class="keyword">in</span> reader:</span><br><span class="line">            rows.append(row)</span><br><span class="line">    <span class="keyword">return</span> rows</span><br></pre></td></tr></table></figure>
+
+<p>之后遍历数据，将数据转化为表的相应对象，以<code>employees</code>为例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># employees插入</span></span><br><span class="line">reader = read_csv_file(<span class="string">&#x27;./employees.csv&#x27;</span>)</span><br><span class="line">rows = []</span><br><span class="line"><span class="keyword">for</span> row <span class="keyword">in</span> reader:</span><br><span class="line">    employee = Employees(</span><br><span class="line">        emp_no=row[<span class="string">&#x27;emp_no&#x27;</span>],</span><br><span class="line">        birth_date=row[<span class="string">&#x27;birth_date&#x27;</span>],</span><br><span class="line">        first_name=row[<span class="string">&#x27;first_name&#x27;</span>],</span><br><span class="line">        last_name=row[<span class="string">&#x27;last_name&#x27;</span>],</span><br><span class="line">        gender=row[<span class="string">&#x27;gender&#x27;</span>],</span><br><span class="line">        hire_date=row[<span class="string">&#x27;hire_date&#x27;</span>]</span><br><span class="line">    )</span><br><span class="line">    rows.append(employee)</span><br></pre></td></tr></table></figure>
+
+<p>利用session的bulk_save_objects方法将数据批量注入表中</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">session.bulk_save_objects(rows)</span><br><span class="line">session.commit()</span><br></pre></td></tr></table></figure>
+
+<h3 id="RESTful接口的实现"><a href="#RESTful接口的实现" class="headerlink" title="RESTful接口的实现"></a>RESTful接口的实现</h3><p>以更新数据接口为例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 更新数据</span></span><br><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/api/v1/&lt;table_name&gt;&#x27;</span>, methods=[<span class="string">&#x27;PUT&#x27;</span>]</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">update_data</span>(<span class="params">table_name</span>):</span><br><span class="line">    data = request.json</span><br><span class="line">    cursor = db.cursor()</span><br><span class="line">    <span class="keyword">if</span> table_name == <span class="string">&#x27;departments&#x27;</span> <span class="keyword">or</span> table_name == <span class="string">&#x27;employees&#x27;</span>:</span><br><span class="line">        op = <span class="number">1</span></span><br><span class="line">    <span class="keyword">elif</span> table_name == <span class="string">&#x27;dept_emp&#x27;</span> <span class="keyword">or</span> table_name == <span class="string">&#x27;dept_manager&#x27;</span>:</span><br><span class="line">        op = <span class="number">2</span></span><br><span class="line">    <span class="keyword">elif</span> table_name == <span class="string">&#x27;titles&#x27;</span>:</span><br><span class="line">        op = <span class="number">3</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        op = <span class="literal">None</span></span><br><span class="line">    keys = <span class="built_in">list</span>(data.keys())</span><br><span class="line">    key1 = <span class="string">&#x27; and &#x27;</span>.join([<span class="string">f&quot;<span class="subst">&#123;key&#125;</span>=&#x27;<span class="subst">&#123;data[key]&#125;</span>&#x27;&quot;</span> <span class="keyword">for</span> key <span class="keyword">in</span> keys[:op]])</span><br><span class="line">    key2 = <span class="string">&#x27;, &#x27;</span>.join([<span class="string">f&quot;<span class="subst">&#123;key&#125;</span>=&#x27;<span class="subst">&#123;data[key]&#125;</span>&#x27;&quot;</span> <span class="keyword">for</span> key <span class="keyword">in</span> keys[op:]])</span><br><span class="line"></span><br><span class="line">    sql = <span class="string">f&#x27;update <span class="subst">&#123;table_name&#125;</span> set <span class="subst">&#123;key2&#125;</span> where <span class="subst">&#123;key1&#125;</span>&#x27;</span></span><br><span class="line">    cursor.execute(sql)</span><br><span class="line">    db.commit()</span><br><span class="line">    <span class="keyword">return</span> jsonify(&#123;<span class="string">&#x27;message&#x27;</span>: <span class="string">f&#x27; row updated successfully&#x27;</span>&#125;), <span class="number">200</span></span><br></pre></td></tr></table></figure>
+
+<p>由于主键不同，因此需要首先判断更新表是哪一个，再通过查询主键来进行更改。</p>
+
+</article>
+    
+    
+</div>
+<div id="post-next-prev" class="row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-blog-card trm-scroll-animation" data-scroll data-scroll-offset="40">
+        <a href="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab7-%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" class="trm-cover-frame trm-anima-link">
+            
+            
+                <img alt="cover" class="no-fancybox" src="https://images.pexels.com/photos/9008989/pexels-photo-9008989.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
+            
+        </a>
+        
+        <div class="trm-card-descr">
+            <div class="trm-label trm-category trm-mb-20">
+                <a href=" /categories/SoftwareEngineering/">
+                    SoftwareEngineering
+                </a>
+            </div>
+            <h5>
+                <a href="/2023/04/23/%E8%BD%AF%E5%B7%A5Lab7-%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" class="trm-anima-link">
+                    软工Lab7-个人博客
+                </a>
+            </h5>
+            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>23/04/23</li>
+                <li>23:07</li>
+                
+                    <li>1.2k</li>
+                
+                
+                    <li>6</li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation" data-scroll data-scroll-offset="50">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2023- 2023</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">Xenon的小破站</span>
+        </div>
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.3.0
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                主题 - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.0.3
+            </span>
+        </div>
+      
+
+     
+
+     
+</footer>
+ 
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            <div class="trm-fixed-container" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="单栏和双栏切换" onclick="asyncFun.switchSingleColumn()">
+            <i class="iconfont fas fa-arrows-alt-h"></i>
+        </div>
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+          </div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.0.3"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.0.3"></script>
+
+  <!-- 《页面点击小红心 -->
+  <!-- -->
+  <!-- 页面点击小红心》 -->
+
+  <!--鼠标点击烟花爆炸效果，需要引入jQuery-->
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+    <script type="text/javascript" src="/js/fireworks.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+
+</html>
