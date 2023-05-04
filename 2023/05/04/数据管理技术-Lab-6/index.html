@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="数据管理技术-Lab6Task1： 新建数据库 Library 新建如下表：（键与约束自行合理设定即可，字段可自由增加，比如 ID）账户(用户名, 密码, …)书库(ISBN, 书名, 数量, …)借阅记录(用户名, ISBN, 借书时间, 到期时间, 还书时间, …)  Ps：到期时间约定为借书时间+30天。 新建表： 123456789101112131415161718192021creat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据管理技术-Lab-6">
+<meta property="og:url" content="https://xenonga.github.io/2023/05/04/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-6/index.html">
+<meta property="og:site_name" content="Xenon的小破站">
+<meta property="og:description" content="数据管理技术-Lab6Task1： 新建数据库 Library 新建如下表：（键与约束自行合理设定即可，字段可自由增加，比如 ID）账户(用户名, 密码, …)书库(ISBN, 书名, 数量, …)借阅记录(用户名, ISBN, 借书时间, 到期时间, 还书时间, …)  Ps：到期时间约定为借书时间+30天。 新建表： 123456789101112131415161718192021creat">
+<meta property="og:locale">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="article:published_time" content="2023-05-04T11:32:58.000Z">
+<meta property="article:modified_time" content="2023-05-04T11:36:26.354Z">
+<meta property="article:author" content="Jiaxuan Gao">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xenonga.github.io/img/404.jpg">
+
+    <meta name="keywords" content="procedure, cursor">
+
+
+<title >数据管理技术-Lab-6</title>
+
+<!-- Favicon -->
+
+    <link href='/rabbit-16%C3%9716.png?v=2.0.3' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"xenonga.github.io","author":"Jiaxuan Gao","root":"/","typed_text":["a SE Learner"],"theme_version":"2.0.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"rabbit-32×32.png","icon16":"rabbit-16×16.png","icon32":"rabbit-32×32.png","appleTouchIcon":"rabbit-32×32.png","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2023-05-04 19:36:26"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.0.3" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" data-scroll-container style="opacity: 0">
+          <div data-scroll-section id="content" class="trm-scroll-section">
+
+            <div class="locomotive-scroll__sticky-target" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none;"></div>
+
+            <!-- top bar -->
+            <header class="trm-top-bar" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/rabbit-32%C3%9732.png">
+    
+    
+        <div class="trm-logo-text">
+            Xe<span>non</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    主页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a  href="/categories/OS/" target="">
+                            OS
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/SoftwareEngineering/" target="">
+                            软件工程
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/DataBase/" target="">
+                            数据管理技术
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/about/" target="">
+                    关于
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner" data-scroll data-scroll-direction="vertical">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" data-scroll data-scroll-direction="vertical" data-scroll-speed="-3" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container" data-scroll data-scroll-direction="vertical" data-scroll-speed="0">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            数据管理技术-Lab-6
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2023
+                                    </span
+                                ></li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <a href="#about-triger" data-scroll-to="#about-triger" data-scroll-offset="-130" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </a>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div id="page-sidebar" class="col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    
+
+<div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card" data-scroll data-scroll-repeat data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="60"> 
+    
+        <div class="trm-user-tabs" id="sidebar-tabs">
+           <div class="trm-tabs-nav trm-mb-40" id="trm-tabs-nav">
+                <div data-to="tabs-user" class="trm-tabs-nav-item">
+                    <i class="iconfont fas fa-user-alt"></i>
+                </div>
+                <div data-to="tabs-toc" class="trm-tabs-nav-item active">
+                    <i class="iconfont fas fa-th-list"></i>
+                </div>
+           </div>
+            <div name="tabs-user" class="trm-tabs-item">
+                <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/rabbit.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        Xenon的小破站
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+                <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/XenonGa/" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+        <a href="https://gitee.com/X2283509194" title="gitee" rel="nofollow" target="_blank">
+            <i class="iconfont iconfont cg-gitee"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+                <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                地球
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                城市:
+            </div>
+            <div class="trm-label trm-label-light">
+                北京
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                20
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+                
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:2283509194@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+            </div>
+            <div name="tabs-toc" class="trm-tabs-item active">
+                <div class="post-toc">
+    <ol class="toc"><li class="toc-item toc-level-1"><a rel="nofollow" class="toc-link" href="#数据管理技术-Lab6"  data-scroll-to="#数据管理技术-Lab6"><span class="toc-number">1.</span> <span class="toc-text">数据管理技术-Lab6</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#Task1："  data-scroll-to="#Task1："><span class="toc-number">1.1.</span> <span class="toc-text">Task1：</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#1-1"  data-scroll-to="#1-1"><span class="toc-number">1.1.1.</span> <span class="toc-text">1-1</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#1-2"  data-scroll-to="#1-2"><span class="toc-number">1.1.2.</span> <span class="toc-text">1-2</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#1-3"  data-scroll-to="#1-3"><span class="toc-number">1.1.3.</span> <span class="toc-text">1-3</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#1-4"  data-scroll-to="#1-4"><span class="toc-number">1.1.4.</span> <span class="toc-text">1-4</span></a></li></ol></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#Task2"  data-scroll-to="#Task2"><span class="toc-number">1.2.</span> <span class="toc-text">Task2:</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#2-1"  data-scroll-to="#2-1"><span class="toc-number">1.2.1.</span> <span class="toc-text">2-1</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#2-2"  data-scroll-to="#2-2"><span class="toc-number">1.2.2.</span> <span class="toc-text">2-2</span></a></li></ol></li></ol></li></ol>
+</div>
+            </div>
+        </div>
+    
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div id="page-content" class="col-lg-8">
+                <div class="trm-content" id="trm-content">
+                    <div data-scroll data-scroll-repeat data-scroll-offset="500" id="about-triger"></div>
+
+                    <div id="post-info" class="row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            05/04
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            19:32
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Xenon
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="数据管理技术-Lab6"><a href="#数据管理技术-Lab6" class="headerlink" title="数据管理技术-Lab6"></a>数据管理技术-Lab6</h1><h2 id="Task1："><a href="#Task1：" class="headerlink" title="Task1："></a>Task1：</h2><ol>
+<li>新建数据库 Library</li>
+<li>新建如下表：（键与约束自行合理设定即可，字段可自由增加，比如 ID）<br>账户(用户名, 密码, …)<br>书库(ISBN, 书名, 数量, …)<br>借阅记录(用户名, ISBN, 借书时间, 到期时间, 还书时间, …)</li>
+</ol>
+<p>Ps：到期时间约定为借书时间+30天。</p>
+<p>新建表：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> account(</span><br><span class="line">    user_name <span class="type">varchar</span>(<span class="number">20</span>) <span class="keyword">primary</span> key ,</span><br><span class="line">    u_password <span class="type">varchar</span>(<span class="number">20</span>) <span class="keyword">not</span> <span class="keyword">null</span> </span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> library(</span><br><span class="line">    ISBN <span class="type">int</span> <span class="keyword">primary</span> key ,</span><br><span class="line">    b_name <span class="type">varchar</span>(<span class="number">20</span>) <span class="keyword">not</span> <span class="keyword">null</span> ,</span><br><span class="line">    num <span class="type">int</span> <span class="keyword">not</span> <span class="keyword">null</span> </span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> record(</span><br><span class="line">    user_name <span class="type">varchar</span>(<span class="number">20</span>) <span class="keyword">not</span> <span class="keyword">null</span> ,</span><br><span class="line">    ISBN <span class="type">int</span> <span class="keyword">not</span> <span class="keyword">null</span> ,</span><br><span class="line">    borrow_date <span class="type">date</span> <span class="keyword">not</span> <span class="keyword">null</span> ,</span><br><span class="line">    due_date <span class="type">date</span> <span class="keyword">not</span> <span class="keyword">null</span> ,</span><br><span class="line">    return_date <span class="type">date</span> <span class="keyword">not</span> <span class="keyword">null</span> ,</span><br><span class="line">    <span class="keyword">constraint</span> fk_1 <span class="keyword">foreign</span> key (user_name) <span class="keyword">references</span> account (user_name) , </span><br><span class="line">    <span class="keyword">constraint</span> fk_2 <span class="keyword">foreign</span> key (ISBN) <span class="keyword">references</span> library (ISBN) ,</span><br><span class="line">    <span class="keyword">constraint</span> check_dueDate <span class="keyword">check</span> ( datediff(borrow_date, due_date) <span class="operator">=</span><span class="number">-30</span> )</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>插入数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> account (user_name, u_password) <span class="keyword">VALUES</span></span><br><span class="line">    (<span class="string">&#x27;Alice&#x27;</span>, <span class="string">&#x27;qwerty&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;Bob&#x27;</span>, <span class="string">&#x27;123456&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;Charlie&#x27;</span>, <span class="string">&#x27;abcdef&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;David&#x27;</span>, <span class="string">&#x27;password&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;Emily&#x27;</span>, <span class="string">&#x27;987654&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;Frank&#x27;</span>, <span class="string">&#x27;iloveyou&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;George&#x27;</span>, <span class="string">&#x27;football&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;Hannah&#x27;</span>, <span class="string">&#x27;sunshine&#x27;</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> library (ISBN, b_name, num) <span class="keyword">VALUES</span></span><br><span class="line">    (<span class="number">10001</span>, <span class="string">&#x27;The Great Gatsby&#x27;</span>, <span class="number">10</span>),</span><br><span class="line">    (<span class="number">10002</span>, <span class="string">&#x27;Mockingbird&#x27;</span>, <span class="number">5</span>),</span><br><span class="line">    (<span class="number">10003</span>, <span class="string">&#x27;1984&#x27;</span>, <span class="number">7</span>),</span><br><span class="line">    (<span class="number">10004</span>, <span class="string">&#x27;Prejudice&#x27;</span>, <span class="number">8</span>),</span><br><span class="line">    (<span class="number">10005</span>, <span class="string">&#x27;Animal Farm&#x27;</span>, <span class="number">3</span>),</span><br><span class="line">    (<span class="number">10006</span>, <span class="string">&#x27;The Catcher&#x27;</span>, <span class="number">6</span>),</span><br><span class="line">    (<span class="number">10007</span>, <span class="string">&#x27;Brave New World&#x27;</span>, <span class="number">4</span>),</span><br><span class="line">    (<span class="number">10008</span>, <span class="string">&#x27;Wuthering&#x27;</span>, <span class="number">2</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> record (user_name, ISBN, borrow_date, due_date, return_date)</span><br><span class="line"><span class="keyword">VALUES</span></span><br><span class="line">    (<span class="string">&#x27;Alice&#x27;</span>, <span class="number">10001</span>, <span class="string">&#x27;2023-01-01&#x27;</span>, <span class="string">&#x27;2023-01-31&#x27;</span>, <span class="string">&#x27;2023-01-28&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;Alice&#x27;</span>, <span class="number">10002</span>, <span class="string">&#x27;2023-01-01&#x27;</span>, <span class="string">&#x27;2023-01-31&#x27;</span>, <span class="string">&#x27;2023-01-28&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;Alice&#x27;</span>, <span class="number">10004</span>, <span class="string">&#x27;2023-01-01&#x27;</span>, <span class="string">&#x27;2023-01-31&#x27;</span>, <span class="string">&#x27;2023-01-28&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;Bob&#x27;</span>, <span class="number">10003</span>, <span class="string">&#x27;2023-01-01&#x27;</span>, <span class="string">&#x27;2023-01-31&#x27;</span>, <span class="string">&#x27;2023-01-28&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;Bob&#x27;</span>, <span class="number">10006</span>, <span class="string">&#x27;2023-01-01&#x27;</span>, <span class="string">&#x27;2023-01-31&#x27;</span>, <span class="string">&#x27;2023-01-28&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;Charlie&#x27;</span>, <span class="number">10005</span>, <span class="string">&#x27;2023-01-01&#x27;</span>, <span class="string">&#x27;2023-01-31&#x27;</span>, <span class="string">&#x27;2023-01-28&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;Charlie&#x27;</span>, <span class="number">10007</span>, <span class="string">&#x27;2023-01-01&#x27;</span>, <span class="string">&#x27;2023-01-31&#x27;</span>, <span class="string">&#x27;2023-01-28&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;David&#x27;</span>, <span class="number">10008</span>, <span class="string">&#x27;2023-01-01&#x27;</span>, <span class="string">&#x27;2023-01-31&#x27;</span>, <span class="string">&#x27;2023-01-28&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;David&#x27;</span>, <span class="number">10001</span>, <span class="string">&#x27;2023-01-01&#x27;</span>, <span class="string">&#x27;2023-01-31&#x27;</span>, <span class="string">&#x27;2023-01-28&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;Emily&#x27;</span>, <span class="number">10002</span>, <span class="string">&#x27;2023-01-01&#x27;</span>, <span class="string">&#x27;2023-01-31&#x27;</span>, <span class="string">&#x27;2023-01-28&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;Emily&#x27;</span>, <span class="number">10005</span>, <span class="string">&#x27;2023-01-01&#x27;</span>, <span class="string">&#x27;2023-01-31&#x27;</span>, <span class="string">&#x27;2023-01-28&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;Emily&#x27;</span>, <span class="number">10006</span>, <span class="string">&#x27;2023-01-01&#x27;</span>, <span class="string">&#x27;2023-01-31&#x27;</span>, <span class="string">&#x27;2023-01-28&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;Frank&#x27;</span>, <span class="number">10001</span>, <span class="string">&#x27;2023-01-01&#x27;</span>, <span class="string">&#x27;2023-01-31&#x27;</span>, <span class="string">&#x27;2023-01-28&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;Frank&#x27;</span>, <span class="number">10004</span>, <span class="string">&#x27;2023-01-01&#x27;</span>, <span class="string">&#x27;2023-01-31&#x27;</span>, <span class="string">&#x27;2023-01-28&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;Frank&#x27;</span>, <span class="number">10006</span>, <span class="string">&#x27;2023-01-01&#x27;</span>, <span class="string">&#x27;2023-01-31&#x27;</span>, <span class="string">&#x27;2023-01-28&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;George&#x27;</span>, <span class="number">10003</span>, <span class="string">&#x27;2023-01-01&#x27;</span>, <span class="string">&#x27;2023-01-31&#x27;</span>, <span class="string">&#x27;2023-01-28&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;George&#x27;</span>, <span class="number">10004</span>, <span class="string">&#x27;2023-01-01&#x27;</span>, <span class="string">&#x27;2023-01-31&#x27;</span>, <span class="string">&#x27;2023-01-28&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;George&#x27;</span>, <span class="number">10005</span>, <span class="string">&#x27;2023-01-01&#x27;</span>, <span class="string">&#x27;2023-01-31&#x27;</span>, <span class="string">&#x27;2023-01-28&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;Hannah&#x27;</span>, <span class="number">10002</span>, <span class="string">&#x27;2023-01-01&#x27;</span>, <span class="string">&#x27;2023-01-31&#x27;</span>, <span class="string">&#x27;2023-01-28&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;Hannah&#x27;</span>, <span class="number">10003</span>, <span class="string">&#x27;2023-01-01&#x27;</span>, <span class="string">&#x27;2023-01-31&#x27;</span>, <span class="string">&#x27;2023-01-28&#x27;</span>),</span><br><span class="line">    (<span class="string">&#x27;Hannah&#x27;</span>, <span class="number">10005</span>, <span class="string">&#x27;2023-01-01&#x27;</span>, <span class="string">&#x27;2023-01-31&#x27;</span>, <span class="string">&#x27;2023-01-28&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-1"><a href="#1-1" class="headerlink" title="1-1"></a>1-1</h3><p>用户密码检查&#x2F;修改： 接收四个参数（用户名，密码，新密码，动作），若动作为1，则检查用户名和密码是否和密码表中存的相符，相符则返回 true，不相符返回false； 若动作为2， 则首先检查用户名、密码是否相符，若不相符返回false，相符则将密码表中的密码改成新密码，返回true。密码要求只包含数字和字母，长度大于等于4、小于等于10。</p>
+<p>代码如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">delimiter $$</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">procedure</span> check_or_modify_password(</span><br><span class="line">    <span class="keyword">in</span> name <span class="type">varchar</span>(<span class="number">20</span>) ,</span><br><span class="line">    <span class="keyword">in</span> password <span class="type">varchar</span>(<span class="number">20</span>) ,</span><br><span class="line">    <span class="keyword">in</span> new_password <span class="type">varchar</span>(<span class="number">20</span>) ,</span><br><span class="line">    <span class="keyword">in</span> action <span class="type">int</span> ,</span><br><span class="line">    <span class="keyword">out</span> res <span class="type">boolean</span></span><br><span class="line">)<span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">declare</span> match_flag <span class="type">int</span> <span class="keyword">default</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">declare</span> wrong_password <span class="type">int</span> <span class="keyword">default</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    if action <span class="operator">=</span> <span class="number">1</span> <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">into</span> match_flag <span class="keyword">from</span> account <span class="keyword">where</span> user_name <span class="operator">=</span> name <span class="keyword">and</span> u_password <span class="operator">=</span> password;</span><br><span class="line">        if match_flag <span class="operator">=</span> <span class="number">1</span> <span class="keyword">then</span></span><br><span class="line">            <span class="keyword">set</span> res <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">set</span> res <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">end</span> if;</span><br><span class="line">    elseif action <span class="operator">=</span> <span class="number">2</span> <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">into</span> match_flag <span class="keyword">from</span> account <span class="keyword">where</span> user_name <span class="operator">=</span> name <span class="keyword">and</span> u_password <span class="operator">=</span> password;</span><br><span class="line">        if match_flag <span class="operator">=</span> <span class="number">1</span> <span class="keyword">then</span></span><br><span class="line">            if new_password regexp <span class="string">&#x27;^[a-zA-Z0-9]+$&#x27;</span> <span class="keyword">then</span></span><br><span class="line">                <span class="keyword">set</span> wrong_password <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                <span class="keyword">set</span> wrong_password <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">            <span class="keyword">end</span> if;</span><br><span class="line">            if length(new_password) <span class="operator">&gt;=</span> <span class="number">4</span> <span class="keyword">and</span> length(new_password) <span class="operator">&lt;=</span> <span class="number">10</span> <span class="keyword">and</span> wrong_password <span class="operator">=</span> <span class="number">0</span> <span class="keyword">then</span></span><br><span class="line">                <span class="keyword">update</span> account <span class="keyword">set</span> u_password <span class="operator">=</span> new_password <span class="keyword">where</span> user_name <span class="operator">=</span> name;</span><br><span class="line">                <span class="keyword">set</span> res <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                <span class="keyword">set</span> res <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">end</span> if;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">set</span> res <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">end</span> if;</span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line"><span class="keyword">end</span>; $$</span><br></pre></td></tr></table></figure>
+
+<p>测试：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">call</span> check_or_modify_password(<span class="string">&#x27;George&#x27;</span>, <span class="string">&#x27;212234&#x27;</span>, <span class="string">&#x27;212.234&#x27;</span>, <span class="number">2</span>, <span class="variable">@res</span>);</span><br><span class="line"><span class="keyword">select</span> <span class="variable">@res</span>;</span><br><span class="line"><span class="keyword">call</span> check_or_modify_password(<span class="string">&#x27;Hannah&#x27;</span>, <span class="string">&#x27;sunshine&#x27;</span>, <span class="string">&#x27;sunshine3&#x27;</span>, <span class="number">1</span>, <span class="variable">@res</span>);</span><br><span class="line"><span class="keyword">select</span> <span class="variable">@res</span>;</span><br><span class="line"><span class="keyword">call</span> check_or_modify_password(<span class="string">&#x27;Hannah&#x27;</span>, <span class="string">&#x27;sunshine2&#x27;</span>, <span class="string">&#x27;sunshine3&#x27;</span>, <span class="number">1</span>, <span class="variable">@res</span>);</span><br><span class="line"><span class="keyword">select</span> <span class="variable">@res</span>;</span><br><span class="line"><span class="keyword">call</span> check_or_modify_password(<span class="string">&#x27;Frank&#x27;</span>, <span class="string">&#x27;iloveyou&#x27;</span>, <span class="string">&#x27;youloveme&#x27;</span>, <span class="number">2</span>, <span class="variable">@res</span>);</span><br><span class="line"><span class="keyword">select</span> <span class="variable">@res</span>;</span><br><span class="line"><span class="keyword">call</span> check_or_modify_password(<span class="string">&#x27;Emily&#x27;</span>, <span class="string">&#x27;987654&#x27;</span>, <span class="string">&#x27;123456&#x27;</span>, <span class="number">2</span>, <span class="variable">@res</span>);</span><br><span class="line"><span class="keyword">select</span> <span class="variable">@res</span>;</span><br></pre></td></tr></table></figure>
+
+<p>测试前<code>account</code>表：</p>
+<img src="/2023/05/04/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-6/image-20230504151333872.png" class="" title="image-20230504151333872" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>测试后<code>res</code>输出0，1， 0， 1， 1，测试后<code>account</code>表：</p>
+<img src="/2023/05/04/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-6/image-20230504151537956.png" class="" title="image-20230504151537956" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h3 id="1-2"><a href="#1-2" class="headerlink" title="1-2"></a>1-2</h3><p>借书：接收两个参数（用户名，ISBN），没有足够的书、用户不存在或一个人借阅两本同样的书时返回false，合法执行后，借阅记录表会新增一条记录，书库对应书的数量也需要减1，并返回true；</p>
+<p>代码如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">delimiter $$</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">procedure</span> borrow_book(</span><br><span class="line">    <span class="keyword">in</span> name <span class="type">varchar</span>(<span class="number">20</span>) ,</span><br><span class="line">    <span class="keyword">in</span> b_isbn <span class="type">int</span> ,</span><br><span class="line">    <span class="keyword">out</span> res <span class="type">boolean</span></span><br><span class="line">)<span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">declare</span> user_exist <span class="type">boolean</span> <span class="keyword">default</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">declare</span> book_num <span class="type">int</span> <span class="keyword">default</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">declare</span> borrow_record <span class="type">int</span> <span class="keyword">default</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">into</span> user_exist <span class="keyword">from</span> account <span class="keyword">where</span> user_name <span class="operator">=</span> name;</span><br><span class="line">    if user_exist <span class="operator">!=</span> <span class="number">1</span> <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">set</span> res <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">select</span> library.num <span class="keyword">into</span> book_num <span class="keyword">from</span> library <span class="keyword">where</span> library.ISBN <span class="operator">=</span> b_isbn;</span><br><span class="line">        if book_num <span class="operator">&lt;</span> <span class="number">1</span> <span class="keyword">then</span></span><br><span class="line">            <span class="keyword">set</span> res <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">into</span> borrow_record <span class="keyword">from</span> record <span class="keyword">where</span> record.user_name <span class="operator">=</span> name <span class="keyword">and</span> record.ISBN <span class="operator">=</span> b_isbn;</span><br><span class="line">            if borrow_record <span class="operator">&gt;</span> <span class="number">0</span> <span class="keyword">then</span></span><br><span class="line">                <span class="keyword">set</span> res <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                <span class="keyword">set</span> res <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line">                <span class="keyword">insert</span> <span class="keyword">into</span> record(user_name, ISBN, borrow_date, due_date, return_date)</span><br><span class="line">                <span class="keyword">values</span> (name, b_isbn, curdate(), date_add(curdate(), <span class="type">interval</span> <span class="number">30</span> <span class="keyword">day</span>), <span class="keyword">null</span>);</span><br><span class="line">                <span class="keyword">update</span> library <span class="keyword">set</span> num <span class="operator">=</span> num <span class="operator">-</span> <span class="number">1</span> <span class="keyword">where</span> ISBN <span class="operator">=</span> b_isbn;</span><br><span class="line">            <span class="keyword">end</span> if;</span><br><span class="line">        <span class="keyword">end</span> if;</span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line"><span class="keyword">end</span>; $$</span><br></pre></td></tr></table></figure>
+
+<p>测试：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">call</span> borrow_book(<span class="string">&#x27;avs&#x27;</span>, <span class="string">&#x27;10008&#x27;</span>, <span class="variable">@res</span>);</span><br><span class="line"><span class="keyword">select</span> <span class="variable">@res</span>;</span><br><span class="line"><span class="keyword">call</span> borrow_book(<span class="string">&#x27;Hannah&#x27;</span>, <span class="string">&#x27;10008&#x27;</span>, <span class="variable">@res</span>);</span><br><span class="line"><span class="keyword">select</span> <span class="variable">@res</span>;</span><br><span class="line"><span class="keyword">call</span> borrow_book(<span class="string">&#x27;Hannah&#x27;</span>, <span class="string">&#x27;10008&#x27;</span>, <span class="variable">@res</span>);</span><br><span class="line"><span class="keyword">select</span> <span class="variable">@res</span>;</span><br><span class="line"><span class="keyword">call</span> borrow_book(<span class="string">&#x27;George&#x27;</span>, <span class="string">&#x27;10008&#x27;</span>, <span class="variable">@res</span>);</span><br><span class="line"><span class="keyword">select</span> <span class="variable">@res</span>;</span><br><span class="line"><span class="keyword">call</span> borrow_book(<span class="string">&#x27;Hannah&#x27;</span>, <span class="string">&#x27;10008&#x27;</span>, <span class="variable">@res</span>);</span><br><span class="line"><span class="keyword">select</span> <span class="variable">@res</span>;</span><br></pre></td></tr></table></figure>
+
+<p>测试前<code>library</code>表：</p>
+<img src="/2023/05/04/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-6/image-20230504161203228.png" class="" title="image-20230504161203228" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>测试前<code>record</code>表：</p>
+<img src="/2023/05/04/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-6/image-20230504161234843.png" class="" title="image-20230504161234843" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>测试后<code>res</code>结果为0， 1， 0， 1， 0</p>
+<p>测试后<code>library</code>表：</p>
+<img src="/2023/05/04/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-6/image-20230504161348488.png" class="" title="image-20230504161348488" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>测试后<code>record</code>表：</p>
+<img src="/2023/05/04/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-6/image-20230504161437067.png" class="" title="image-20230504161437067" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h3 id="1-3"><a href="#1-3" class="headerlink" title="1-3"></a>1-3</h3><p>还书：接收两个参数（用户名，ISBN），未查询到借阅记录时返回false，合法执行后，借阅记录表对应记录会修改还书时间，书库对应书的数量需要加1，并返回true；</p>
+<p>代码如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">delimiter $$</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">procedure</span> return_book(</span><br><span class="line">    <span class="keyword">in</span> name <span class="type">varchar</span>(<span class="number">20</span>) ,</span><br><span class="line">    <span class="keyword">in</span> b_isbn <span class="type">int</span> ,</span><br><span class="line">    <span class="keyword">out</span> res <span class="type">boolean</span></span><br><span class="line">)<span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">declare</span> user_exist <span class="type">boolean</span> <span class="keyword">default</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">declare</span> book_record <span class="type">int</span> <span class="keyword">default</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">into</span> user_exist <span class="keyword">from</span> account <span class="keyword">where</span> user_name <span class="operator">=</span> name;</span><br><span class="line">    if user_exist <span class="operator">!=</span> <span class="number">1</span> <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">set</span> res <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">into</span> book_record <span class="keyword">from</span> record <span class="keyword">where</span> user_name <span class="operator">=</span> name <span class="keyword">and</span> ISBN <span class="operator">=</span> b_isbn;</span><br><span class="line">        if book_record <span class="operator">=</span> <span class="number">0</span> <span class="keyword">then</span></span><br><span class="line">            <span class="keyword">set</span> res <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            <span class="keyword">update</span> record <span class="keyword">set</span> return_date <span class="operator">=</span> curdate() <span class="keyword">where</span> user_name <span class="operator">=</span> name <span class="keyword">and</span> ISBN <span class="operator">=</span> b_isbn;</span><br><span class="line">            <span class="keyword">update</span> library <span class="keyword">set</span> num <span class="operator">=</span> num <span class="operator">+</span> <span class="number">1</span> <span class="keyword">where</span> ISBN <span class="operator">=</span> b_isbn;</span><br><span class="line">        <span class="keyword">end</span> if;</span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line"><span class="keyword">end</span>; $$</span><br></pre></td></tr></table></figure>
+
+<p>测试：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">call</span> return_book(<span class="string">&#x27;Hannah&#x27;</span>, <span class="string">&#x27;10008&#x27;</span>, <span class="variable">@res</span>);</span><br><span class="line"><span class="keyword">select</span> <span class="variable">@res</span>;</span><br><span class="line"><span class="keyword">call</span> return_book(<span class="string">&#x27;George&#x27;</span>, <span class="string">&#x27;10008&#x27;</span>, <span class="variable">@res</span>);</span><br><span class="line"><span class="keyword">select</span> <span class="variable">@res</span>;</span><br><span class="line"><span class="keyword">call</span> return_book(<span class="string">&#x27;阿萨德&#x27;</span>, <span class="string">&#x27;10008&#x27;</span>, <span class="variable">@res</span>);</span><br><span class="line"><span class="keyword">select</span> <span class="variable">@res</span>;</span><br></pre></td></tr></table></figure>
+
+<p>测试前<code>library</code>表：</p>
+<img src="/2023/05/04/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-6/image-20230504161348488.png" class="" title="image-20230504161348488" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>测试前<code>record</code>表：</p>
+<img src="/2023/05/04/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-6/image-20230504161437067.png" class="" title="image-20230504161437067" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>测试后<code>res</code>结果：1, 1，0</p>
+<p>测试后<code>library</code>表：</p>
+<img src="/2023/05/04/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-6/image-20230504163112280.png" class="" title="image-20230504163112280" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>测试后<code>record</code>表：</p>
+<img src="/2023/05/04/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-6/image-20230504163159485.png" class="" title="image-20230504163159485" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h3 id="1-4"><a href="#1-4" class="headerlink" title="1-4"></a>1-4</h3><p>查看当前借阅记录：接受一个参数（用户名），返回该用户名的当前借阅中的记录(用户名, ISBN, 到期时间)</p>
+<p>代码如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">delimiter $$</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">procedure</span> check_record(</span><br><span class="line">    <span class="keyword">in</span> name <span class="type">varchar</span>(<span class="number">20</span>)</span><br><span class="line">)<span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">declare</span> done <span class="type">boolean</span> <span class="keyword">default</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">declare</span> current_userName <span class="type">varchar</span>(<span class="number">20</span>);</span><br><span class="line">    <span class="keyword">declare</span> current_ISBN <span class="type">int</span>;</span><br><span class="line">    <span class="keyword">declare</span> current_dueDate <span class="type">date</span>;</span><br><span class="line">    <span class="keyword">declare</span> cursor1 <span class="keyword">cursor</span> <span class="keyword">for</span> <span class="keyword">select</span> user_name, ISBN, due_date <span class="keyword">from</span> record;</span><br><span class="line">    <span class="keyword">declare</span> continue handler <span class="keyword">for</span> <span class="keyword">not</span> found <span class="keyword">set</span> done <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">create</span> temporary <span class="keyword">table</span> if <span class="keyword">not</span> <span class="keyword">exists</span> temp_res(</span><br><span class="line">        u_name <span class="type">varchar</span>(<span class="number">20</span>) ,</span><br><span class="line">        ISBN <span class="type">int</span> ,</span><br><span class="line">        due_date <span class="type">date</span></span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">open</span> cursor1;</span><br><span class="line">    cursor_loop: loop</span><br><span class="line">        <span class="keyword">fetch</span> cursor1 <span class="keyword">into</span> current_userName, current_ISBN, current_dueDate;</span><br><span class="line">        if done <span class="keyword">then</span></span><br><span class="line">            leave cursor_loop;</span><br><span class="line">        <span class="keyword">end</span> if;</span><br><span class="line"></span><br><span class="line">        if current_userName <span class="operator">=</span> name <span class="keyword">then</span></span><br><span class="line">            <span class="keyword">insert</span> <span class="keyword">into</span> temp_res <span class="keyword">values</span> (current_userName, current_ISBN, current_dueDate);</span><br><span class="line">        <span class="keyword">end</span> if;</span><br><span class="line">    <span class="keyword">end</span> loop cursor_loop;</span><br><span class="line">    <span class="keyword">close</span> cursor1;</span><br><span class="line">    <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> temp_res;</span><br><span class="line">    <span class="keyword">drop</span> temporary <span class="keyword">table</span> if <span class="keyword">exists</span> temp_res;</span><br><span class="line"><span class="keyword">end</span>; $$</span><br></pre></td></tr></table></figure>
+
+<p>测试：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">call</span> check_record(<span class="string">&#x27;Hannah&#x27;</span>);</span><br><span class="line"><span class="keyword">call</span> check_record(<span class="string">&#x27;George&#x27;</span>);</span><br><span class="line"><span class="keyword">call</span> check_record(<span class="string">&#x27;David&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>结果如下：</p>
+<img src="/2023/05/04/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-6/image-20230504171151107.png" class="" title="image-20230504171151107" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/05/04/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-6/image-20230504171202479.png" class="" title="image-20230504171202479" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/05/04/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-6/image-20230504171211195.png" class="" title="image-20230504171211195" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h2 id="Task2"><a href="#Task2" class="headerlink" title="Task2:"></a>Task2:</h2><p>创建表：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> tableA (</span><br><span class="line">    id <span class="type">int</span> <span class="keyword">primary</span> key auto_increment,</span><br><span class="line">    sparse <span class="type">int</span> <span class="keyword">check</span> ( sparse<span class="operator">&gt;=</span><span class="number">0</span> <span class="keyword">and</span> sparse <span class="operator">&lt;=</span> <span class="number">5000000</span> ),</span><br><span class="line">    dense <span class="type">int</span> <span class="keyword">check</span> ( dense<span class="operator">&gt;=</span><span class="number">0</span> <span class="keyword">and</span> dense <span class="operator">&lt;=</span> <span class="number">9</span> )</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-1"><a href="#2-1" class="headerlink" title="2-1"></a>2-1</h3><p>加载（一次性插入40万条记录）.</p>
+<p>代码如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">delimiter $$</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">procedure</span> load_data(</span><br><span class="line">    <span class="keyword">in</span> num_rows <span class="type">int</span></span><br><span class="line">)<span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">declare</span> i <span class="type">int</span> <span class="keyword">default</span> <span class="number">0</span>;</span><br><span class="line">    while i <span class="operator">&lt;</span> num_rows do</span><br><span class="line">        <span class="keyword">insert</span> <span class="keyword">into</span> tableA (sparse, dense) <span class="keyword">values</span> (round(rand() <span class="operator">*</span> <span class="number">5000000</span>), <span class="built_in">floor</span>(rand() <span class="operator">*</span> <span class="number">10</span>)) ;</span><br><span class="line">        <span class="keyword">set</span> i <span class="operator">=</span> i <span class="operator">+</span> <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">end</span> while;</span><br><span class="line"><span class="keyword">end</span>; $$</span><br></pre></td></tr></table></figure>
+
+<p>测试：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">call</span> load_data(<span class="number">400000</span>);</span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<img src="/2023/05/04/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-6/image-20230504173823132.png" class="" title="image-20230504173823132" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h3 id="2-2"><a href="#2-2" class="headerlink" title="2-2"></a>2-2</h3><p>使用定义好的加载存储过程或自定义函数，完成400万条记录的插入.</p>
+<p>代码如下：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">delimiter $$</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">procedure</span> insert_data(</span><br><span class="line">    <span class="keyword">in</span> num_rows <span class="type">int</span></span><br><span class="line">)<span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">declare</span> max_id <span class="type">int</span> <span class="keyword">default</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">declare</span> table_a_num <span class="type">int</span> <span class="keyword">default</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">select</span> <span class="built_in">max</span>(id) <span class="keyword">into</span> max_id <span class="keyword">from</span> tableA;</span><br><span class="line">    <span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">into</span> table_a_num <span class="keyword">from</span> tableA;</span><br><span class="line">    <span class="keyword">drop</span> temporary <span class="keyword">table</span> if <span class="keyword">exists</span> temp_table;</span><br><span class="line">    <span class="keyword">create</span> temporary <span class="keyword">table</span> temp_table <span class="keyword">like</span> tableA;</span><br><span class="line">    <span class="keyword">insert</span> <span class="keyword">into</span> temp_table <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> tableA;</span><br><span class="line">    while table_a_num <span class="operator">&lt;</span> num_rows do</span><br><span class="line">        <span class="keyword">update</span> temp_table <span class="keyword">set</span> sparse <span class="operator">=</span> (sparse <span class="operator">+</span> <span class="number">1</span>) mod <span class="number">5000000</span> <span class="keyword">where</span> id <span class="operator">&lt;=</span> num_rows;</span><br><span class="line">        <span class="keyword">update</span> temp_table <span class="keyword">set</span> dense <span class="operator">=</span> (dense <span class="operator">+</span> <span class="number">1</span>) mod <span class="number">10</span> <span class="keyword">where</span> id <span class="operator">&lt;=</span> num_rows;</span><br><span class="line">        <span class="keyword">update</span> temp_table <span class="keyword">set</span> id <span class="operator">=</span> id <span class="operator">+</span> max_id <span class="keyword">where</span> id <span class="operator">&lt;=</span> num_rows;</span><br><span class="line">        <span class="keyword">insert</span> <span class="keyword">into</span> tableA <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> temp_table;</span><br><span class="line">        <span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">into</span> table_a_num <span class="keyword">from</span> tableA;</span><br><span class="line">    <span class="keyword">end</span> while;</span><br><span class="line">    <span class="keyword">drop</span> temporary <span class="keyword">table</span> if <span class="keyword">exists</span> temp_table;</span><br><span class="line"><span class="keyword">end</span>; $$</span><br></pre></td></tr></table></figure>
+
+<p>测试：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">call</span> insert_data(<span class="number">4000000</span>);</span><br></pre></td></tr></table></figure>
+
+<p>结果如图：</p>
+
+
+</article>
+    
+    
+</div>
+<div id="post-next-prev" class="row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-blog-card trm-scroll-animation" data-scroll data-scroll-offset="40">
+        <a href="/2023/04/27/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-%E5%A4%A7%E4%BD%9C%E4%B8%9A/" class="trm-cover-frame trm-anima-link">
+            
+            
+                <img alt="cover" class="no-fancybox" src="https://images.pexels.com/photos/11556100/pexels-photo-11556100.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
+            
+        </a>
+        
+        <div class="trm-card-descr">
+            <div class="trm-label trm-category trm-mb-20">
+                <a href=" /categories/DataBase/">
+                    DataBase
+                </a>
+            </div>
+            <h5>
+                <a href="/2023/04/27/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-%E5%A4%A7%E4%BD%9C%E4%B8%9A/" class="trm-anima-link">
+                    数据管理技术-大作业
+                </a>
+            </h5>
+            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>23/04/27</li>
+                <li>10:11</li>
+                
+                    <li>911</li>
+                
+                
+                    <li>4</li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation" data-scroll data-scroll-offset="50">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2023- 2023</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">Xenon的小破站</span>
+        </div>
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.3.0
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                主题 - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.0.3
+            </span>
+        </div>
+      
+
+     
+
+     
+</footer>
+ 
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            <div class="trm-fixed-container" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="单栏和双栏切换" onclick="asyncFun.switchSingleColumn()">
+            <i class="iconfont fas fa-arrows-alt-h"></i>
+        </div>
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+          </div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.0.3"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.0.3"></script>
+
+  <!-- 《页面点击小红心 -->
+  <!-- -->
+  <!-- 页面点击小红心》 -->
+
+  <!--鼠标点击烟花爆炸效果，需要引入jQuery-->
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+    <script type="text/javascript" src="/js/fireworks.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+
+</html>
