@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="OS-Lab5一、思考题Thinking 5.1   由于外部设备会更改自己对应地址空间的数据，CPU写入外设的数据存入Cache中，若在此时访问Cache，由于缓存内容只有在被新数据换出时才会被写入内存，因此会导致缓存内容覆盖了之前的操作，这相当于只进行最后一次操作，即操作覆盖。 串口访问频繁，而IDE磁盘访问频率较小，因此串口出错概率更高。  Thinking 5.2   由File文件控制块">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS-Lab5">
+<meta property="og:url" content="https://xenonga.github.io/2023/05/08/OS-Lab5/index.html">
+<meta property="og:site_name" content="Xenon的小破站">
+<meta property="og:description" content="OS-Lab5一、思考题Thinking 5.1   由于外部设备会更改自己对应地址空间的数据，CPU写入外设的数据存入Cache中，若在此时访问Cache，由于缓存内容只有在被新数据换出时才会被写入内存，因此会导致缓存内容覆盖了之前的操作，这相当于只进行最后一次操作，即操作覆盖。 串口访问频繁，而IDE磁盘访问频率较小，因此串口出错概率更高。  Thinking 5.2   由File文件控制块">
+<meta property="og:locale">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="article:published_time" content="2023-05-08T02:27:01.000Z">
+<meta property="article:modified_time" content="2023-05-08T02:30:44.002Z">
+<meta property="article:author" content="Jiaxuan Gao">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xenonga.github.io/img/404.jpg">
+
+    <meta name="keywords" content="外设管理,文件系统">
+
+
+<title >OS-Lab5</title>
+
+<!-- Favicon -->
+
+    <link href='/rabbit-16%C3%9716.png?v=2.0.3' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"xenonga.github.io","author":"Jiaxuan Gao","root":"/","typed_text":["a SE Learner"],"theme_version":"2.0.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"rabbit-32×32.png","icon16":"rabbit-16×16.png","icon32":"rabbit-32×32.png","appleTouchIcon":"rabbit-32×32.png","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2023-05-08 10:30:44"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.0.3" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" data-scroll-container style="opacity: 0">
+          <div data-scroll-section id="content" class="trm-scroll-section">
+
+            <div class="locomotive-scroll__sticky-target" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none;"></div>
+
+            <!-- top bar -->
+            <header class="trm-top-bar" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/rabbit-32%C3%9732.png">
+    
+    
+        <div class="trm-logo-text">
+            Xe<span>non</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    主页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a  href="/categories/OS/" target="">
+                            OS
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/SoftwareEngineering/" target="">
+                            软件工程
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/DataBase/" target="">
+                            数据管理技术
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/about/" target="">
+                    关于
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner" data-scroll data-scroll-direction="vertical">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" data-scroll data-scroll-direction="vertical" data-scroll-speed="-3" src="https://pic1.zhimg.com/v2-b3c2c6745b9421a13a3c4706b19223b3_r.jpg">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container" data-scroll data-scroll-direction="vertical" data-scroll-speed="0">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            Hi my new friend!
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            OS-Lab5
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2023
+                                    </span
+                                ></li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <a href="#about-triger" data-scroll-to="#about-triger" data-scroll-offset="-130" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </a>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div id="page-sidebar" class="col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    
+
+<div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card" data-scroll data-scroll-repeat data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="60"> 
+    
+        <div class="trm-user-tabs" id="sidebar-tabs">
+           <div class="trm-tabs-nav trm-mb-40" id="trm-tabs-nav">
+                <div data-to="tabs-user" class="trm-tabs-nav-item">
+                    <i class="iconfont fas fa-user-alt"></i>
+                </div>
+                <div data-to="tabs-toc" class="trm-tabs-nav-item active">
+                    <i class="iconfont fas fa-th-list"></i>
+                </div>
+           </div>
+            <div name="tabs-user" class="trm-tabs-item">
+                <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/rabbit.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        Xenon的小破站
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+                <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/XenonGa/" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+        <a href="https://gitee.com/X2283509194" title="gitee" rel="nofollow" target="_blank">
+            <i class="iconfont iconfont cg-gitee"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+                <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                地球
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                城市:
+            </div>
+            <div class="trm-label trm-label-light">
+                北京
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                20
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+                
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:2283509194@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+            </div>
+            <div name="tabs-toc" class="trm-tabs-item active">
+                <div class="post-toc">
+    <ol class="toc"><li class="toc-item toc-level-1"><a rel="nofollow" class="toc-link" href="#OS-Lab5"  data-scroll-to="#OS-Lab5"><span class="toc-number">1.</span> <span class="toc-text">OS-Lab5</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#一、思考题"  data-scroll-to="#一、思考题"><span class="toc-number">1.1.</span> <span class="toc-text">一、思考题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-5-1"  data-scroll-to="#Thinking-5-1"><span class="toc-number">1.1.1.</span> <span class="toc-text">Thinking 5.1</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-5-2"  data-scroll-to="#Thinking-5-2"><span class="toc-number">1.1.2.</span> <span class="toc-text">Thinking 5.2</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-5-3"  data-scroll-to="#Thinking-5-3"><span class="toc-number">1.1.3.</span> <span class="toc-text">Thinking 5.3</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-5-4"  data-scroll-to="#Thinking-5-4"><span class="toc-number">1.1.4.</span> <span class="toc-text">Thinking 5.4</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-5-5"  data-scroll-to="#Thinking-5-5"><span class="toc-number">1.1.5.</span> <span class="toc-text">Thinking 5.5</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-5-6"  data-scroll-to="#Thinking-5-6"><span class="toc-number">1.1.6.</span> <span class="toc-text">Thinking 5.6</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-5-7"  data-scroll-to="#Thinking-5-7"><span class="toc-number">1.1.7.</span> <span class="toc-text">Thinking 5.7</span></a></li></ol></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#二、实验难点"  data-scroll-to="#二、实验难点"><span class="toc-number">1.2.</span> <span class="toc-text">二、实验难点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#1-文件数据块定位"  data-scroll-to="#1-文件数据块定位"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.文件数据块定位</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#2-用户进程与文件系统服务进程交互流程"  data-scroll-to="#2-用户进程与文件系统服务进程交互流程"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.用户进程与文件系统服务进程交互流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#三、心得体会"  data-scroll-to="#三、心得体会"><span class="toc-number">1.3.</span> <span class="toc-text">三、心得体会</span></a></li></ol></li></ol>
+</div>
+            </div>
+        </div>
+    
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div id="page-content" class="col-lg-8">
+                <div class="trm-content" id="trm-content">
+                    <div data-scroll data-scroll-repeat data-scroll-offset="500" id="about-triger"></div>
+
+                    <div id="post-info" class="row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            05/08
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            10:27
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Xenon
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="OS-Lab5"><a href="#OS-Lab5" class="headerlink" title="OS-Lab5"></a>OS-Lab5</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-5-1"><a href="#Thinking-5-1" class="headerlink" title="Thinking 5.1"></a>Thinking 5.1</h3><img src="/2023/05/08/OS-Lab5/image-20230507091732427.png" class="" title="image-20230507091732427" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<ul>
+<li>由于外部设备会更改自己对应地址空间的数据，CPU写入外设的数据存入Cache中，若在此时访问Cache，由于缓存内容只有在被新数据换出时才会被写入内存，因此会导致缓存内容覆盖了之前的操作，这相当于只进行最后一次操作，即操作覆盖。</li>
+<li>串口访问频繁，而IDE磁盘访问频率较小，因此串口出错概率更高。</li>
+</ul>
+<h3 id="Thinking-5-2"><a href="#Thinking-5-2" class="headerlink" title="Thinking 5.2"></a>Thinking 5.2</h3><img src="/2023/05/08/OS-Lab5/image-20230507165210636.png" class="" title="image-20230507165210636" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<ul>
+<li>由File文件控制块定义可知，文件控制块被f_pad限制对齐为256B，而一个磁盘块大小为4KB，因此一个磁盘块最多存储16个文件控制块。</li>
+<li>目录文件最多用1024个磁盘块存储数据，因此最多有1024 * 16 &#x3D; 16384个文件。</li>
+<li>一个文件最多用1024个磁盘块存储数据，因此单个文件最大为1024 * 4KB &#x3D; 4MB。</li>
+</ul>
+<h3 id="Thinking-5-3"><a href="#Thinking-5-3" class="headerlink" title="Thinking 5.3"></a>Thinking 5.3</h3><img src="/2023/05/08/OS-Lab5/image-20230507182131897.png" class="" title="image-20230507182131897" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>内核支持最大磁盘大小为<code>DISKMAX</code>即0x40000000B &#x3D; 1GB。</p>
+<h3 id="Thinking-5-4"><a href="#Thinking-5-4" class="headerlink" title="Thinking 5.4"></a>Thinking 5.4</h3><img src="/2023/05/08/OS-Lab5/image-20230507191009333.png" class="" title="image-20230507191009333" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p><code>fs/serv.h</code>:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> BY2SECT 512		    <span class="comment">/* Bytes per disk sector */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SECT2BLK (BY2BLK / BY2SECT) <span class="comment">/* sectors to a block */</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Disk block n, when in memory, is mapped into the file system</span></span><br><span class="line"><span class="comment"> * server&#x27;s address space at DISKMAP+(n*BY2BLK). */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DISKMAP 0x10000000</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Maximum disk size we can handle (1GB) */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> DISKMAX 0x40000000</span></span><br></pre></td></tr></table></figure>
+
+<p>这些宏标记了扇区大小以及diskmap的地址范围。</p>
+<p><code>user/include/fs.h</code>:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Bytes per file system block - same as page size</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> BY2BLK BY2PG</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Number of (direct) block pointers in a File descriptor</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> NDIRECT 10</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> NINDIRECT (BY2BLK / 4)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> FILE2BLK (BY2BLK / sizeof(struct File))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// File types</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> FTYPE_REG 0 <span class="comment">// Regular file</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> FTYPE_DIR 1 <span class="comment">// Directory</span></span></span><br></pre></td></tr></table></figure>
+
+<p>这些宏定义了各种关于文件结构体的信息，比如文件直接指针数以及文件类型。</p>
+<h3 id="Thinking-5-5"><a href="#Thinking-5-5" class="headerlink" title="Thinking 5.5"></a>Thinking 5.5</h3><img src="/2023/05/08/OS-Lab5/image-20230507211952092.png" class="" title="image-20230507211952092" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>由于文件描述符以及定位指针都存在于用户空间内，因此fork前后的父子进程会共享文件描述符和定位指针。</p>
+<p>程序代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&quot;lib.h&quot;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">test</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="type">int</span> r;</span><br><span class="line">    <span class="type">int</span> fdnum;</span><br><span class="line">    <span class="type">int</span> num;</span><br><span class="line">    <span class="type">char</span> buf[<span class="number">100</span>];</span><br><span class="line">	fdnum = open(<span class="string">&quot;/newmotd&quot;</span>, O_RDWR);</span><br><span class="line">    <span class="keyword">if</span>((r = fork()) == <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        num = read(fdnum, buf, <span class="number">10</span>);</span><br><span class="line">		debugf(<span class="string">&quot;this is child buf : %s\n&quot;</span>, buf);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        num = read(fdnum, buf, <span class="number">10</span>);</span><br><span class="line">		debugf(<span class="string">&quot;this is father buf : %s\n&quot;</span>, buf);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Thinking-5-6"><a href="#Thinking-5-6" class="headerlink" title="Thinking 5.6"></a>Thinking 5.6</h3><img src="/2023/05/08/OS-Lab5/image-20230507213113132.png" class="" title="image-20230507213113132" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p><code>File</code>:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">File</span> &#123;</span></span><br><span class="line">	<span class="type">char</span> f_name[MAXNAMELEN]; <span class="comment">// filename</span></span><br><span class="line">	<span class="type">uint32_t</span> f_size;	 <span class="comment">// file size in bytes</span></span><br><span class="line">	<span class="type">uint32_t</span> f_type;	 <span class="comment">// file type</span></span><br><span class="line">	<span class="type">uint32_t</span> f_direct[NDIRECT];</span><br><span class="line">	<span class="type">uint32_t</span> f_indirect;</span><br><span class="line"></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">File</span> *<span class="title">f_dir</span>;</span> <span class="comment">// the pointer to the dir where this file is in, valid only in memory.</span></span><br><span class="line">	<span class="type">char</span> f_pad[BY2FILE - MAXNAMELEN - (<span class="number">3</span> + NDIRECT) * <span class="number">4</span> - <span class="keyword">sizeof</span>(<span class="type">void</span> *)];</span><br><span class="line">&#125; __attribute__((aligned(<span class="number">4</span>), packed));</span><br></pre></td></tr></table></figure>
+
+<p><code>File</code>结构体在描述以及管理文件时使用，主要作用是获得文件的各种属性以及文件内容在磁盘上的位置，<code>File</code>结构体是物理实体。</p>
+<p><code>Fd</code>:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Fd</span> &#123;</span></span><br><span class="line">	u_int fd_dev_id; <span class="comment">//文件对应外设id</span></span><br><span class="line">	u_int fd_offset; <span class="comment">//读写偏移量</span></span><br><span class="line">	u_int fd_omode;  <span class="comment">//文件的打开方式</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><code>Fd</code>结构体记录已打开文件的状态，便于用户直接使用其对文件进行操作。该结构体是内存数据。</p>
+<p><code>Filefd</code>:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Filefd</span> &#123;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Fd</span> <span class="title">f_fd</span>;</span>			<span class="comment">//文件描述符</span></span><br><span class="line">	u_int f_fileid;			<span class="comment">//文件的id</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">File</span> <span class="title">f_file</span>;</span>		<span class="comment">//文件控制块</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><code>Filefd</code>结构体是对文件描述符的扩展，便于获得更多文件描述信息。该结构体是内存数据。</p>
+<h3 id="Thinking-5-7"><a href="#Thinking-5-7" class="headerlink" title="Thinking 5.7"></a>Thinking 5.7</h3><img src="/2023/05/08/OS-Lab5/image-20230507215727281.png" class="" title="image-20230507215727281" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/05/08/OS-Lab5/image-20230507215732771.png" class="" title="image-20230507215732771" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<ul>
+<li><code>ENV_CREATE(user_env)</code>与<code>ENV_CREATE(fs_env)</code>是同步消息，表示两种进程的创建，在结束创建过程后init才会向下执行。</li>
+<li>fs进程在执行完初始化后，就进入serv()函数，调用<code>ipc_receive()</code>函数将自身阻塞，等待用户进程发送请求，直到收到用户进程的<code>ipc_send</code>同步信息被唤醒。</li>
+<li>fs进程服务结束，通过<code>ipc_send</code>发送一个同步的返回信息，唤醒用户进程继续执行，而自身继续阻塞等待下次请求服务。</li>
+</ul>
+<h2 id="二、实验难点"><a href="#二、实验难点" class="headerlink" title="二、实验难点"></a>二、实验难点</h2><h3 id="1-文件数据块定位"><a href="#1-文件数据块定位" class="headerlink" title="1.文件数据块定位"></a>1.文件数据块定位</h3><img src="/2023/05/08/OS-Lab5/image-20230508100332971.png" class="" title="image-20230508100332971" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>文件的数据离散地存放在不同的磁盘块中，而在文件控制块内，存在指针指向这些存放数据的磁盘块。在<code>f_direct</code>数组中存在十个直接指针，这些指针直接指向磁盘块，还有存在于<code>f_indirect</code>指针指向的磁盘块中的1024个指针，由于前十个指针不使用，因此存在1014个间接指针，因此一个文件最大可以有1024个磁盘块保存数据，一个目录也可以最多有1024个磁盘块保存子文件或子目录。</p>
+<h3 id="2-用户进程与文件系统服务进程交互流程"><a href="#2-用户进程与文件系统服务进程交互流程" class="headerlink" title="2.用户进程与文件系统服务进程交互流程"></a>2.用户进程与文件系统服务进程交互流程</h3><img src="/2023/05/08/OS-Lab5/image-20230508101455080.png" class="" title="image-20230508101455080" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/05/08/OS-Lab5/image-20230508101847635.png" class="" title="image-20230508101847635" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>用户进程通过用户接口申请文件服务，这些服务都定义在file.c中，之后请求会通过fsipc.c中的函数利用IPC机制将请求发送至文件系统服务进程。文件系统服务进程接收到请求后摆脱阻塞态，使用serv.c中的函数调用fs.c中的服务函数解决请求，之后通过serv.c中的函数向用户进程发出返回信息，交互结束。</p>
+<h2 id="三、心得体会"><a href="#三、心得体会" class="headerlink" title="三、心得体会"></a>三、心得体会</h2><p>本次实验逻辑比较清晰，因为有请求服务-&gt;发出信号-&gt;服务进程处理-&gt;返回信号这一过程，因此代码实现目的性强。但本次实验代码量很大，需要一定时间阅读理解。总体而言加深了我对外设以及文件系统管理与服务的理解，收获很多。</p>
+
+</article>
+    
+    
+</div>
+<div id="post-next-prev" class="row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-blog-card trm-scroll-animation" data-scroll data-scroll-offset="40">
+        <a href="/2023/05/04/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-6/" class="trm-cover-frame trm-anima-link">
+            
+            
+                <img alt="cover" class="no-fancybox" src="https://images.pexels.com/photos/16117986/pexels-photo-16117986.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
+            
+        </a>
+        
+        <div class="trm-card-descr">
+            <div class="trm-label trm-category trm-mb-20">
+                <a href=" /categories/DataBase/">
+                    DataBase
+                </a>
+            </div>
+            <h5>
+                <a href="/2023/05/04/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-6/" class="trm-anima-link">
+                    数据管理技术-Lab-6
+                </a>
+            </h5>
+            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>23/05/04</li>
+                <li>19:32</li>
+                
+                    <li>2k</li>
+                
+                
+                    <li>10</li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation" data-scroll data-scroll-offset="50">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2023- 2023</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">Xenon的小破站</span>
+        </div>
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.3.0
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                主题 - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.0.3
+            </span>
+        </div>
+      
+
+     
+
+     
+</footer>
+ 
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            <div class="trm-fixed-container" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="单栏和双栏切换" onclick="asyncFun.switchSingleColumn()">
+            <i class="iconfont fas fa-arrows-alt-h"></i>
+        </div>
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+          </div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.0.3"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.0.3"></script>
+
+  <!-- 《页面点击小红心 -->
+  <!-- -->
+  <!-- 页面点击小红心》 -->
+
+  <!--鼠标点击烟花爆炸效果，需要引入jQuery-->
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+    <script type="text/javascript" src="/js/fireworks.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+
+</html>
