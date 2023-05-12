@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="数据管理技术-Lab7实验报告TASK 1 索引环境MYSQL 准备一个包含400万条记录的表A，包含三个数字型字段：1）自增长的字段id； 2）可能的取值有500万个的字段sparse； 3）可能的取值有10个的字段dense。 基于A复制出三个表（B、C、D）。 A表建立主键id，没有其它索引； B表，没有主键，在sparse、dense字段上建立一个多列索引；C表，建立主键id，和dense">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据管理技术-Lab-7">
+<meta property="og:url" content="https://xenonga.github.io/2023/05/12/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-7/index.html">
+<meta property="og:site_name" content="Xenon的小破站">
+<meta property="og:description" content="数据管理技术-Lab7实验报告TASK 1 索引环境MYSQL 准备一个包含400万条记录的表A，包含三个数字型字段：1）自增长的字段id； 2）可能的取值有500万个的字段sparse； 3）可能的取值有10个的字段dense。 基于A复制出三个表（B、C、D）。 A表建立主键id，没有其它索引； B表，没有主键，在sparse、dense字段上建立一个多列索引；C表，建立主键id，和dense">
+<meta property="og:locale">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="article:published_time" content="2023-05-12T06:42:45.000Z">
+<meta property="article:modified_time" content="2023-05-12T06:51:27.268Z">
+<meta property="article:author" content="Jiaxuan Gao">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xenonga.github.io/img/404.jpg">
+
+    <meta name="keywords" content="index, trigger">
+
+
+<title >数据管理技术-Lab-7</title>
+
+<!-- Favicon -->
+
+    <link href='/rabbit-16%C3%9716.png?v=2.0.3' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"xenonga.github.io","author":"Jiaxuan Gao","root":"/","typed_text":["a SE Learner"],"theme_version":"2.0.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"rabbit-32×32.png","icon16":"rabbit-16×16.png","icon32":"rabbit-32×32.png","appleTouchIcon":"rabbit-32×32.png","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2023-05-12 14:51:27"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.0.3" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" data-scroll-container style="opacity: 0">
+          <div data-scroll-section id="content" class="trm-scroll-section">
+
+            <div class="locomotive-scroll__sticky-target" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none;"></div>
+
+            <!-- top bar -->
+            <header class="trm-top-bar" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/rabbit-32%C3%9732.png">
+    
+    
+        <div class="trm-logo-text">
+            Xe<span>non</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    主页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a  href="/categories/OS/" target="">
+                            OS
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/SoftwareEngineering/" target="">
+                            软件工程
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/DataBase/" target="">
+                            数据管理技术
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/about/" target="">
+                    关于
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner" data-scroll data-scroll-direction="vertical">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" data-scroll data-scroll-direction="vertical" data-scroll-speed="-3" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container" data-scroll data-scroll-direction="vertical" data-scroll-speed="0">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            数据管理技术-Lab-7
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2023
+                                    </span
+                                ></li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <a href="#about-triger" data-scroll-to="#about-triger" data-scroll-offset="-130" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </a>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div id="page-sidebar" class="col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    
+
+<div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card" data-scroll data-scroll-repeat data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="60"> 
+    
+        <div class="trm-user-tabs" id="sidebar-tabs">
+           <div class="trm-tabs-nav trm-mb-40" id="trm-tabs-nav">
+                <div data-to="tabs-user" class="trm-tabs-nav-item">
+                    <i class="iconfont fas fa-user-alt"></i>
+                </div>
+                <div data-to="tabs-toc" class="trm-tabs-nav-item active">
+                    <i class="iconfont fas fa-th-list"></i>
+                </div>
+           </div>
+            <div name="tabs-user" class="trm-tabs-item">
+                <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/rabbit.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        Xenon的小破站
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+                <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/XenonGa/" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+        <a href="https://gitee.com/X2283509194" title="gitee" rel="nofollow" target="_blank">
+            <i class="iconfont iconfont cg-gitee"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+                <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                地球
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                城市:
+            </div>
+            <div class="trm-label trm-label-light">
+                北京
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                20
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+                
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:2283509194@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+            </div>
+            <div name="tabs-toc" class="trm-tabs-item active">
+                <div class="post-toc">
+    <ol class="toc"><li class="toc-item toc-level-1"><a rel="nofollow" class="toc-link" href="#数据管理技术-Lab7实验报告"  data-scroll-to="#数据管理技术-Lab7实验报告"><span class="toc-number">1.</span> <span class="toc-text">数据管理技术-Lab7实验报告</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#TASK-1-索引"  data-scroll-to="#TASK-1-索引"><span class="toc-number">1.1.</span> <span class="toc-text">TASK 1 索引</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#环境MYSQL"  data-scroll-to="#环境MYSQL"><span class="toc-number">1.1.1.</span> <span class="toc-text">环境MYSQL</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Q1-查询id字段大于2000000小于3000000的记录条数"  data-scroll-to="#Q1-查询id字段大于2000000小于3000000的记录条数"><span class="toc-number">1.1.2.</span> <span class="toc-text">Q1: 查询id字段大于2000000小于3000000的记录条数</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Q2-查询dense段大于5的记录条数"  data-scroll-to="#Q2-查询dense段大于5的记录条数"><span class="toc-number">1.1.3.</span> <span class="toc-text">Q2:查询dense段大于5的记录条数</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Q3-查询sparse字段小于150000的记录条数"  data-scroll-to="#Q3-查询sparse字段小于150000的记录条数"><span class="toc-number">1.1.4.</span> <span class="toc-text">Q3:查询sparse字段小于150000的记录条数</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Q4-查询sparse字段小于150000，dense段大于5的记录条数"  data-scroll-to="#Q4-查询sparse字段小于150000，dense段大于5的记录条数"><span class="toc-number">1.1.5.</span> <span class="toc-text">Q4: 查询sparse字段小于150000，dense段大于5的记录条数</span></a></li></ol></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#Task-2-触发器"  data-scroll-to="#Task-2-触发器"><span class="toc-number">1.2.</span> <span class="toc-text">Task 2 触发器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#环境MYSQL-1"  data-scroll-to="#环境MYSQL-1"><span class="toc-number">1.2.1.</span> <span class="toc-text">环境MYSQL</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#1-建表"  data-scroll-to="#1-建表"><span class="toc-number">1.2.2.</span> <span class="toc-text">1.建表</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#2-创建触发器"  data-scroll-to="#2-创建触发器"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.创建触发器</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#3-DML语句验证"  data-scroll-to="#3-DML语句验证"><span class="toc-number">1.2.4.</span> <span class="toc-text">3.DML语句验证</span></a></li></ol></li></ol></li></ol>
+</div>
+            </div>
+        </div>
+    
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div id="page-content" class="col-lg-8">
+                <div class="trm-content" id="trm-content">
+                    <div data-scroll data-scroll-repeat data-scroll-offset="500" id="about-triger"></div>
+
+                    <div id="post-info" class="row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            05/12
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            14:42
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Xenon
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="数据管理技术-Lab7实验报告"><a href="#数据管理技术-Lab7实验报告" class="headerlink" title="数据管理技术-Lab7实验报告"></a>数据管理技术-Lab7实验报告</h1><h2 id="TASK-1-索引"><a href="#TASK-1-索引" class="headerlink" title="TASK 1 索引"></a>TASK 1 索引</h2><h3 id="环境MYSQL"><a href="#环境MYSQL" class="headerlink" title="环境MYSQL"></a>环境MYSQL</h3><ol>
+<li>准备一个包含400万条记录的表A，包含三个数字型字段：1）自增长的字段id； 2）可能的取值有500万个的字段sparse； 3）可能的取值有10个的字段dense。</li>
+<li>基于A复制出三个表（B、C、D）。</li>
+<li>A表建立主键id，没有其它索引； B表，没有主键，在sparse、dense字段上建立一个多列索引；C表，建立主键id，和dense字段上的索引；D表没有任何索引和主键。</li>
+</ol>
+<p>A表即为上一次实验创建的表tablea。</p>
+<img src="/2023/05/12/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-7/image-20230510171220320.png" class="" title="image-20230510171220320" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>建表以及数据复制如下代码：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> if <span class="keyword">exists</span> tableB;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> tableB(</span><br><span class="line">    id <span class="type">int</span>,</span><br><span class="line">    sparse <span class="type">int</span> <span class="keyword">null</span> ,</span><br><span class="line">    dense <span class="type">int</span> <span class="keyword">null</span> ,</span><br><span class="line">    index index_mult_columns(sparse, dense)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> if <span class="keyword">exists</span> tableC;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> tableC(</span><br><span class="line">    id <span class="type">int</span> <span class="keyword">primary</span> key ,</span><br><span class="line">    sparse <span class="type">int</span> <span class="keyword">null</span> ,</span><br><span class="line">    dense <span class="type">int</span> <span class="keyword">null</span> ,</span><br><span class="line">    index index_column(dense)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">drop</span> <span class="keyword">table</span> if <span class="keyword">exists</span> tableD;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> tableD(</span><br><span class="line">    id <span class="type">int</span> ,</span><br><span class="line">    sparse <span class="type">int</span> <span class="keyword">null</span> ,</span><br><span class="line">    dense <span class="type">int</span> <span class="keyword">null</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tableB <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> tableA;</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tableC <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> tableA;</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> tableD <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> tableA;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Q1-查询id字段大于2000000小于3000000的记录条数"><a href="#Q1-查询id字段大于2000000小于3000000的记录条数" class="headerlink" title="Q1: 查询id字段大于2000000小于3000000的记录条数"></a>Q1: 查询id字段大于2000000小于3000000的记录条数</h3><p>查询语句：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> tableA <span class="keyword">where</span> id <span class="operator">&gt;</span> <span class="number">2000000</span> <span class="keyword">and</span> id <span class="operator">&lt;</span> <span class="number">3000000</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> tableB <span class="keyword">where</span> id <span class="operator">&gt;</span> <span class="number">2000000</span> <span class="keyword">and</span> id <span class="operator">&lt;</span> <span class="number">3000000</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> tableC <span class="keyword">where</span> id <span class="operator">&gt;</span> <span class="number">2000000</span> <span class="keyword">and</span> id <span class="operator">&lt;</span> <span class="number">3000000</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> tableD <span class="keyword">where</span> id <span class="operator">&gt;</span> <span class="number">2000000</span> <span class="keyword">and</span> id <span class="operator">&lt;</span> <span class="number">3000000</span>;</span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<img src="/2023/05/12/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-7/image-20230510173356617.png" class="" title="image-20230510173356617" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>分析：因为表A C拥有主键id，因此查询速度快，其与两表查询速度接近。</p>
+<h3 id="Q2-查询dense段大于5的记录条数"><a href="#Q2-查询dense段大于5的记录条数" class="headerlink" title="Q2:查询dense段大于5的记录条数"></a>Q2:查询dense段大于5的记录条数</h3><p>查询语句：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> tableA <span class="keyword">where</span> dense <span class="operator">&gt;</span> <span class="number">5</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> tableB <span class="keyword">where</span> dense <span class="operator">&gt;</span> <span class="number">5</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> tableC <span class="keyword">where</span> dense <span class="operator">&gt;</span> <span class="number">5</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> tableD <span class="keyword">where</span> dense <span class="operator">&gt;</span> <span class="number">5</span>;</span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<img src="/2023/05/12/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-7/image-20230510173535611.png" class="" title="image-20230510173535611" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>分析：tableC拥有dense的索引，查询较快，tableA因为有主键，自动创建聚集索引，因此查询A表时查询引擎会更快地定位和检索满足条件的数据。而表B因为是多列索引，其排序方式与单列索引不同，因此查询速度较慢。</p>
+<h3 id="Q3-查询sparse字段小于150000的记录条数"><a href="#Q3-查询sparse字段小于150000的记录条数" class="headerlink" title="Q3:查询sparse字段小于150000的记录条数"></a>Q3:查询sparse字段小于150000的记录条数</h3><p>查询语句：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> tableA <span class="keyword">where</span> sparse <span class="operator">&lt;</span> <span class="number">150000</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> tableB <span class="keyword">where</span> sparse <span class="operator">&lt;</span> <span class="number">150000</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> tableC <span class="keyword">where</span> sparse <span class="operator">&lt;</span> <span class="number">150000</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> tableD <span class="keyword">where</span> sparse <span class="operator">&lt;</span> <span class="number">150000</span>;</span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<img src="/2023/05/12/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-7/image-20230510174025524.png" class="" title="image-20230510174025524" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>分析：表A原理同Q2，表B因为具有sparse的索引因此查询较快，表C由于索引对表的排序而使其查询较无索引快一些。</p>
+<h3 id="Q4-查询sparse字段小于150000，dense段大于5的记录条数"><a href="#Q4-查询sparse字段小于150000，dense段大于5的记录条数" class="headerlink" title="Q4: 查询sparse字段小于150000，dense段大于5的记录条数"></a>Q4: 查询sparse字段小于150000，dense段大于5的记录条数</h3><p>查询语句：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> tableA <span class="keyword">where</span> sparse <span class="operator">&lt;</span> <span class="number">150000</span> <span class="keyword">and</span> dense <span class="operator">&gt;</span> <span class="number">5</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> tableB <span class="keyword">where</span> sparse <span class="operator">&lt;</span> <span class="number">150000</span> <span class="keyword">and</span> dense <span class="operator">&gt;</span> <span class="number">5</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> tableC <span class="keyword">where</span> sparse <span class="operator">&lt;</span> <span class="number">150000</span> <span class="keyword">and</span> dense <span class="operator">&gt;</span> <span class="number">5</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="built_in">count</span>(<span class="operator">*</span>) <span class="keyword">from</span> tableD <span class="keyword">where</span> sparse <span class="operator">&lt;</span> <span class="number">150000</span> <span class="keyword">and</span> dense <span class="operator">&gt;</span> <span class="number">5</span>;</span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<img src="/2023/05/12/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-7/image-20230510174252438.png" class="" title="image-20230510174252438" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>分析：表A原理同Q2，表B由于具有多列索引因此查询快，表C由于索引不足以覆盖查询，因此查询返回的数据比索引的数据更多，需要访问更多的磁盘块，因此查询很慢。</p>
+<h2 id="Task-2-触发器"><a href="#Task-2-触发器" class="headerlink" title="Task 2 触发器"></a>Task 2 触发器</h2><h3 id="环境MYSQL-1"><a href="#环境MYSQL-1" class="headerlink" title="环境MYSQL"></a>环境MYSQL</h3><ol>
+<li><p>建表： fruits（fid， fname， price）， sells（fid，cid， sellTime， quantity），customer （cid， cname， level)，在fruits表和customer 表插入至少一条数据。</p>
+</li>
+<li><p>写个sells表触发器，当插入新的用户购买记录时，检查该用户购买的总价值（每种水果价格 * 销售量的和 ）超过1万元就设置customer表的level为VIP，超过2万元设置为SVIP，低于1万元则置为normal。</p>
+</li>
+<li><p>若是删除或修改sells表记录，也重新计算并重置客户的level值。</p>
+</li>
+<li><p>通过DML语句进行触发器效果验证, 如插入&#x2F;更新&#x2F;删除交易记录，查看用户等级变化。</p>
+</li>
+</ol>
+<p>TIPS: 使用存储过程将重复流程简化</p>
+<h3 id="1-建表"><a href="#1-建表" class="headerlink" title="1.建表"></a>1.建表</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> fruits(</span><br><span class="line">  fid <span class="type">int</span> <span class="keyword">primary</span> key ,</span><br><span class="line">  fname <span class="type">varchar</span>(<span class="number">20</span>) ,</span><br><span class="line">  price <span class="type">int</span></span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> customer(</span><br><span class="line">  cid <span class="type">int</span> <span class="keyword">primary</span> key ,</span><br><span class="line">  cname <span class="type">varchar</span>(<span class="number">20</span>) ,</span><br><span class="line">  level <span class="type">varchar</span>(<span class="number">20</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> sells(</span><br><span class="line">  fid <span class="type">int</span> ,</span><br><span class="line">  cid <span class="type">int</span> ,</span><br><span class="line">  sellTime <span class="type">date</span> ,</span><br><span class="line">  quantity <span class="type">int</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<p>fruits中插入数据：</p>
+<img src="/2023/05/12/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-7/image-20230510192822148.png" class="" title="image-20230510192822148" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>customer中插入数据:</p>
+<img src="/2023/05/12/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-7/image-20230510193006261.png" class="" title="image-20230510193006261" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h3 id="2-创建触发器"><a href="#2-创建触发器" class="headerlink" title="2.创建触发器"></a>2.创建触发器</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">trigger</span> add_sell</span><br><span class="line">after <span class="keyword">insert</span> <span class="keyword">on</span> sells</span><br><span class="line"><span class="keyword">for</span> <span class="keyword">each</span> <span class="type">row</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">declare</span> total_money <span class="type">int</span> ;</span><br><span class="line">    <span class="keyword">select</span> <span class="built_in">sum</span>(sells.quantity <span class="operator">*</span> fruits.price) <span class="keyword">into</span> total_money</span><br><span class="line">    <span class="keyword">from</span> sells <span class="keyword">inner</span> <span class="keyword">join</span> fruits <span class="keyword">on</span> sells.fid <span class="operator">=</span> fruits.fid</span><br><span class="line">    <span class="keyword">where</span> cid <span class="operator">=</span> NEW.cid;</span><br><span class="line">    if total_money <span class="operator">&lt;</span> <span class="number">10000</span> <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">update</span> customer <span class="keyword">set</span> level <span class="operator">=</span> <span class="string">&#x27;normal&#x27;</span> <span class="keyword">where</span> cid <span class="operator">=</span> NEW.cid;</span><br><span class="line">    <span class="keyword">else</span> if total_money <span class="operator">&gt;=</span> <span class="number">10000</span> <span class="keyword">and</span> total_money <span class="operator">&lt;</span> <span class="number">20000</span> <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">update</span> customer <span class="keyword">set</span> level <span class="operator">=</span> <span class="string">&#x27;VIP&#x27;</span> <span class="keyword">where</span> cid <span class="operator">=</span> NEW.cid;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">update</span> customer <span class="keyword">set</span> level <span class="operator">=</span> <span class="string">&#x27;SVIP&#x27;</span> <span class="keyword">where</span> cid <span class="operator">=</span> NEW.cid;</span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">trigger</span> delete_sell</span><br><span class="line">    after <span class="keyword">delete</span> <span class="keyword">on</span> sells</span><br><span class="line">    <span class="keyword">for</span> <span class="keyword">each</span> <span class="type">row</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">declare</span> total_money <span class="type">int</span> ;</span><br><span class="line">    <span class="keyword">select</span> <span class="built_in">sum</span>(sells.quantity <span class="operator">*</span> fruits.price) <span class="keyword">into</span> total_money</span><br><span class="line">    <span class="keyword">from</span> sells <span class="keyword">inner</span> <span class="keyword">join</span> fruits <span class="keyword">on</span> sells.fid <span class="operator">=</span> fruits.fid</span><br><span class="line">    <span class="keyword">where</span> cid <span class="operator">=</span> OLD.cid;</span><br><span class="line">    if total_money <span class="operator">&lt;</span> <span class="number">10000</span> <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">update</span> customer <span class="keyword">set</span> level <span class="operator">=</span> <span class="string">&#x27;normal&#x27;</span> <span class="keyword">where</span> cid <span class="operator">=</span> OLD.cid;</span><br><span class="line">    <span class="keyword">else</span> if total_money <span class="operator">&gt;=</span> <span class="number">10000</span> <span class="keyword">and</span> total_money <span class="operator">&lt;</span> <span class="number">20000</span> <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">update</span> customer <span class="keyword">set</span> level <span class="operator">=</span> <span class="string">&#x27;VIP&#x27;</span> <span class="keyword">where</span> cid <span class="operator">=</span> OLD.cid;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">update</span> customer <span class="keyword">set</span> level <span class="operator">=</span> <span class="string">&#x27;SVIP&#x27;</span> <span class="keyword">where</span> cid <span class="operator">=</span> OLD.cid;</span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="keyword">trigger</span> update_sell</span><br><span class="line">    after <span class="keyword">update</span> <span class="keyword">on</span> sells</span><br><span class="line">    <span class="keyword">for</span> <span class="keyword">each</span> <span class="type">row</span></span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">    <span class="keyword">declare</span> total_money <span class="type">int</span> ;</span><br><span class="line">    <span class="keyword">select</span> <span class="built_in">sum</span>(sells.quantity <span class="operator">*</span> fruits.price) <span class="keyword">into</span> total_money</span><br><span class="line">    <span class="keyword">from</span> sells <span class="keyword">inner</span> <span class="keyword">join</span> fruits <span class="keyword">on</span> sells.fid <span class="operator">=</span> fruits.fid</span><br><span class="line">    <span class="keyword">where</span> cid <span class="operator">=</span> NEW.cid;</span><br><span class="line">    if total_money <span class="operator">&lt;</span> <span class="number">10000</span> <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">update</span> customer <span class="keyword">set</span> level <span class="operator">=</span> <span class="string">&#x27;normal&#x27;</span> <span class="keyword">where</span> cid <span class="operator">=</span> NEW.cid;</span><br><span class="line">    <span class="keyword">else</span> if total_money <span class="operator">&gt;=</span> <span class="number">10000</span> <span class="keyword">and</span> total_money <span class="operator">&lt;</span> <span class="number">20000</span> <span class="keyword">then</span></span><br><span class="line">        <span class="keyword">update</span> customer <span class="keyword">set</span> level <span class="operator">=</span> <span class="string">&#x27;VIP&#x27;</span> <span class="keyword">where</span> cid <span class="operator">=</span> NEW.cid;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">update</span> customer <span class="keyword">set</span> level <span class="operator">=</span> <span class="string">&#x27;SVIP&#x27;</span> <span class="keyword">where</span> cid <span class="operator">=</span> NEW.cid;</span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line">    <span class="keyword">end</span> if;</span><br><span class="line"><span class="keyword">end</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-DML语句验证"><a href="#3-DML语句验证" class="headerlink" title="3.DML语句验证"></a>3.DML语句验证</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> sells <span class="keyword">values</span> (<span class="number">1</span>, <span class="number">1</span>, <span class="string">&#x27;2021-01-02&#x27;</span>, <span class="number">10</span>);</span><br></pre></td></tr></table></figure>
+
+<p>结果如下</p>
+<img src="/2023/05/12/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-7/image-20230510195433473.png" class="" title="image-20230510195433473" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> sells <span class="keyword">values</span> (<span class="number">1</span>, <span class="number">1</span>, <span class="string">&#x27;2021-01-02&#x27;</span>, <span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
+
+<p>结果如下</p>
+<img src="/2023/05/12/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-7/image-20230510195533842.png" class="" title="image-20230510195533842" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>再执行上述语句一次，结果如下</p>
+<img src="/2023/05/12/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-7/image-20230510195614802.png" class="" title="image-20230510195614802" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>执行删除语句，删除购买数量为1000的数据</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> sells <span class="keyword">where</span> quantity <span class="operator">=</span> <span class="number">1000</span>;</span><br></pre></td></tr></table></figure>
+
+<p>结果如下</p>
+<img src="/2023/05/12/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-7/image-20230510195746997.png" class="" title="image-20230510195746997" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>执行修改语句，将购买数量10改为1000,</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">update</span> sells <span class="keyword">set</span> quantity <span class="operator">=</span> <span class="number">1000</span> <span class="keyword">where</span> quantity <span class="operator">=</span> <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+
+<p>结果如下</p>
+<img src="/2023/05/12/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-7/image-20230512144417625.png" class="" title="image-20230512144417625" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+</article>
+    
+    
+</div>
+<div id="post-next-prev" class="row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-blog-card trm-scroll-animation" data-scroll data-scroll-offset="40">
+        <a href="/2023/05/08/OS-Lab5/" class="trm-cover-frame trm-anima-link">
+            
+            
+                <img alt="cover" class="no-fancybox" src="https://images.pexels.com/photos/14430268/pexels-photo-14430268.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2">
+            
+        </a>
+        
+        <div class="trm-card-descr">
+            <div class="trm-label trm-category trm-mb-20">
+                <a href=" /categories/OS/">
+                    OS
+                </a>
+            </div>
+            <h5>
+                <a href="/2023/05/08/OS-Lab5/" class="trm-anima-link">
+                    OS-Lab5
+                </a>
+            </h5>
+            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>23/05/08</li>
+                <li>10:27</li>
+                
+                    <li>1.3k</li>
+                
+                
+                    <li>5</li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation" data-scroll data-scroll-offset="50">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2023- 2023</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">Xenon的小破站</span>
+        </div>
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.3.0
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                主题 - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.0.3
+            </span>
+        </div>
+      
+
+     
+
+     
+</footer>
+ 
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            <div class="trm-fixed-container" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="单栏和双栏切换" onclick="asyncFun.switchSingleColumn()">
+            <i class="iconfont fas fa-arrows-alt-h"></i>
+        </div>
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+          </div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.0.3"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.0.3"></script>
+
+  <!-- 《页面点击小红心 -->
+  <!-- -->
+  <!-- 页面点击小红心》 -->
+
+  <!--鼠标点击烟花爆炸效果，需要引入jQuery-->
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+    <script type="text/javascript" src="/js/fireworks.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+
+</html>
