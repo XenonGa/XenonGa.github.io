@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="OS-Lab6一、思考题Thinking 6.1  代码修改如下： 123456789101112131415161718192021222324252627282930313233343536#include &lt;stdlib.h&gt;#include &lt;unistd.h&gt;int fildes[2];char buf[100];int status;int main()&amp;#12">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS-Lab6">
+<meta property="og:url" content="https://xenonga.github.io/2023/05/19/OS-Lab6/index.html">
+<meta property="og:site_name" content="Xenon的小破站">
+<meta property="og:description" content="OS-Lab6一、思考题Thinking 6.1  代码修改如下： 123456789101112131415161718192021222324252627282930313233343536#include &lt;stdlib.h&gt;#include &lt;unistd.h&gt;int fildes[2];char buf[100];int status;int main()&amp;#12">
+<meta property="og:locale">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="article:published_time" content="2023-05-19T14:53:02.000Z">
+<meta property="article:modified_time" content="2023-05-19T14:55:52.078Z">
+<meta property="article:author" content="Jiaxuan Gao">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xenonga.github.io/img/404.jpg">
+
+    <meta name="keywords" content="管道, shell">
+
+
+<title >OS-Lab6</title>
+
+<!-- Favicon -->
+
+    <link href='/rabbit-16%C3%9716.png?v=2.0.3' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"xenonga.github.io","author":"Jiaxuan Gao","root":"/","typed_text":["a SE Learner"],"theme_version":"2.0.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"rabbit-32×32.png","icon16":"rabbit-16×16.png","icon32":"rabbit-32×32.png","appleTouchIcon":"rabbit-32×32.png","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2023-05-19 22:55:52"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.0.3" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" data-scroll-container style="opacity: 0">
+          <div data-scroll-section id="content" class="trm-scroll-section">
+
+            <div class="locomotive-scroll__sticky-target" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none;"></div>
+
+            <!-- top bar -->
+            <header class="trm-top-bar" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/rabbit-32%C3%9732.png">
+    
+    
+        <div class="trm-logo-text">
+            Xe<span>non</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    主页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a  href="/categories/OS/" target="">
+                            OS
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/SoftwareEngineering/" target="">
+                            软件工程
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/DataBase/" target="">
+                            数据管理技术
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/about/" target="">
+                    关于
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner" data-scroll data-scroll-direction="vertical">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" data-scroll data-scroll-direction="vertical" data-scroll-speed="-3" src="https://pic1.zhimg.com/v2-b3c2c6745b9421a13a3c4706b19223b3_r.jpg">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container" data-scroll data-scroll-direction="vertical" data-scroll-speed="0">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            Hi my new friend!
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            OS-Lab6
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2023
+                                    </span
+                                ></li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <a href="#about-triger" data-scroll-to="#about-triger" data-scroll-offset="-130" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </a>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div id="page-sidebar" class="col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    
+
+<div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card" data-scroll data-scroll-repeat data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="60"> 
+    
+        <div class="trm-user-tabs" id="sidebar-tabs">
+           <div class="trm-tabs-nav trm-mb-40" id="trm-tabs-nav">
+                <div data-to="tabs-user" class="trm-tabs-nav-item">
+                    <i class="iconfont fas fa-user-alt"></i>
+                </div>
+                <div data-to="tabs-toc" class="trm-tabs-nav-item active">
+                    <i class="iconfont fas fa-th-list"></i>
+                </div>
+           </div>
+            <div name="tabs-user" class="trm-tabs-item">
+                <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/rabbit.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        Xenon的小破站
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+                <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/XenonGa/" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+        <a href="https://gitee.com/X2283509194" title="gitee" rel="nofollow" target="_blank">
+            <i class="iconfont iconfont cg-gitee"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+                <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                地球
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                城市:
+            </div>
+            <div class="trm-label trm-label-light">
+                北京
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                20
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+                
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:2283509194@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+            </div>
+            <div name="tabs-toc" class="trm-tabs-item active">
+                <div class="post-toc">
+    <ol class="toc"><li class="toc-item toc-level-1"><a rel="nofollow" class="toc-link" href="#OS-Lab6"  data-scroll-to="#OS-Lab6"><span class="toc-number">1.</span> <span class="toc-text">OS-Lab6</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#一、思考题"  data-scroll-to="#一、思考题"><span class="toc-number">1.1.</span> <span class="toc-text">一、思考题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-6-1"  data-scroll-to="#Thinking-6-1"><span class="toc-number">1.1.1.</span> <span class="toc-text">Thinking 6.1</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-6-2"  data-scroll-to="#Thinking-6-2"><span class="toc-number">1.1.2.</span> <span class="toc-text">Thinking 6.2</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-6-3"  data-scroll-to="#Thinking-6-3"><span class="toc-number">1.1.3.</span> <span class="toc-text">Thinking 6.3</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-6-4"  data-scroll-to="#Thinking-6-4"><span class="toc-number">1.1.4.</span> <span class="toc-text">Thinking 6.4</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-6-5"  data-scroll-to="#Thinking-6-5"><span class="toc-number">1.1.5.</span> <span class="toc-text">Thinking 6.5</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-6-6"  data-scroll-to="#Thinking-6-6"><span class="toc-number">1.1.6.</span> <span class="toc-text">Thinking 6.6</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-6-7"  data-scroll-to="#Thinking-6-7"><span class="toc-number">1.1.7.</span> <span class="toc-text">Thinking 6.7</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Thinking-6-8"  data-scroll-to="#Thinking-6-8"><span class="toc-number">1.1.8.</span> <span class="toc-text">Thinking 6.8</span></a></li></ol></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#二、实验难点"  data-scroll-to="#二、实验难点"><span class="toc-number">1.2.</span> <span class="toc-text">二、实验难点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#1-管道内存分配"  data-scroll-to="#1-管道内存分配"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.管道内存分配</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#2-spawn函数流程"  data-scroll-to="#2-spawn函数流程"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.spawn函数流程</span></a></li></ol></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#三、心得体会"  data-scroll-to="#三、心得体会"><span class="toc-number">1.3.</span> <span class="toc-text">三、心得体会</span></a></li></ol></li></ol>
+</div>
+            </div>
+        </div>
+    
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div id="page-content" class="col-lg-8">
+                <div class="trm-content" id="trm-content">
+                    <div data-scroll data-scroll-repeat data-scroll-offset="500" id="about-triger"></div>
+
+                    <div id="post-info" class="row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            05/19
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            22:53
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Xenon
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="OS-Lab6"><a href="#OS-Lab6" class="headerlink" title="OS-Lab6"></a>OS-Lab6</h1><h2 id="一、思考题"><a href="#一、思考题" class="headerlink" title="一、思考题"></a>一、思考题</h2><h3 id="Thinking-6-1"><a href="#Thinking-6-1" class="headerlink" title="Thinking 6.1"></a>Thinking 6.1</h3><img src="/2023/05/19/OS-Lab6/image-20230518165024498.png" class="" title="image-20230518165024498" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>代码修改如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> fildes[<span class="number">2</span>];</span><br><span class="line"><span class="type">char</span> buf[<span class="number">100</span>];</span><br><span class="line"><span class="type">int</span> status;</span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">()</span>&#123;</span><br><span class="line"></span><br><span class="line">    status = pipe(fildes);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (status == <span class="number">-1</span> ) &#123;</span><br><span class="line">        <span class="built_in">printf</span>(<span class="string">&quot;error\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">switch</span> (fork()) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">-1</span>:</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">case</span> <span class="number">0</span>: <span class="comment">/* 子进程 - 作为管道的读者 */</span></span><br><span class="line">            close(fildes[<span class="number">1</span>]); <span class="comment">/* 关闭不用的写端 */</span></span><br><span class="line">            write(fildes[<span class="number">1</span>], <span class="string">&quot;Hello world\n&quot;</span>, <span class="number">12</span>); <span class="comment">/* 向管道中写数据 */</span></span><br><span class="line">            close(fildes[<span class="number">1</span>]); <span class="comment">/* 写入结束，关闭写端 */</span></span><br><span class="line">            <span class="built_in">exit</span>(EXIT_SUCCESS);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">default</span>: <span class="comment">/* 父进程 - 作为管道的写者 */</span></span><br><span class="line">            close(fildes[<span class="number">0</span>]); <span class="comment">/* 关闭不用的读端 */</span></span><br><span class="line">            read(fildes[<span class="number">0</span>], buf, <span class="number">100</span>); <span class="comment">/* 从管道中读数据 */</span></span><br><span class="line">            <span class="built_in">printf</span>(<span class="string">&quot;child-process read:%s&quot;</span>,buf); <span class="comment">/* 打印读到的数据 */</span></span><br><span class="line">            close(fildes[<span class="number">0</span>]); <span class="comment">/* 读取结束，关闭读端 */</span></span><br><span class="line">            <span class="built_in">exit</span>(EXIT_SUCCESS);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Thinking-6-2"><a href="#Thinking-6-2" class="headerlink" title="Thinking 6.2"></a>Thinking 6.2</h3><img src="/2023/05/19/OS-Lab6/image-20230518202023722.png" class="" title="image-20230518202023722" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>分析：</p>
+<p><code>dup</code>函数的作用是将<code>olddfnum</code>代表的文件描述符指向的数据完全复制给<code>newfdnum</code>文件描述符。首先将<code>newfd</code>所在的虚拟页映射到<code>oldfd</code>所在的物理页，之后将<code>newfd</code>的数据所在的虚拟页映射到<code>oldfd</code>的数据所在的物理页。</p>
+<p>设计代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">pipe(p);</span><br><span class="line"><span class="keyword">if</span>(fork() == <span class="number">0</span>)</span><br><span class="line">&#123;</span><br><span class="line">    close(p[<span class="number">1</span>]);</span><br><span class="line">    read(p[<span class="number">0</span>],buf,<span class="keyword">sizeof</span> buf);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">    dup(p[<span class="number">0</span>], newfd);</span><br><span class="line">    close(p[<span class="number">0</span>]);</span><br><span class="line">	write(p[<span class="number">1</span>],<span class="string">&quot;Hello&quot;</span>,<span class="number">5</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>分析过程：</p>
+<ul>
+<li>子进程进行，但在执行read函数前发生时钟中断，换至父进程开始执行。</li>
+<li>父进程执行dup函数，并完成了对p[0]的映射，但在完成对pipe的映射前发生时钟中断。</li>
+<li>换至子进程执行，子进程执行read函数，此时pageref(p[0]) &#x3D; 3（由于p[0]本身ref为2且在dup函数后加1），pageref(p[1]) &#x3D; 1（close(p[1])使其ref减1），pageref(pipe) &#x3D; 2 + 1 &#x3D; 3（pipe在dup中尚未映射），pageref(p[0]) &#x3D; pageref(pipe) ，子进程判断写端关闭，子进程退出。</li>
+</ul>
+<h3 id="Thinking-6-3"><a href="#Thinking-6-3" class="headerlink" title="Thinking 6.3"></a>Thinking 6.3</h3><img src="/2023/05/19/OS-Lab6/image-20230518210704928.png" class="" title="image-20230518210704928" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>系统调用是原子操作。在宏<code>SAVE_ALL</code>中通过设置<code>CP0_STATUS</code>寄存器关闭中断，从而在用户执行系统调用过程中不会因中断而导致其他用户程序执行，因此系统调用是原子操作。</p>
+<h3 id="Thinking-6-4"><a href="#Thinking-6-4" class="headerlink" title="Thinking 6.4"></a>Thinking 6.4</h3><img src="/2023/05/19/OS-Lab6/image-20230519094822340.png" class="" title="image-20230519094822340" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<ul>
+<li>调换顺序可以解决上述问题。</li>
+<li>分析：由于pageref(fd) 始终小于等于pageref(pipe)， 因此若先解除fd的映射，pageref(fd) 会变得更小，就不会出现pageref(fd)  &#x3D;&#x3D;  pageref(pipe)的情况，因此也就不会出现进程竞争问题。</li>
+<li>dup函数也会出现类似close的问题。如果在dup函数中先映射fd，再映射pipe，若在dup进行到一半即只映射了fd还没有映射pipe时切换进程，就很可能导致pageref(fd)  &#x3D;&#x3D;  pageref(pipe)的情况出现，而调换fd和pipe的映射顺序就可以解决这个问题。</li>
+</ul>
+<h3 id="Thinking-6-5"><a href="#Thinking-6-5" class="headerlink" title="Thinking 6.5"></a>Thinking 6.5</h3><img src="/2023/05/19/OS-Lab6/image-20230519102634404.png" class="" title="image-20230519102634404" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/05/19/OS-Lab6/image-20230519102645916.png" class="" title="image-20230519102645916" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>用户进程尝试打开一个文件，运行open函数，open函数会调用fsipc_open和fsipc_map函数，这些函数会调用fsipc函数向文件系统服务进程发送请求，文件系统服务进程接到请求时摆脱阻塞态，运行serve_open函数，该函数会调用file_open函数，最终打开成功。</p>
+<p>读取ELF文件使用lab1中实现的readelf函数。load_icode 函数会从 ELF 文件中解析出每个 segment 的段头 ph，以及其数据在内存中的起始位置 bin，再由 elf_load_seg 函数将参数指定的程序段（program segment）加载到进程的地址空间中。</p>
+<p>在elf_load_seg中，如果该段在文件中的内容的大小达不到为填入这段内容新分配的页面大小，即分配了新的页面但没能填满（如 .bss 区域），那么余下的部分用 0 来填充。代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Step 2: alloc pages to reach `sgsize` when `bin_size` &lt; `sgsize`. */</span></span><br><span class="line">	<span class="keyword">while</span> (i &lt; sgsize) &#123;</span><br><span class="line">		<span class="keyword">if</span> ((r = map_page(data, va + i, <span class="number">0</span>, perm, <span class="literal">NULL</span>, MIN(bin_size - i, BY2PG))) != <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">return</span> r;</span><br><span class="line">		&#125;</span><br><span class="line">		i += BY2PG;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Thinking-6-6"><a href="#Thinking-6-6" class="headerlink" title="Thinking 6.6"></a>Thinking 6.6</h3><img src="/2023/05/19/OS-Lab6/image-20230519173359117.png" class="" title="image-20230519173359117" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>在<code>user/init.c</code>中：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// stdin should be 0, because no file descriptors are open yet</span></span><br><span class="line">	<span class="keyword">if</span> ((r = opencons()) != <span class="number">0</span>) &#123;</span><br><span class="line">		user_panic(<span class="string">&quot;opencons: %d&quot;</span>, r);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// stdout</span></span><br><span class="line">	<span class="keyword">if</span> ((r = dup(<span class="number">0</span>, <span class="number">1</span>)) &lt; <span class="number">0</span>) &#123;</span><br><span class="line">		user_panic(<span class="string">&quot;dup: %d&quot;</span>, r);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>尚无文件描述符打开，因此标准输入是0。通过dup将1设置为标准输出。</p>
+<h3 id="Thinking-6-7"><a href="#Thinking-6-7" class="headerlink" title="Thinking 6.7"></a>Thinking 6.7</h3><img src="/2023/05/19/OS-Lab6/image-20230519175348825.png" class="" title="image-20230519175348825" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<ul>
+<li>MOS中的shell命令是外部命令。因为shell在执行命令是会fork一个子进程即子shell来执行这条命令。</li>
+<li>linux中的内部命令属于shell程序的一部分，这些命令被写进原码中，在linux系统启动时就加载进内存中，在调用时被shell识别并在其内部运行。</li>
+</ul>
+<h3 id="Thinking-6-8"><a href="#Thinking-6-8" class="headerlink" title="Thinking 6.8"></a>Thinking 6.8</h3><img src="/2023/05/19/OS-Lab6/image-20230519182540331.png" class="" title="image-20230519182540331" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>有2次spawn。对应ls.b和cat.b的执行进程。</p>
+<p>有2次进程销毁。对应ls.b和cat.b的执行进程。</p>
+<h2 id="二、实验难点"><a href="#二、实验难点" class="headerlink" title="二、实验难点"></a>二、实验难点</h2><h3 id="1-管道内存分配"><a href="#1-管道内存分配" class="headerlink" title="1.管道内存分配"></a>1.管道内存分配</h3><img src="/2023/05/19/OS-Lab6/image-20230519223408185.png" class="" title="image-20230519223408185" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/05/19/OS-Lab6/image-20230519223414329.png" class="" title="image-20230519223414329" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>子进程和父进程都分别对写端和读段分配有一个虚拟页，但是子进程的写端和读端都分别映射到了同一个物理页。并且管道文件也仅使用一个物理页，因此整个管道只需要3个物理页。</p>
+<h3 id="2-spawn函数流程"><a href="#2-spawn函数流程" class="headerlink" title="2.spawn函数流程"></a>2.spawn函数流程</h3><ol>
+<li>调用<code>open</code>函数打开从<code>shell</code>指定的ELF文件。</li>
+<li>通过系统调用<code>syscall_exofork</code>函数为子进程创建进程控制块。</li>
+<li>调用<code>init_stack</code> 函数为子进程栈空间初始化。</li>
+<li>使用<code>elf_load_seg</code> 函数将 ELF 文件的各个段加载进子进程。</li>
+<li>设置子进程的运行现场寄存器。</li>
+<li>将父进程的共享页面映射给子进程。</li>
+<li>使用系统调用 syscall_set_env_status 唤醒子进程。</li>
+</ol>
+<h2 id="三、心得体会"><a href="#三、心得体会" class="headerlink" title="三、心得体会"></a>三、心得体会</h2><p>通过本次实验，我了解了管道的底层逻辑实现以及创建基于MOS的shell程序。实验难度并不是很高，但是也需要阅读一定量的代码，收获很多。</p>
+
+</article>
+    
+    
+</div>
+<div id="post-next-prev" class="row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-blog-card trm-scroll-animation" data-scroll data-scroll-offset="40">
+        <a href="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/" class="trm-cover-frame trm-anima-link">
+            
+            
+                <img alt="cover" class="no-fancybox" src="https://images.pexels.com/photos/16783095/pexels-photo-16783095.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
+            
+        </a>
+        
+        <div class="trm-card-descr">
+            <div class="trm-label trm-category trm-mb-20">
+                <a href=" /categories/DataBase/">
+                    DataBase
+                </a>
+            </div>
+            <h5>
+                <a href="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/" class="trm-anima-link">
+                    数据管理技术-Lab-8
+                </a>
+            </h5>
+            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>23/05/19</li>
+                <li>22:52</li>
+                
+                    <li>1.7k</li>
+                
+                
+                    <li>6</li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation" data-scroll data-scroll-offset="50">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2023- 2023</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">Xenon的小破站</span>
+        </div>
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.3.0
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                主题 - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.0.3
+            </span>
+        </div>
+      
+
+     
+
+     
+</footer>
+ 
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            <div class="trm-fixed-container" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="单栏和双栏切换" onclick="asyncFun.switchSingleColumn()">
+            <i class="iconfont fas fa-arrows-alt-h"></i>
+        </div>
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+          </div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.0.3"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.0.3"></script>
+
+  <!-- 《页面点击小红心 -->
+  <!-- -->
+  <!-- 页面点击小红心》 -->
+
+  <!--鼠标点击烟花爆炸效果，需要引入jQuery-->
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+    <script type="text/javascript" src="/js/fireworks.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+
+</html>

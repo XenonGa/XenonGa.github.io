@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="数据管理技术Lab8实验报告Task1：隔离级别的验证使用命令行工具连接 MySQL 或使用可视化工具，实验需要设计 2个 MySQL session，对应为 2 个建立连接的命令行窗口或可视化工具中 2 个会话框； 建表： 1234567CREATE TABLE account (  id int NOT NULL PRIMARY KEY,  name varchar(10) DEFAULT N">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据管理技术-Lab-8">
+<meta property="og:url" content="https://xenonga.github.io/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/index.html">
+<meta property="og:site_name" content="Xenon的小破站">
+<meta property="og:description" content="数据管理技术Lab8实验报告Task1：隔离级别的验证使用命令行工具连接 MySQL 或使用可视化工具，实验需要设计 2个 MySQL session，对应为 2 个建立连接的命令行窗口或可视化工具中 2 个会话框； 建表： 1234567CREATE TABLE account (  id int NOT NULL PRIMARY KEY,  name varchar(10) DEFAULT N">
+<meta property="og:locale">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="article:published_time" content="2023-05-19T14:52:43.000Z">
+<meta property="article:modified_time" content="2023-05-19T14:54:36.534Z">
+<meta property="article:author" content="Jiaxuan Gao">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xenonga.github.io/img/404.jpg">
+
+    <meta name="keywords" content="read uncommitted,read committed,repeatable read,Serializable">
+
+
+<title >数据管理技术-Lab-8</title>
+
+<!-- Favicon -->
+
+    <link href='/rabbit-16%C3%9716.png?v=2.0.3' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"xenonga.github.io","author":"Jiaxuan Gao","root":"/","typed_text":["a SE Learner"],"theme_version":"2.0.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"rabbit-32×32.png","icon16":"rabbit-16×16.png","icon32":"rabbit-32×32.png","appleTouchIcon":"rabbit-32×32.png","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2023-05-19 22:54:36"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.0.3" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" data-scroll-container style="opacity: 0">
+          <div data-scroll-section id="content" class="trm-scroll-section">
+
+            <div class="locomotive-scroll__sticky-target" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none;"></div>
+
+            <!-- top bar -->
+            <header class="trm-top-bar" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/rabbit-32%C3%9732.png">
+    
+    
+        <div class="trm-logo-text">
+            Xe<span>non</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    主页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a  href="/categories/OS/" target="">
+                            OS
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/SoftwareEngineering/" target="">
+                            软件工程
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/DataBase/" target="">
+                            数据管理技术
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/about/" target="">
+                    关于
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner" data-scroll data-scroll-direction="vertical">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" data-scroll data-scroll-direction="vertical" data-scroll-speed="-3" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container" data-scroll data-scroll-direction="vertical" data-scroll-speed="0">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            数据管理技术-Lab-8
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2023
+                                    </span
+                                ></li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <a href="#about-triger" data-scroll-to="#about-triger" data-scroll-offset="-130" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </a>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div id="page-sidebar" class="col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    
+
+<div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card" data-scroll data-scroll-repeat data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="60"> 
+    
+        <div class="trm-user-tabs" id="sidebar-tabs">
+           <div class="trm-tabs-nav trm-mb-40" id="trm-tabs-nav">
+                <div data-to="tabs-user" class="trm-tabs-nav-item">
+                    <i class="iconfont fas fa-user-alt"></i>
+                </div>
+                <div data-to="tabs-toc" class="trm-tabs-nav-item active">
+                    <i class="iconfont fas fa-th-list"></i>
+                </div>
+           </div>
+            <div name="tabs-user" class="trm-tabs-item">
+                <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/rabbit.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        Xenon的小破站
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+                <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/XenonGa/" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+        <a href="https://gitee.com/X2283509194" title="gitee" rel="nofollow" target="_blank">
+            <i class="iconfont iconfont cg-gitee"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+                <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                地球
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                城市:
+            </div>
+            <div class="trm-label trm-label-light">
+                北京
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                20
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+                
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:2283509194@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+            </div>
+            <div name="tabs-toc" class="trm-tabs-item active">
+                <div class="post-toc">
+    <ol class="toc"><li class="toc-item toc-level-1"><a rel="nofollow" class="toc-link" href="#数据管理技术Lab8实验报告"  data-scroll-to="#数据管理技术Lab8实验报告"><span class="toc-number">1.</span> <span class="toc-text">数据管理技术Lab8实验报告</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#Task1：隔离级别的验证"  data-scroll-to="#Task1：隔离级别的验证"><span class="toc-number">1.1.</span> <span class="toc-text">Task1：隔离级别的验证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Q1"  data-scroll-to="#Q1"><span class="toc-number">1.1.1.</span> <span class="toc-text">Q1:</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Q2"  data-scroll-to="#Q2"><span class="toc-number">1.1.2.</span> <span class="toc-text">Q2:</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Q3："  data-scroll-to="#Q3："><span class="toc-number">1.1.3.</span> <span class="toc-text">Q3：</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Q4"  data-scroll-to="#Q4"><span class="toc-number">1.1.4.</span> <span class="toc-text">Q4:</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Q5"  data-scroll-to="#Q5"><span class="toc-number">1.1.5.</span> <span class="toc-text">Q5:</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Q6"  data-scroll-to="#Q6"><span class="toc-number">1.1.6.</span> <span class="toc-text">Q6:</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Q7"  data-scroll-to="#Q7"><span class="toc-number">1.1.7.</span> <span class="toc-text">Q7:</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Q8"  data-scroll-to="#Q8"><span class="toc-number">1.1.8.</span> <span class="toc-text">Q8:</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Q9"  data-scroll-to="#Q9"><span class="toc-number">1.1.9.</span> <span class="toc-text">Q9:</span></a></li></ol></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#Task2：死锁"  data-scroll-to="#Task2：死锁"><span class="toc-number">1.2.</span> <span class="toc-text">Task2：死锁</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#Q10-请解释死锁发生的原因，并按照链接方法手工杀死死锁事务"  data-scroll-to="#Q10-请解释死锁发生的原因，并按照链接方法手工杀死死锁事务"><span class="toc-number">1.2.1.</span> <span class="toc-text">Q10: 请解释死锁发生的原因，并按照链接方法手工杀死死锁事务</span></a></li></ol></li></ol></li></ol>
+</div>
+            </div>
+        </div>
+    
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div id="page-content" class="col-lg-8">
+                <div class="trm-content" id="trm-content">
+                    <div data-scroll data-scroll-repeat data-scroll-offset="500" id="about-triger"></div>
+
+                    <div id="post-info" class="row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            05/19
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            22:52
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Xenon
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="数据管理技术Lab8实验报告"><a href="#数据管理技术Lab8实验报告" class="headerlink" title="数据管理技术Lab8实验报告"></a>数据管理技术Lab8实验报告</h1><h2 id="Task1：隔离级别的验证"><a href="#Task1：隔离级别的验证" class="headerlink" title="Task1：隔离级别的验证"></a>Task1：隔离级别的验证</h2><p>使用命令行工具连接 MySQL 或使用可视化工具，实验需要设计 2个 MySQL session，对应为 2 个建立连接的命令行窗口或可视化工具中 2 个会话框；</p>
+<p>建表：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> account (</span><br><span class="line">  id <span class="type">int</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="keyword">PRIMARY</span> KEY,</span><br><span class="line">  name <span class="type">varchar</span>(<span class="number">10</span>) <span class="keyword">DEFAULT</span> <span class="keyword">NULL</span>,</span><br><span class="line">  money <span class="type">int</span> <span class="keyword">DEFAULT</span> <span class="number">0</span></span><br><span class="line">);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">into</span> account <span class="keyword">values</span>(<span class="number">1</span>, ‘tom’, <span class="number">1000</span>);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">into</span> account <span class="keyword">values</span>(<span class="number">2</span>, ‘bob’, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p>隔离级别：<br>1.read uncommitted<br>2.read committed<br>3.repeatable read<br>4.Serializable</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517154618526.png" class="" title="image-20230517154618526" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h3 id="Q1"><a href="#Q1" class="headerlink" title="Q1:"></a>Q1:</h3><p>按照表格顺序执行，给出语句2、语句4和语句5的输出结果，并分析结果</p>
+<p>语句2</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517155137680.png" class="" title="image-20230517155137680" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>语句4:</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517155324661.png" class="" title="image-20230517155324661" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>语句5：</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517155337891.png" class="" title="image-20230517155337891" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>分析结果：</p>
+<p><strong>读未提交的概念：允许一个事务可以看到其他事务未提交的修改。</strong></p>
+<p>语句2证明tom的money加了1000，而语句4在事务1提交前读tom对应行，由于设定为read uncommitted，虽然事务1未提交，但事务2可以读到事务1的更新值为2000。在事务1roll back后，事务2又读出money为1000.</p>
+<h3 id="Q2"><a href="#Q2" class="headerlink" title="Q2:"></a>Q2:</h3><p>将语句1，语句3的隔离级别修改为 read committed &#x2F; repeatable read &#x2F; serializable，重新执行，记录语句2、语句4和语句5的输出结果，并分析结果</p>
+<h4 id="read-committed"><a href="#read-committed" class="headerlink" title="read committed"></a>read committed</h4><p>语句2：</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517160239384.png" class="" title="image-20230517160239384" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>语句4：</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517161109475.png" class="" title="image-20230517161109475" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>语句5：</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517161148235.png" class="" title="image-20230517161148235" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>分析结果：</p>
+<p><strong>读已提交的概念：允许一个事务只能看到其他事务已经提交的修改，未提交的修改是不可见的。</strong></p>
+<p>语句2证明tom的money加了1000，而语句4在事务1提交前读tom对应行，由于设定为read committed，且事务1未提交，但事务2只能读到事务1更新前的值为1000。在事务1roll back后，事务2又读出money为1000。不会脏读。</p>
+<h4 id="repeatable-read"><a href="#repeatable-read" class="headerlink" title="repeatable read"></a>repeatable read</h4><p>语句2：</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517161602046.png" class="" title="image-20230517161602046" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>语句4：</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517161831725-16843115125371.png" class="" title="image-20230517161831725" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>语句5：</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517161837635.png" class="" title="image-20230517161837635" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>分析结果：</p>
+<p><strong>可重复读概念：确保如果在一个事务中执行两次相同的select语句，都能得到相同的结果，不管其他事务是否提交这些修改。</strong></p>
+<p>事务2读到的内容是事务2开始前的内容，即使在事务进行中有其他事务commit也不会改变事务2读到的内容。在本例中体现不明显。不会脏读。</p>
+<h4 id="serializable"><a href="#serializable" class="headerlink" title="serializable"></a>serializable</h4><p>语句2：</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517161602046.png" class="" title="image-20230517161602046" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>语句4：</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517170203111.png" class="" title="image-20230517170203111" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>语句5：</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517161602046.png" class="" title="image-20230517161602046" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>分析结果：</p>
+<p>Serializable 是最高的事务隔离级别，在该级别下，事务<strong>串行化</strong>顺序执行，所有操作都是<strong>阻塞</strong>，<strong>被同步调用</strong>的。可以<strong>避免脏读、不可重复读与幻读</strong>。</p>
+<p>语句2证明tom的money加了1000，而语句4在事务1提交前读tom对应行，由于设定为serializable ，且事务1未提交，因此事务2被阻塞，直到事务1提交后，事务2才可以继续执行。不会脏读。</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517170529888.png" class="" title="image-20230517170529888" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h3 id="Q3："><a href="#Q3：" class="headerlink" title="Q3："></a>Q3：</h3><p>按照表格顺序执行，给出语句2和语句4的输出结果，并分析结果</p>
+<p>语句2：</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517170725954.png" class="" title="image-20230517170725954" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>语句4：</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517170743569.png" class="" title="image-20230517170743569" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>分析结果：</p>
+<p>语句2先读出id为2的行，此时事务2修改id为2的行的money为1000并提交，由于隔离级别为read committed，语句4读出事务2修改后的行，这证明了read committed是不可重复读的。</p>
+<h3 id="Q4"><a href="#Q4" class="headerlink" title="Q4:"></a>Q4:</h3><p> 将语句1，语句3的隔离级别修改为 repeatable read &#x2F; serializable，重新执行，记录语句2和语句4的输出结果，并分析结果</p>
+<h4 id="repeatable-read-1"><a href="#repeatable-read-1" class="headerlink" title="repeatable read"></a>repeatable read</h4><p>语句2：</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517170725954.png" class="" title="image-20230517170725954" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>语句4：</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517170725954.png" class="" title="image-20230517170725954" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>分析结果：</p>
+<p>语句2先读出id为2的行，此时事务2修改id为2的行的money为1000并提交，由于隔离级别为repeatable read，即使事务2提交，也不会改变事务1读到的内容。因此repeatable read是可重复读的。</p>
+<h4 id="serializable-1"><a href="#serializable-1" class="headerlink" title="serializable"></a>serializable</h4><p>语句2：</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517170725954.png" class="" title="image-20230517170725954" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>语句4：</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517170725954.png" class="" title="image-20230517170725954" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>分析结果：</p>
+<p>语句2先读出id为2的行，此时事务2修改id为2的行的money为1000并提交，由于隔离级别为serializable，因此只有在事务1提交后事务2中的语句才会被执行，因此</p>
+<p><code>update account set money = money+1000 where id=2;</code>这个语句会被阻塞直到事务1 提交。</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517171740898.png" class="" title="image-20230517171740898" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517172446917.png" class="" title="image-20230517172446917" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h3 id="Q5"><a href="#Q5" class="headerlink" title="Q5:"></a>Q5:</h3><p>按照表格顺序执行，给出T2与T4时刻语句2的输出结果与状态，并解释其原因；</p>
+<p>T2时刻：</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517173327533.png" class="" title="image-20230517173327533" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>T4时刻：</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517173401495.png" class="" title="image-20230517173401495" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>分析结果：</p>
+<p>T2时刻事务1上锁，事务2想要改变数据，但此时事务1占据了锁，因此事务2被阻塞。T4时刻事务1已提交，事务2顺利执行。</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517173803493.png" class="" title="image-20230517173803493" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h3 id="Q6"><a href="#Q6" class="headerlink" title="Q6:"></a>Q6:</h3><p>按照表格顺序执行，给出语句2和语句4的输出结果</p>
+<p>语句2：</p>
+<p><img src="C:/Users/lenovo/Desktop/数据库/实验/image-20230517174217512.png" alt="image-20230517174217512" onerror='this.onerror=null;this.src="/img/404.jpg"'></p>
+<p>语句4：</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517174217512-16845080079401.png" class="" title="image-20230517174217512" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>分析结果：</p>
+<p>事务2对数据库进行修改，但是事务1前后读内容相同，这是因为repeatable read前后读的内容不会改变。</p>
+<h3 id="Q7"><a href="#Q7" class="headerlink" title="Q7:"></a>Q7:</h3><p>将语句1，语句3的隔离级别修改为 serializable，重新执行，记录语句2和语句4的输出结果</p>
+<p>语句2：</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517174217512-16845080079401.png" class="" title="image-20230517174217512" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>语句4：</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517174217512-16845080079401.png" class="" title="image-20230517174217512" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>由于串行化影响，事务2的操作需要等待事务1提交后才可以执行，因此语句2和语句4结果相同。</p>
+<h3 id="Q8"><a href="#Q8" class="headerlink" title="Q8:"></a>Q8:</h3><p>若语句2 增加了 lock in share mode; 的设置，T2中语句 5、6 会阻塞；请结合两种隔离级别下解锁前后的现象，分析阻塞原因。</p>
+<h4 id="repeatable-read-2"><a href="#repeatable-read-2" class="headerlink" title="repeatable read"></a>repeatable read</h4><img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517182026723.png" class="" title="image-20230517182026723" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="serializable-2"><a href="#serializable-2" class="headerlink" title="serializable"></a>serializable</h4><img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517182026723.png" class="" title="image-20230517182026723" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>分析结果：</p>
+<p>事务2中的语句都被阻塞，这是因为lock in share mode对数据库加S锁，而事务2中的insert语句尝试对其加X锁，失败而处于阻塞状态。</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517182357458.png" class="" title="image-20230517182357458" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h3 id="Q9"><a href="#Q9" class="headerlink" title="Q9:"></a>Q9:</h3><p>按照表格顺序执行，给出语句2、语句3的执行结果，并分析原因</p>
+<p>语句2：</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517182803020.png" class="" title="image-20230517182803020" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>语句3：</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517182814414.png" class="" title="image-20230517182814414" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>事务1在执行update语句时对数据库加了X锁，不能再加锁，事务2的delete</p>
+<p>语句尝试对数据库加X锁，因此delete被阻塞，直到事务1提交后语句2、3才能执行。</p>
+<h2 id="Task2：死锁"><a href="#Task2：死锁" class="headerlink" title="Task2：死锁"></a>Task2：死锁</h2><p>使用命令行工具连接 MySQL 或使用可视化工具，实验需要设计 2个 MySQL session，对应为 2 个建立连接的命令行窗口或可视化工具中 2 个会话框；<br>建表：<br>create tableA(id, columnA) …<br>create tableB(id, columnB)  …<br>Insert into tableA values(1, 0);<br>Insert into tableB values(1, 0);<br>开启两个命令行界面A和B，按照下面顺序在A、B中分别执行语句：<br>A: start transaction;（或Begin）<br>A: update tableA set columnA&#x3D;1 where id&#x3D;1;<br>B: start transaction;<br>B: update tableB set columnB&#x3D;2 where id&#x3D;1;<br>A: update tableB set columnB&#x3D;3 where id&#x3D;1;<br>B: update tableA set columnA&#x3D;2 where id&#x3D;1;<br>最后一条语句执行时系统会提示死锁，界面A会处于等待状态，需要手工杀掉死锁事务</p>
+<h3 id="Q10-请解释死锁发生的原因，并按照链接方法手工杀死死锁事务"><a href="#Q10-请解释死锁发生的原因，并按照链接方法手工杀死死锁事务" class="headerlink" title="Q10: 请解释死锁发生的原因，并按照链接方法手工杀死死锁事务"></a>Q10: 请解释死锁发生的原因，并按照链接方法手工杀死死锁事务</h3><img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517183235943.png" class="" title="image-20230517183235943" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>手动解除：</p>
+<img src="/2023/05/19/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-8/image-20230517183413511.png" class="" title="image-20230517183413511" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>事务1对tableA加锁，之后事务2又对tableB加锁，在两个事务还没有释放锁之前，事务1又请求对tableB加锁，被阻塞，事务2对tableB申请加锁，被阻塞，两个事务都是在占有一部分资源后申请另一部分资源，从而两个事务都被阻塞，因此产生死锁。</p>
+
+</article>
+    
+    
+</div>
+<div id="post-next-prev" class="row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-blog-card trm-scroll-animation" data-scroll data-scroll-offset="40">
+        <a href="/2023/05/19/OS-Lab6/" class="trm-cover-frame trm-anima-link">
+            
+            
+                <img alt="cover" class="no-fancybox" src="https://images.pexels.com/photos/11954769/pexels-photo-11954769.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
+            
+        </a>
+        
+        <div class="trm-card-descr">
+            <div class="trm-label trm-category trm-mb-20">
+                <a href=" /categories/OS/">
+                    OS
+                </a>
+            </div>
+            <h5>
+                <a href="/2023/05/19/OS-Lab6/" class="trm-anima-link">
+                    OS-Lab6
+                </a>
+            </h5>
+            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>23/05/19</li>
+                <li>22:53</li>
+                
+                    <li>1.4k</li>
+                
+                
+                    <li>5</li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-blog-card trm-scroll-animation" data-scroll data-scroll-offset="40">
+        <a href="/2023/05/12/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-7/" class="trm-cover-frame trm-anima-link">
+            
+            
+                <img alt="cover" class="no-fancybox" src="https://images.pexels.com/photos/16317163/pexels-photo-16317163.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2">
+            
+        </a>
+        
+        <div class="trm-card-descr">
+            <div class="trm-label trm-category trm-mb-20">
+                <a href=" /categories/DataBase/">
+                    DataBase
+                </a>
+            </div>
+            <h5>
+                <a href="/2023/05/12/%E6%95%B0%E6%8D%AE%E7%AE%A1%E7%90%86%E6%8A%80%E6%9C%AF-Lab-7/" class="trm-anima-link">
+                    数据管理技术-Lab-7
+                </a>
+            </h5>
+            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>23/05/12</li>
+                <li>14:42</li>
+                
+                    <li>1.3k</li>
+                
+                
+                    <li>6</li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation" data-scroll data-scroll-offset="50">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2023- 2023</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">Xenon的小破站</span>
+        </div>
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.3.0
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                主题 - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.0.3
+            </span>
+        </div>
+      
+
+     
+
+     
+</footer>
+ 
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            <div class="trm-fixed-container" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="单栏和双栏切换" onclick="asyncFun.switchSingleColumn()">
+            <i class="iconfont fas fa-arrows-alt-h"></i>
+        </div>
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+          </div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.0.3"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.0.3"></script>
+
+  <!-- 《页面点击小红心 -->
+  <!-- -->
+  <!-- 页面点击小红心》 -->
+
+  <!--鼠标点击烟花爆炸效果，需要引入jQuery-->
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+    <script type="text/javascript" src="/js/fireworks.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+
+</html>
