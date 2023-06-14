@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="Lab4_Challenge实验报告一、任务背景信号（英语：Signal）是 Unix、类 Unix 以及其他 POSIX 兼容的操作系统中进程间通讯的一种有限制的方式。它是一种异步的通知机制，用来提醒进程一个事件已经发生。当一个信号发送给一个进程，操作系统会打断进程正常的控制流程，此时，任何非原子操作都将被打断。如果进程注册了信号的处理函数，那么它将被执行，否则就执行默认的处理函数。信号的机制类">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OS_Lab4_Challenge">
+<meta property="og:url" content="https://xenonga.github.io/2023/06/14/OS-Lab4-Challenge/index.html">
+<meta property="og:site_name" content="Xenon的小破站">
+<meta property="og:description" content="Lab4_Challenge实验报告一、任务背景信号（英语：Signal）是 Unix、类 Unix 以及其他 POSIX 兼容的操作系统中进程间通讯的一种有限制的方式。它是一种异步的通知机制，用来提醒进程一个事件已经发生。当一个信号发送给一个进程，操作系统会打断进程正常的控制流程，此时，任何非原子操作都将被打断。如果进程注册了信号的处理函数，那么它将被执行，否则就执行默认的处理函数。信号的机制类">
+<meta property="og:locale">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="article:published_time" content="2023-06-14T11:35:54.000Z">
+<meta property="article:modified_time" content="2023-06-14T11:37:13.664Z">
+<meta property="article:author" content="Jiaxuan Gao">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xenonga.github.io/img/404.jpg">
+
+    <meta name="keywords" content="信号机制">
+
+
+<title >OS_Lab4_Challenge</title>
+
+<!-- Favicon -->
+
+    <link href='/rabbit-16%C3%9716.png?v=2.0.3' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"xenonga.github.io","author":"Jiaxuan Gao","root":"/","typed_text":["a SE Learner"],"theme_version":"2.0.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"rabbit-32×32.png","icon16":"rabbit-16×16.png","icon32":"rabbit-32×32.png","appleTouchIcon":"rabbit-32×32.png","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2023-06-14 19:37:13"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.0.3" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" data-scroll-container style="opacity: 0">
+          <div data-scroll-section id="content" class="trm-scroll-section">
+
+            <div class="locomotive-scroll__sticky-target" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none;"></div>
+
+            <!-- top bar -->
+            <header class="trm-top-bar" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/rabbit-32%C3%9732.png">
+    
+    
+        <div class="trm-logo-text">
+            Xe<span>non</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    主页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a  href="/categories/OS/" target="">
+                            OS
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/SoftwareEngineering/" target="">
+                            软件工程
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/DataBase/" target="">
+                            数据管理技术
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/about/" target="">
+                    关于
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner" data-scroll data-scroll-direction="vertical">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" data-scroll data-scroll-direction="vertical" data-scroll-speed="-3" src="https://pic1.zhimg.com/v2-b3c2c6745b9421a13a3c4706b19223b3_r.jpg">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container" data-scroll data-scroll-direction="vertical" data-scroll-speed="0">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            Hi my new friend!
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            OS_Lab4_Challenge
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2023
+                                    </span
+                                ></li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <a href="#about-triger" data-scroll-to="#about-triger" data-scroll-offset="-130" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </a>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div id="page-sidebar" class="col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    
+
+<div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card" data-scroll data-scroll-repeat data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="60"> 
+    
+        <div class="trm-user-tabs" id="sidebar-tabs">
+           <div class="trm-tabs-nav trm-mb-40" id="trm-tabs-nav">
+                <div data-to="tabs-user" class="trm-tabs-nav-item">
+                    <i class="iconfont fas fa-user-alt"></i>
+                </div>
+                <div data-to="tabs-toc" class="trm-tabs-nav-item active">
+                    <i class="iconfont fas fa-th-list"></i>
+                </div>
+           </div>
+            <div name="tabs-user" class="trm-tabs-item">
+                <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/rabbit.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        Xenon的小破站
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+                <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/XenonGa/" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+        <a href="https://gitee.com/X2283509194" title="gitee" rel="nofollow" target="_blank">
+            <i class="iconfont iconfont cg-gitee"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+                <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                地球
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                城市:
+            </div>
+            <div class="trm-label trm-label-light">
+                北京
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                20
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+                
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:2283509194@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+            </div>
+            <div name="tabs-toc" class="trm-tabs-item active">
+                <div class="post-toc">
+    <ol class="toc"><li class="toc-item toc-level-1"><a rel="nofollow" class="toc-link" href="#Lab4-Challenge实验报告"  data-scroll-to="#Lab4-Challenge实验报告"><span class="toc-number">1.</span> <span class="toc-text">Lab4_Challenge实验报告</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#一、任务背景"  data-scroll-to="#一、任务背景"><span class="toc-number">1.1.</span> <span class="toc-text">一、任务背景</span></a></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#二、实现思路"  data-scroll-to="#二、实现思路"><span class="toc-number">1.2.</span> <span class="toc-text">二、实现思路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#1-保存的内容"  data-scroll-to="#1-保存的内容"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.保存的内容</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#2-信号的注册"  data-scroll-to="#2-信号的注册"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.信号的注册</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#3-信号的发送"  data-scroll-to="#3-信号的发送"><span class="toc-number">1.2.3.</span> <span class="toc-text">3.信号的发送</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#4-信号的处理"  data-scroll-to="#4-信号的处理"><span class="toc-number">1.2.4.</span> <span class="toc-text">4.信号的处理</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#5-一些细节"  data-scroll-to="#5-一些细节"><span class="toc-number">1.2.5.</span> <span class="toc-text">5.一些细节</span></a></li></ol></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#三、实验难点"  data-scroll-to="#三、实验难点"><span class="toc-number">1.3.</span> <span class="toc-text">三、实验难点</span></a></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#四、心得体会"  data-scroll-to="#四、心得体会"><span class="toc-number">1.4.</span> <span class="toc-text">四、心得体会</span></a></li></ol></li></ol>
+</div>
+            </div>
+        </div>
+    
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div id="page-content" class="col-lg-8">
+                <div class="trm-content" id="trm-content">
+                    <div data-scroll data-scroll-repeat data-scroll-offset="500" id="about-triger"></div>
+
+                    <div id="post-info" class="row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            06/14
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            19:35
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Xenon
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="Lab4-Challenge实验报告"><a href="#Lab4-Challenge实验报告" class="headerlink" title="Lab4_Challenge实验报告"></a>Lab4_Challenge实验报告</h1><h2 id="一、任务背景"><a href="#一、任务背景" class="headerlink" title="一、任务背景"></a>一、任务背景</h2><p>信号（英语：Signal）是 Unix、类 Unix 以及其他 POSIX 兼容的操作系统中进程间通讯的一种有限制的方式。它是一种异步的通知机制，用来提醒进程一个事件已经发生。当一个信号发送给一个进程，操作系统会打断进程正常的控制流程，此时，任何非原子操作都将被打断。如果进程注册了信号的处理函数，那么它将被执行，否则就执行默认的处理函数。信号的机制类似于硬件中断（异常），不同之处在于中断由处理器发出并由内核处理，而信号由内核发出并由用户程序处理。除了进程通过系统调用向另一进程（或它自身）发出的信号，内核还可以将发生的中断通过信号通知给引发中断的进程。如果说系统调用是一种用户程序通知内核的机制，那么信号就是内核通知用户程序的机制。任务：在我们的 MOS 操作系统中实现这样一套机制。</p>
+<h2 id="二、实现思路"><a href="#二、实现思路" class="headerlink" title="二、实现思路"></a>二、实现思路</h2><h3 id="1-保存的内容"><a href="#1-保存的内容" class="headerlink" title="1.保存的内容"></a>1.保存的内容</h3><p>考虑到信号是针对进程而言的，进程拥有各自的信号以及信号处理函数，因此将信号、信号处理函数（sigaction）以及进程掩码储存于进程控制块中，具体言之，应当有如下几部分内容：</p>
+<ul>
+<li>一个sigaction的列表</li>
+<li>进程的掩码</li>
+<li>信号等待栈（由于后接收到的信号先处理，因此使用栈存储信号）</li>
+<li>被掩盖信号等待栈</li>
+<li>在用户态下定义的信号处理封装函数入口</li>
+</ul>
+<p>代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Lab 4 challenge struct</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sigset_t</span>&#123;</span></span><br><span class="line">    <span class="type">int</span> sig[<span class="number">2</span>]; <span class="comment">//最多 32*2=64 种信号</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">sigaction</span>&#123;</span></span><br><span class="line">    <span class="type">void</span> (*sa_handler)(<span class="type">int</span>);</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">sigset_t</span> <span class="title">sa_mask</span>;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Values of mathod in sigprocmask</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SIG_BLOCK 0</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SIG_UNBLOCK 1</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> SIG_SETMASK 2</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Env</span> &#123;</span></span><br><span class="line">	……	</span><br><span class="line">   	<span class="comment">// Lab 4 challenge info</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">sigaction</span> <span class="title">sigaction_list</span>[65];</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">sigset_t</span> <span class="title">env_sa_mask</span>;</span></span><br><span class="line">	u_int env_cur_signal;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Lab 4 challenge wait stack </span></span><br><span class="line">	u_int env_wait_signal[<span class="number">100</span>];</span><br><span class="line">	u_int env_wait_head_ptr;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Lab 4 challenge masked wait stack</span></span><br><span class="line">	u_int env_masked_wait_signal[<span class="number">100</span>];</span><br><span class="line">	u_int env_masked_wait_head_ptr;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Lab 4 challenge signal handler entry</span></span><br><span class="line">	u_int env_user_signal_entry;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-信号的注册"><a href="#2-信号的注册" class="headerlink" title="2.信号的注册"></a>2.信号的注册</h3><p>信号注册函数实际上是将一个用户态下定义的<code>handler</code>的地址放进env的sigaction列表中。任何对于env的操作应当位于内核态中，因此需要实现系统调用函数。</p>
+<p>在我的设计中，对于Lab4 challenge 中的所有用户态的函数都定义在<code>user/lib/signal.c</code>中。</p>
+<p>信号注册函数逻辑是如果oldact不为空，则将旧的信号处理函数存在此地址中。在此过程后，将传入的新act赋值给进程对应信号的sigaction。</p>
+<p>代码如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">sys_sigaction</span><span class="params">(<span class="type">int</span> signum, <span class="type">const</span> <span class="keyword">struct</span> sigaction *act, <span class="keyword">struct</span> sigaction *oldact)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(signum &gt; <span class="number">64</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	<span class="keyword">if</span>(oldact)</span><br><span class="line">	&#123;</span><br><span class="line">		*oldact = curenv-&gt;sigaction_list[signum];</span><br><span class="line">	&#125;</span><br><span class="line">	curenv-&gt;sigaction_list[signum] = *act;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>进程掩码修改逻辑类似，将旧的掩码放入oldset位置（如果oldset不为空）。之后根据how的值对进程掩码进行一些位运算。</p>
+<p>进程掩码修改函数和信号集操作函数是对于信号集的一些位运算，比较简单，不在这里展示。</p>
+<p>应当注意的是信号集操作是用户态函数，不需设置系统调用。</p>
+<h3 id="3-信号的发送"><a href="#3-信号的发送" class="headerlink" title="3.信号的发送"></a>3.信号的发送</h3><p>信号发送函数本质上就是向编号为envid的进程的信号等待栈中压一个信号。使用系统调用即可。</p>
+<h3 id="4-信号的处理"><a href="#4-信号的处理" class="headerlink" title="4.信号的处理"></a>4.信号的处理</h3><p>对于信号处理应当是Lab4 challenge 的核心部分。</p>
+<p>由于信号存放在进程控制块中，所以如果想要处理信号，就应当在内核态下将其取出处理。而信号处理函数又是用户在用户态下定义的函数，因此想要处理一个信号，应当先进入内核态取得信号，之后返回用户态，调用其在用户态下的处理函数。这个逻辑类似于写时复制的原理，实现也与其比较类似。</p>
+<p>应当注意的是，在信号开始处理时，要一次处理所有未被阻塞的信号，这就意味着在一个用户态的信号处理函数执行结束后，应当返回内核态，重新执行信号处理，取出等待栈中下一个信号继续处理，直到等待栈空。</p>
+<p>对于用户态函数，我的实现是实现一个封装函数，进入用户态时执行这个函数，通过该函数调用用户定义的信号处理函数，最后通过系统调用返回内核态。</p>
+<p>信号应当在每次陷入内核后就得到处理。如果只在进程调度时处理信号，那么一个进程给自己发送信号，当时间片执行完后没有调度，信号就会一直得不到处理。</p>
+<p>综合以上思考，我的信号处理整体思路如下：</p>
+<ul>
+<li>内核态在 <code>kern/signal.c</code> 中定义<code>do_signal</code>函数，这个函数类似于<code>do_syscal</code> 、<code>do_tlb_mod</code>函数，区别在于每次陷入内核都会执行这个函数。这个函数应当在陷入内核的handler调用的处理函数执行后再执行，防止影响本身陷入内核处理的事务。调用函数位置如下</li>
+</ul>
+<img src="/2023/06/14/OS-Lab4-Challenge/image-20230614174407866.png" class="" title="image-20230614174407866" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<ul>
+<li>在do_signal 函数中，首先遍历信号等待栈，如果栈为空则返回，不为空，判断信号是否被阻塞，若被阻塞，则将其压入阻塞信号栈中。若没有被阻塞，则将其拿出等待进一步处理。</li>
+<li>设置Trapframe，将原先的Trapframe存入栈中，并修改为使用用户异常栈处理信号处理函数，这一操作与do_tlb_mod中的操作一致，目的在于回到用户态但不改变原先的用户上下文。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Trapframe</span> <span class="title">tmp_tf</span> =</span> *tf;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (tf-&gt;regs[<span class="number">29</span>] &lt; USTACKTOP || tf-&gt;regs[<span class="number">29</span>] &gt;= UXSTACKTOP) &#123;</span><br><span class="line">    tf-&gt;regs[<span class="number">29</span>] = UXSTACKTOP;</span><br><span class="line">&#125;</span><br><span class="line">tf-&gt;regs[<span class="number">29</span>] -= <span class="keyword">sizeof</span>(<span class="keyword">struct</span> Trapframe);</span><br><span class="line">*(<span class="keyword">struct</span> Trapframe *)tf-&gt;regs[<span class="number">29</span>] = tmp_tf;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>判断该信号是否注册过用户态的处理函数，如果没有，则执行信号的默认处理动作。</li>
+<li>设置寄存器，向其中传入用户态封装函数需要使用的参数，以便返回用户态时执行用户态封装函数。</li>
+<li>将<code>cp0_epc</code>设置为定义的用户态封装函数入口，便于返回用户态时执行该函数。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (curenv-&gt;env_user_signal_entry) &#123;</span><br><span class="line">	tf-&gt;regs[<span class="number">4</span>] = tf-&gt;regs[<span class="number">29</span>];</span><br><span class="line">	tf-&gt;regs[<span class="number">29</span>] -= <span class="keyword">sizeof</span>(tf-&gt;regs[<span class="number">4</span>]);</span><br><span class="line">    tf-&gt;regs[<span class="number">5</span>] = signum;</span><br><span class="line">    tf-&gt;regs[<span class="number">29</span>] -= <span class="keyword">sizeof</span>(tf-&gt;regs[<span class="number">5</span>]);</span><br><span class="line">    tf-&gt;regs[<span class="number">6</span>] = curenv-&gt;sigaction_list[signum].sa_handler;</span><br><span class="line">    tf-&gt;regs[<span class="number">29</span>] -= <span class="keyword">sizeof</span>(tf-&gt;regs[<span class="number">6</span>]);</span><br><span class="line">	tf-&gt;cp0_epc = curenv-&gt;env_user_signal_entry;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	panic(<span class="string">&quot;Signal handle but no user handler registered&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>设置一个用户态封装函数 <code>sighandler</code> ，该函数首先执行用户设定的处理函数，再进行系统调用<code>syscall_set_trapframe</code>，将保存的原用户上下文传回，并且回到内核进行下一个信号的处理。值得注意的是这个封装函数应当是无返回的，类似于<code>cow_entry</code>。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __attribute__((<span class="keyword">noreturn</span>)) sighandler(<span class="keyword">struct</span> Trapframe *tf, <span class="type">int</span> signum, <span class="type">void</span> (*sa_handler)(<span class="type">int</span>))</span><br><span class="line">&#123;</span><br><span class="line">    sa_handler(signum);</span><br><span class="line">    <span class="type">int</span> r = syscall_set_trapframe(<span class="number">0</span>, tf);</span><br><span class="line">	user_panic(<span class="string">&quot;syscall_set_trapframe returned %d&quot;</span>, r);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-一些细节"><a href="#5-一些细节" class="headerlink" title="5.一些细节"></a>5.一些细节</h3><h4 id="5-1-阻塞信号的处理"><a href="#5-1-阻塞信号的处理" class="headerlink" title="5.1 阻塞信号的处理"></a>5.1 阻塞信号的处理</h4><p>在信号处理部分，我将被阻塞的信号放置于信号阻塞栈中。那这些阻塞信号应当在什么时候被拿出处理呢？我的设计是将其放于<code>sys_sigprocmask</code>中，也就是在进程掩码发生变化时，我将所有被阻塞信号放回等待栈中，交给<code>do_signal</code>进一步判断，考虑到每次进程掩码改变可能只改变一位也就是一个信号可以变得不被阻塞，<code>do_signal</code>将遍历到的被阻塞信号再放回阻塞信号队列，将没有被阻塞的信号取出。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">sys_sigprocmask</span><span class="params">(<span class="type">int</span> how, <span class="type">const</span> <span class="keyword">struct</span> <span class="type">sigset_t</span> *<span class="built_in">set</span>, <span class="keyword">struct</span> <span class="type">sigset_t</span> *oldset)</span></span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(curenv-&gt;env_masked_wait_head_ptr == <span class="number">0</span>) <span class="keyword">break</span>;</span><br><span class="line">        curenv-&gt;env_wait_signal[curenv-&gt;env_wait_head_ptr++] = curenv-&gt;env_masked_wait_signal[--curenv-&gt;env_masked_wait_head_ptr];</span><br><span class="line">    &#125;</span><br><span class="line">    ……</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-2-初始化与fork"><a href="#5-2-初始化与fork" class="headerlink" title="5.2 初始化与fork"></a>5.2 初始化与fork</h4><p>在进程被创建时，它的等待栈和阻塞栈指针应当被初始化为0（当然也可以是-1）。我将这个过程放置在<code>env_create</code>中。</p>
+<p>在fork一个子进程时，子进程继承父进程注册的函数也即信号处理函数，等待栈和阻塞信号栈全部清空。相关实现位于<code>sys_exofork</code>中。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">sys_exofork</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">	……</span><br><span class="line">	e-&gt;env_user_signal_entry = curenv-&gt;env_user_signal_entry;</span><br><span class="line">	e-&gt;env_wait_head_ptr = <span class="number">0</span>;</span><br><span class="line">	e-&gt;env_masked_wait_head_ptr = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(i = <span class="number">1</span>; i &lt;= <span class="number">64</span>; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		e-&gt;sigaction_list[i].sa_handler = curenv-&gt;sigaction_list[i].sa_handler;</span><br><span class="line">		e-&gt;sigaction_list[i].sa_mask = curenv-&gt;sigaction_list[i].sa_mask;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> e-&gt;env_id;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-3-SIGKILL处理"><a href="#5-3-SIGKILL处理" class="headerlink" title="5.3 SIGKILL处理"></a>5.3 SIGKILL处理</h4><p>9号信号即SIGKILL不可被阻塞，因此在do_signal的信号阻塞判断前首先判断信号是否为阻塞信号，如果是，则直接结束程序运行。</p>
+<h4 id="5-4-空指针处理"><a href="#5-4-空指针处理" class="headerlink" title="5.4 空指针处理"></a>5.4 空指针处理</h4><p>在程序中如果访问了一个空指针，在原实现中会跳到<code>passive_alloc</code> panic，经过了解，访问空指针实际上应当触发第11号信号，因此在<code>_do_tlb_refill</code>中添加判断，如果<code>va</code>小于<code>UTEMP</code>则向当前进程发送11号信号。</p>
+<h4 id="5-5-写时复制处理"><a href="#5-5-写时复制处理" class="headerlink" title="5.5 写时复制处理"></a>5.5 写时复制处理</h4><p>需要处理可能出现写时复制的地址。由于很多数据的修改都位于内核态，而在这之前并未写时复制，则会出现异常。应当在使用可能出现这种异常的位置提前触发写时复制。只需使用<code>memset</code>即可处理。在本次任务中，只需在写<code>oldset</code>或<code>oldact</code>前<code>memset</code>该地址即可。</p>
+<h4 id="5-6-include-mk的修改"><a href="#5-6-include-mk的修改" class="headerlink" title="5.6 include.mk的修改"></a>5.6 include.mk的修改</h4><p>由于我在内核与用户态都添加了名为<code>signal.c</code>的文件，因此需要更改include.mk文件使其被正确链接。</p>
+<h2 id="三、实验难点"><a href="#三、实验难点" class="headerlink" title="三、实验难点"></a>三、实验难点</h2><p>我认为本实验的难点应当是理解信号处理的内核态-&gt;用户态-&gt;内核态-&gt;…这一机制。具体分析与实现思路在上文中有涉及，在此就不赘述了。</p>
+<h2 id="四、心得体会"><a href="#四、心得体会" class="headerlink" title="四、心得体会"></a>四、心得体会</h2><p>Lab4 challenge是我认为比较考验对MOS理解的一个挑战性任务。在这次任务中，我加深了对用户态、内核态转变的理解，学会利用系统调用以及用户自定义函数等实现信号机制，也对操作系统的信号有更进一步了解。本次实验指导书内容较少，更培养我的独立思考能力，收获很大。</p>
+
+</article>
+    
+    
+</div>
+<div id="post-next-prev" class="row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-blog-card trm-scroll-animation" data-scroll data-scroll-offset="40">
+        <a href="/2023/05/19/OS-Lab6/" class="trm-cover-frame trm-anima-link">
+            
+            
+                <img alt="cover" class="no-fancybox" src="https://images.pexels.com/photos/11954769/pexels-photo-11954769.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1">
+            
+        </a>
+        
+        <div class="trm-card-descr">
+            <div class="trm-label trm-category trm-mb-20">
+                <a href=" /categories/OS/">
+                    OS
+                </a>
+            </div>
+            <h5>
+                <a href="/2023/05/19/OS-Lab6/" class="trm-anima-link">
+                    OS-Lab6
+                </a>
+            </h5>
+            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>23/05/19</li>
+                <li>22:53</li>
+                
+                    <li>1.4k</li>
+                
+                
+                    <li>5</li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation" data-scroll data-scroll-offset="50">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2023- 2023</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">Xenon的小破站</span>
+        </div>
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.3.0
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                主题 - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.0.3
+            </span>
+        </div>
+      
+
+     
+
+     
+</footer>
+ 
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            <div class="trm-fixed-container" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="单栏和双栏切换" onclick="asyncFun.switchSingleColumn()">
+            <i class="iconfont fas fa-arrows-alt-h"></i>
+        </div>
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+          </div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.0.3"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.0.3"></script>
+
+  <!-- 《页面点击小红心 -->
+  <!-- -->
+  <!-- 页面点击小红心》 -->
+
+  <!--鼠标点击烟花爆炸效果，需要引入jQuery-->
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+    <script type="text/javascript" src="/js/fireworks.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+
+</html>
