@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="程序设计实践——Pygamepygame 库pygame 是为开发 2D 游戏而设计的 Python 跨平台模块，该模块中定义了很多接口，开发人员使用这些接口可以方便地实现游戏开发的常用功能，比如图形和图像绘制、播放音频等等。 pygame第一版发布已经过去23年了，简单的2D游戏也难以用作一般的商用游戏，但对于编程的初学者，通过Pygame学习Python以及如何创作一个项目是极为有意思的。 p">
+<meta property="og:type" content="article">
+<meta property="og:title" content="程序设计实践——pygame">
+<meta property="og:url" content="https://xenonga.github.io/2023/08/20/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94pygame/index.html">
+<meta property="og:site_name" content="Xenon的小破站">
+<meta property="og:description" content="程序设计实践——Pygamepygame 库pygame 是为开发 2D 游戏而设计的 Python 跨平台模块，该模块中定义了很多接口，开发人员使用这些接口可以方便地实现游戏开发的常用功能，比如图形和图像绘制、播放音频等等。 pygame第一版发布已经过去23年了，简单的2D游戏也难以用作一般的商用游戏，但对于编程的初学者，通过Pygame学习Python以及如何创作一个项目是极为有意思的。 p">
+<meta property="og:locale">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="article:published_time" content="2023-08-20T13:21:21.000Z">
+<meta property="article:modified_time" content="2023-08-20T09:47:14.662Z">
+<meta property="article:author" content="Jiaxuan Gao">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xenonga.github.io/img/404.jpg">
+
+    <meta name="keywords" content="pygame">
+
+
+<title >程序设计实践——pygame</title>
+
+<!-- Favicon -->
+
+    <link href='/rabbit-16%C3%9716.png?v=2.0.3' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"xenonga.github.io","author":"Jiaxuan Gao","root":"/","typed_text":["a SE Learner"],"theme_version":"2.0.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"rabbit-32×32.png","icon16":"rabbit-16×16.png","icon32":"rabbit-32×32.png","appleTouchIcon":"rabbit-32×32.png","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2023-08-20 17:47:14"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.0.3" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" data-scroll-container style="opacity: 0">
+          <div data-scroll-section id="content" class="trm-scroll-section">
+
+            <div class="locomotive-scroll__sticky-target" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none;"></div>
+
+            <!-- top bar -->
+            <header class="trm-top-bar" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/rabbit-32%C3%9732.png">
+    
+    
+        <div class="trm-logo-text">
+            Xe<span>non</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    主页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a  href="/categories/OS/" target="">
+                            OS
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/SoftwareEngineering/" target="">
+                            软件工程
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/DataBase/" target="">
+                            数据管理技术
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/about/" target="">
+                    关于
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner" data-scroll data-scroll-direction="vertical">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" data-scroll data-scroll-direction="vertical" data-scroll-speed="-3" src="https://pic1.zhimg.com/v2-b3c2c6745b9421a13a3c4706b19223b3_r.jpg">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container" data-scroll data-scroll-direction="vertical" data-scroll-speed="0">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            Hi my new friend!
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            程序设计实践——pygame
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2023
+                                    </span
+                                ></li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <a href="#about-triger" data-scroll-to="#about-triger" data-scroll-offset="-130" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </a>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div id="page-sidebar" class="col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    
+
+<div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card" data-scroll data-scroll-repeat data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="60"> 
+    
+        <div class="trm-user-tabs" id="sidebar-tabs">
+           <div class="trm-tabs-nav trm-mb-40" id="trm-tabs-nav">
+                <div data-to="tabs-user" class="trm-tabs-nav-item">
+                    <i class="iconfont fas fa-user-alt"></i>
+                </div>
+                <div data-to="tabs-toc" class="trm-tabs-nav-item active">
+                    <i class="iconfont fas fa-th-list"></i>
+                </div>
+           </div>
+            <div name="tabs-user" class="trm-tabs-item">
+                <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/rabbit.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        Xenon的小破站
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+                <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/XenonGa/" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+        <a href="https://gitee.com/X2283509194" title="gitee" rel="nofollow" target="_blank">
+            <i class="iconfont iconfont cg-gitee"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+                <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                地球
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                城市:
+            </div>
+            <div class="trm-label trm-label-light">
+                北京
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                20
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+                
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:2283509194@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+            </div>
+            <div name="tabs-toc" class="trm-tabs-item active">
+                <div class="post-toc">
+    <ol class="toc"><li class="toc-item toc-level-1"><a rel="nofollow" class="toc-link" href="#程序设计实践——Pygame"  data-scroll-to="#程序设计实践——Pygame"><span class="toc-number">1.</span> <span class="toc-text">程序设计实践——Pygame</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#一、python与pygame"  data-scroll-to="#一、python与pygame"><span class="toc-number">1.1.</span> <span class="toc-text">一、python与pygame</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#1-为什么选择python？"  data-scroll-to="#1-为什么选择python？"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.为什么选择python？</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#2-python开发工具"  data-scroll-to="#2-python开发工具"><span class="toc-number">1.1.2.</span> <span class="toc-text">2.python开发工具</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#3-python语法学习"  data-scroll-to="#3-python语法学习"><span class="toc-number">1.1.3.</span> <span class="toc-text">3.python语法学习</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#4-面向对象与面向过程"  data-scroll-to="#4-面向对象与面向过程"><span class="toc-number">1.1.4.</span> <span class="toc-text">4.面向对象与面向过程</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#5-什么是pygame？"  data-scroll-to="#5-什么是pygame？"><span class="toc-number">1.1.5.</span> <span class="toc-text">5.什么是pygame？</span></a></li></ol></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#二、游戏原理"  data-scroll-to="#二、游戏原理"><span class="toc-number">1.2.</span> <span class="toc-text">二、游戏原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#1-电影的原理是什么？"  data-scroll-to="#1-电影的原理是什么？"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.电影的原理是什么？</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#2-游戏的原理是什么？"  data-scroll-to="#2-游戏的原理是什么？"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.游戏的原理是什么？</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#3-pygame能做什么？"  data-scroll-to="#3-pygame能做什么？"><span class="toc-number">1.2.3.</span> <span class="toc-text">3.pygame能做什么？</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#4-pygame与unity等引擎"  data-scroll-to="#4-pygame与unity等引擎"><span class="toc-number">1.2.4.</span> <span class="toc-text">4.pygame与unity等引擎</span></a></li></ol></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#三、简单pygame样例"  data-scroll-to="#三、简单pygame样例"><span class="toc-number">1.3.</span> <span class="toc-text">三、简单pygame样例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#1-40行即可创作一个可互动的小游戏！（太简单了可能算不上游戏）"  data-scroll-to="#1-40行即可创作一个可互动的小游戏！（太简单了可能算不上游戏）"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.40行即可创作一个可互动的小游戏！（太简单了可能算不上游戏）</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#2-空窗口"  data-scroll-to="#2-空窗口"><span class="toc-number">1.3.2.</span> <span class="toc-text">2.空窗口</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#3-图片与文字"  data-scroll-to="#3-图片与文字"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.图片与文字</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#4-键盘事件与碰撞检测"  data-scroll-to="#4-键盘事件与碰撞检测"><span class="toc-number">1.3.4.</span> <span class="toc-text">4.键盘事件与碰撞检测</span></a></li></ol></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#四、游戏语言"  data-scroll-to="#四、游戏语言"><span class="toc-number">1.4.</span> <span class="toc-text">四、游戏语言</span></a></li></ol></li></ol>
+</div>
+            </div>
+        </div>
+    
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div id="page-content" class="col-lg-8">
+                <div class="trm-content" id="trm-content">
+                    <div data-scroll data-scroll-repeat data-scroll-offset="500" id="about-triger"></div>
+
+                    <div id="post-info" class="row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            08/20
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            21:21
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Xenon
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="程序设计实践——Pygame"><a href="#程序设计实践——Pygame" class="headerlink" title="程序设计实践——Pygame"></a>程序设计实践——Pygame</h1><p><em>pygame</em> 库<em>pygame</em> 是为开发 2D 游戏而设计的 Python 跨平台模块，该模块中定义了很多接口，开发人员使用这些接口可以方便地实现游戏开发的常用功能，比如图形和图像绘制、播放音频等等。</p>
+<p>pygame第一版发布已经过去23年了，简单的2D游戏也难以用作一般的商用游戏，但对于编程的初学者，通过Pygame学习Python以及如何创作一个项目是极为有意思的。</p>
+<p>pygame上手简单，可以作为入门游戏开发者不错的启蒙。</p>
+<h2 id="一、python与pygame"><a href="#一、python与pygame" class="headerlink" title="一、python与pygame"></a>一、python与pygame</h2><h3 id="1-为什么选择python？"><a href="#1-为什么选择python？" class="headerlink" title="1.为什么选择python？"></a>1.为什么选择python？</h3><p><strong>简单</strong>：Python是一种代表<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%AE%80%E5%8D%95%E4%B8%BB%E4%B9%89/6711624?fromModule=lemma_inlink">简单主义</a>思想的语言。阅读一个良好的Python程序就感觉像是在读英语一样。它使你能够专注于解决问题而不是去搞明白语言本身。</p>
+<p><strong>易学</strong>：Python极其容易上手，因为Python有极其简单的说明文档 。</p>
+<p><strong>易读、易维护</strong>：风格清晰划一、强制缩进</p>
+<p><strong>用途广泛</strong></p>
+<p><strong>速度较快：</strong>Python的底层是用C语言写的，很多标准库和第三方库也都是用C写的，运行速度非常快。</p>
+<p><strong>高层语言</strong>：用Python语言编写程序的时候无需考虑诸如如何管理你的程序使用的内存一类的底层细节。</p>
+<p><strong>可移植性</strong>：由于它的开源本质，Python已经被移植在许多平台上（经过改动使它能够工作在不同平台上）。。</p>
+<p><strong>面向对象</strong>：Python既支持面向过程的编程也支持面向对象的编程。在“面向过程”的语言中，程序是由过程或仅仅是可重用代码的函数构建起来的。在“面向对象”的语言中，程序是由数据和功能组合而成的对象构建起来的。</p>
+<p><strong>丰富的库</strong>：Python标准库确实很庞大。它可以帮助处理各种工作，包括正则表达式、文档生成、单元测试、线程、数据库、<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%BD%91%E9%A1%B5%E6%B5%8F%E8%A7%88%E5%99%A8/8309940?fromModule=lemma_inlink">网页浏览器</a>、CGI、FTP、<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%94%B5%E5%AD%90%E9%82%AE%E4%BB%B6/111106?fromModule=lemma_inlink">电子邮件</a>、XML、XML-RPC、HTML、WAV文件、密码系统、GUI（图形用户界面）、Tk和其他与系统有关的操作。这被称作Python的“功能齐全”理念。除了标准库以外，还有许多其他高质量的库，如wxPython、Twisted和Python图像库等等。</p>
+<p><strong>规范的代码：</strong>Python采用强制缩进的方式使得代码具有较好可读性。而Python语言写的程序不需要编译成二进制代码。Python的作者设计限制性很强的语法，使得不好的编程习惯（例如if语句的下一行不向右缩进）都不能通过编译。其中很重要的一项就是Python的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%BC%A9%E8%BF%9B/7337492?fromModule=lemma_inlink">缩进</a>规则。一个和其他大多数语言（如C）的区别就是，一个模块的界限，完全是由每行的首字符在这一行的位置来决定（而C语言是用一对大括号来明确的定出模块的边界，与字符的位置毫无关系）。通过强制程序员们缩进（包括if，for和函数定义等所有需要使用模块的地方），Python确实使得程序更加清晰和美观。</p>
+<h3 id="2-python开发工具"><a href="#2-python开发工具" class="headerlink" title="2.python开发工具"></a>2.python开发工具</h3><p>Python    推荐python3</p>
+<p><a target="_blank" rel="noopener" href="https://www.python.org/">https://www.python.org</a></p>
+<img src="/2023/08/20/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94pygame/image-20230820174708939.png" class="" title="image-20230820174708939" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<p><a target="_blank" rel="noopener" href="https://baike.baidu.com/item/Python/407313?fromModule=lemma_inlink">Python</a> <a target="_blank" rel="noopener" href="https://baike.baidu.com/item/IDE/8232086?fromModule=lemma_inlink">IDE</a>（Integrated Development Environment，<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%9B%86%E6%88%90%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/298524?fromModule=lemma_inlink">集成开发环境</a>）：</p>
+<p>PyCharm    （学生申请可免费使用）</p>
+<p><a target="_blank" rel="noopener" href="https://www.jetbrains.com/pycharm">https://www.jetbrains.com/pycharm</a></p>
+<img src="/2023/08/20/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94pygame/image-20230819102353579.png" class="" title="image-20230819102353579" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h3 id="3-python语法学习"><a href="#3-python语法学习" class="headerlink" title="3.python语法学习"></a>3.python语法学习</h3><p>菜鸟</p>
+<p><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-tutorial.html">https://www.runoob.com/python3/python3-tutorial.html</a></p>
+<img src="/2023/08/20/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94pygame/image-20230820144410626.png" class="" title="image-20230820144410626" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>B站黑马程序员</p>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1qW4y1a7fU/?spm_id_from=333.337.search-card.all.click&vd_source=081a9428df91ab02baefa8f13719b00f">https://www.bilibili.com/video/BV1qW4y1a7fU/?spm_id_from=333.337.search-card.all.click&amp;vd_source=081a9428df91ab02baefa8f13719b00f</a></p>
+<img src="/2023/08/20/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94pygame/image-20230820144334701.png" class="" title="image-20230820144334701" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h3 id="4-面向对象与面向过程"><a href="#4-面向对象与面向过程" class="headerlink" title="4.面向对象与面向过程"></a>4.面向对象与面向过程</h3><p>python作为一种同时支持面向对象编程和面向过程编程的语言，理解清晰，功能性强。我们不可避免地要去了解学习面向对象编程，以及面向对象的易于理解和实用性。那么什么是面向对象编程？面向对象编程与我们学习过的面向过程编程有什么异同之处？</p>
+<p>&#x2F;&#x2F;面向对象介绍与举例说明</p>
+<p>面向对象是相对于<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%9D%A2%E5%90%91%E8%BF%87%E7%A8%8B/9957246?fromModule=lemma_inlink">面向过程</a>来讲的，<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E6%96%B9%E6%B3%95/216078?fromModule=lemma_inlink">面向对象方法</a>，把相关的数据和方法组织为一个整体来看待，从更高的层次来进行系统<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%BB%BA%E6%A8%A1/814831?fromModule=lemma_inlink">建模</a>，更贴近事物的自然运行模式。</p>
+<p>在面向对象编程中，程序被组织成一系列相互作用的对象，每个对象都有自己的状态（属性）和行为（方法）。对象可以根据事物的特性进行抽象和定义，并通过类的方式来创建。类是一种对象的模板，它描述了对象具有的属性和方法。</p>
+<p>面向对象编程的主要特点包括：</p>
+<ol>
+<li><strong>封装（Encapsulation）</strong>：封装将对象的属性和行为包装在一起，防止外部直接访问和修改对象的内部状态。通过提供公共接口（方法）来控制对对象的访问。</li>
+<li><strong>继承（Inheritance）</strong>：继承允许我们定义一个类，该类继承了另一个类的属性和方法。通过继承，子类可以复用父类的代码，并可以在此基础上进行修改或扩展。</li>
+<li><strong>多态（Polymorphism）</strong>：多态允许不同的对象对相同的消息做出不同的响应。即使对象属于不同的类，但通过相同的方法调用可以触发各个对象的不同行为。</li>
+</ol>
+<img src="/2023/08/20/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94pygame/image-20230820144856216.png" class="" title="image-20230820144856216" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<p>面向对象和面向过程的比较：</p>
+<p>面向对象：</p>
+<ul>
+<li>数据和操作被封装为对象</li>
+<li>将具有共性的对象抽象为类</li>
+<li>类中数据由类中方法处理</li>
+<li>对象通过接口与外界联系，对象间通过消息通信</li>
+</ul>
+<p>面向过程：</p>
+<ul>
+<li>顺序执行</li>
+<li>数据和行为分离</li>
+<li>顺序、分支、循环三种结构</li>
+<li>模块间关系简单、功能上独立</li>
+</ul>
+<h3 id="5-什么是pygame？"><a href="#5-什么是pygame？" class="headerlink" title="5.什么是pygame？"></a>5.什么是pygame？</h3><p>Pygame是一个用于开发2D游戏和多媒体应用程序的Python库。它提供了一组功能强大的工具和函数，可以用来创建图形界面、处理用户输入、播放音频和视频、加载图像等。Pygame建立在SDL（Simple DirectMedia Layer）库之上，为开发者提供了方便的游戏开发环境。</p>
+<img src="/2023/08/20/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94pygame/image-20230820174657741.png" class="" title="image-20230820174657741" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>pygame特点：</p>
+<ul>
+<li>简单易用</li>
+<li>功能丰富</li>
+<li>2D开发</li>
+</ul>
+<p>​	</p>
+<h2 id="二、游戏原理"><a href="#二、游戏原理" class="headerlink" title="二、游戏原理"></a>二、游戏原理</h2><h3 id="1-电影的原理是什么？"><a href="#1-电影的原理是什么？" class="headerlink" title="1.电影的原理是什么？"></a>1.电影的原理是什么？</h3><p>每秒播放24帧（frame）图片，人的眼睛就会将其视为动态图。电影利用这种视觉效果，通过快速播放图片实现动态的效果。</p>
+<img src="/2023/08/20/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94pygame/image-20230820174649633.png" class="" title="image-20230820174649633" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h3 id="2-游戏的原理是什么？"><a href="#2-游戏的原理是什么？" class="headerlink" title="2.游戏的原理是什么？"></a>2.游戏的原理是什么？</h3><p>与电影原理类似，可以通过每秒播放很多帧的图片实现动态效果。 与电影不同的是，需要接收玩家输入改变游戏画面。</p>
+<img src="/2023/08/20/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94pygame/QQ%E5%9B%BE%E7%89%8720230812152850.gif" class="" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>游戏运行的过程：</p>
+<ol>
+<li>检查玩家输入（event loop）</li>
+<li>根据信息绘制屏幕上的元素</li>
+<li>重复以上步骤</li>
+</ol>
+<h3 id="3-pygame能做什么？"><a href="#3-pygame能做什么？" class="headerlink" title="3.pygame能做什么？"></a>3.pygame能做什么？</h3><p>pygame通过循环监听用户的动作，将游戏本身展示的内容以及用户进行交互的动作以很高的帧率绘制在屏幕上。从而实现构造一个可交互的电影，即游戏。</p>
+<p>pygame具体功能：</p>
+<ul>
+<li>绘制图像（以及播放声音）</li>
+<li>检查玩家输入（在我们初学的时候，我们可能简单地认为检测输入只需运用如python中的input()函数，C中的scanf()函数即可实现输入交互操作，但应当注意的是，程序一旦运行到如input()这种输入函数，就会阻塞进程，程序处于暂停运行状态，游戏直到输入结束才能继续运行。但我们的游戏时刻都在流畅运行，并没有向使用input()函数一样在等待输入，所以我们之前学习的输入函数在游戏中肯定是无法使用的）</li>
+<li>提供有用的工具，如碰撞检测（collisions），文本、计时器。</li>
+</ul>
+<h3 id="4-pygame与unity等引擎"><a href="#4-pygame与unity等引擎" class="headerlink" title="4.pygame与unity等引擎"></a>4.pygame与unity等引擎</h3><p>Pygame提供了简单的游戏开发工具，但是没有复杂的功能，如果你想要开发3A大作，像GTA、战地等游戏，应该去学习更复杂的引擎（虚幻，Unity等）。(小学期应该没有佬手搓GTA吧)</p>
+<table>
+<thead>
+<tr>
+<th>pygame</th>
+<th>unity</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上手简单</td>
+<td>学习曲线陡峭</td>
+</tr>
+<tr>
+<td>常用于2D游戏开发</td>
+<td>开发3D大型游戏</td>
+</tr>
+<tr>
+<td>功能较少</td>
+<td>功能强大，组件库丰富</td>
+</tr>
+</tbody></table>
+<h2 id="三、简单pygame样例"><a href="#三、简单pygame样例" class="headerlink" title="三、简单pygame样例"></a>三、简单pygame样例</h2><h3 id="1-40行即可创作一个可互动的小游戏！（太简单了可能算不上游戏）"><a href="#1-40行即可创作一个可互动的小游戏！（太简单了可能算不上游戏）" class="headerlink" title="1.40行即可创作一个可互动的小游戏！（太简单了可能算不上游戏）"></a>1.40行即可创作一个可互动的小游戏！（太简单了可能算不上游戏）</h3><p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pygame</span><br><span class="line"></span><br><span class="line">pygame.init()</span><br><span class="line">screen = pygame.display.set_mode((<span class="number">1280</span>, <span class="number">720</span>))</span><br><span class="line">clock = pygame.time.Clock()</span><br><span class="line">running = <span class="literal">True</span></span><br><span class="line">dt = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">player_pos = pygame.Vector2(screen.get_width() / <span class="number">2</span>, screen.get_height() / <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> running:</span><br><span class="line">    <span class="keyword">for</span> event <span class="keyword">in</span> pygame.event.get():</span><br><span class="line">        <span class="keyword">if</span> event.<span class="built_in">type</span> == pygame.QUIT:</span><br><span class="line">            running = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">    screen.fill(<span class="string">&quot;purple&quot;</span>)</span><br><span class="line"></span><br><span class="line">    pygame.draw.circle(screen, <span class="string">&quot;white&quot;</span>, player_pos, <span class="number">40</span>)</span><br><span class="line"></span><br><span class="line">    keys = pygame.key.get_pressed()</span><br><span class="line">    <span class="keyword">if</span> keys[pygame.K_w]:</span><br><span class="line">        player_pos.y -= <span class="number">300</span> * dt</span><br><span class="line">    <span class="keyword">if</span> keys[pygame.K_s]:</span><br><span class="line">        player_pos.y += <span class="number">300</span> * dt</span><br><span class="line">    <span class="keyword">if</span> keys[pygame.K_a]:</span><br><span class="line">        player_pos.x -= <span class="number">300</span> * dt</span><br><span class="line">    <span class="keyword">if</span> keys[pygame.K_d]:</span><br><span class="line">        player_pos.x += <span class="number">300</span> * dt</span><br><span class="line"></span><br><span class="line">    pygame.display.flip()</span><br><span class="line"></span><br><span class="line">    clock.tick(<span class="number">60</span>)</span><br><span class="line">    dt = <span class="number">0.01</span></span><br><span class="line"></span><br><span class="line">pygame.quit()</span><br></pre></td></tr></table></figure>
+
+<p>达成的效果如下，是一个简单的可操作的弹球小游戏。</p>
+<img src="/2023/08/20/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94pygame/image-20230820160656989.png" class="" title="image-20230820160656989" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>在开发游戏的过程中，大家可以将小球换成自己角色的图片，更换背景图片，添加亿些细节，就可以完成属于自己的游戏啦</p>
+<h3 id="2-空窗口"><a href="#2-空窗口" class="headerlink" title="2.空窗口"></a>2.空窗口</h3><p>是pygame最小系统，pygame制作游戏的基本逻辑如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">导入相关包</span><br><span class="line">初始化pygame</span><br><span class="line">设置窗口</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    事件循环</span><br><span class="line">    做一些处理</span><br><span class="line">    更新显示</span><br></pre></td></tr></table></figure>
+
+<p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pygame</span><br><span class="line"><span class="keyword">from</span> sys <span class="keyword">import</span> exit</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化 引擎</span></span><br><span class="line">pygame.init()</span><br><span class="line"><span class="comment"># 设置屏幕  宽度800，高度400</span></span><br><span class="line">screen = pygame.display.set_mode((<span class="number">942</span>, <span class="number">471</span>))</span><br><span class="line"><span class="comment"># 设置标题</span></span><br><span class="line">pygame.display.set_caption(<span class="string">&#x27;圆神&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="comment"># 事件循环</span></span><br><span class="line">    <span class="keyword">for</span> event <span class="keyword">in</span> pygame.event.get():</span><br><span class="line">        <span class="comment"># 如果点击退出，则关闭程序</span></span><br><span class="line">        <span class="keyword">if</span> event.<span class="built_in">type</span> == pygame.QUIT:</span><br><span class="line">            pygame.quit()</span><br><span class="line">            exit()</span><br><span class="line">   </span><br><span class="line">    pygame.display.update()</span><br></pre></td></tr></table></figure>
+
+<p>效果如下：</p>
+<img src="/2023/08/20/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94pygame/image-20230820161923392.png" class="" title="image-20230820161923392" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h3 id="3-图片与文字"><a href="#3-图片与文字" class="headerlink" title="3.图片与文字"></a>3.图片与文字</h3><p>图片与文字的逻辑大致相似，整体思路为：</p>
+<p>图片：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">定义一张图片，确定图片路径</span><br><span class="line"></span><br><span class="line">将图片绘制到屏幕上</span><br></pre></td></tr></table></figure>
+
+<p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">background_surface = pygame.image.load(<span class="string">&#x27;background.jpg&#x27;</span>)</span><br><span class="line">player_surface = pygame.image.load(<span class="string">&#x27;Tighnari.png&#x27;</span>)</span><br><span class="line">enemy_surface = pygame.image.load(<span class="string">&#x27;Sai Noi.png&#x27;</span>)、</span><br><span class="line"></span><br><span class="line">screen.blit(background_surface, (<span class="number">0</span>, <span class="number">0</span>))</span><br><span class="line">screen.blit(enemy_surface, (enemy_x, enemy_y))</span><br><span class="line">screen.blit(player_surface, (player_x, player_y))</span><br></pre></td></tr></table></figure>
+
+<p>文字：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">创建字体（font）</span><br><span class="line"></span><br><span class="line">在表面上写文字</span><br><span class="line"></span><br><span class="line">将文字放到显示表面上</span><br></pre></td></tr></table></figure>
+
+<p>代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">test_font = pygame.font.Font(<span class="string">&quot;FZSTK.TTF&quot;</span>, <span class="number">50</span>)</span><br><span class="line"></span><br><span class="line">text_surface = test_font.render(<span class="string">&quot;圆神，启动！&quot;</span>, <span class="literal">False</span>, <span class="string">&#x27;Blue&#x27;</span>)</span><br><span class="line"></span><br><span class="line">screen.blit(text_surface, (<span class="number">20</span>, <span class="number">20</span>))</span><br></pre></td></tr></table></figure>
+
+<p>最终效果如下：</p>
+<img src="/2023/08/20/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94pygame/image-20230820171004971.png" class="" title="image-20230820171004971" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h3 id="4-键盘事件与碰撞检测"><a href="#4-键盘事件与碰撞检测" class="headerlink" title="4.键盘事件与碰撞检测"></a>4.键盘事件与碰撞检测</h3><p>pygame自带按键检测工具，直接调用即可。<br>对于交互，此例中只需改变角色位置即可。（实在是太简单辣）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">keys = pygame.key.get_pressed()</span><br><span class="line">    <span class="keyword">if</span> keys[pygame.K_w]:</span><br><span class="line">        player_y -= <span class="number">300</span> * dt</span><br><span class="line">    <span class="keyword">if</span> keys[pygame.K_s]:</span><br><span class="line">        player_y += <span class="number">300</span> * dt</span><br><span class="line">    <span class="keyword">if</span> keys[pygame.K_a]:</span><br><span class="line">        player_x -= <span class="number">300</span> * dt</span><br><span class="line">    <span class="keyword">if</span> keys[pygame.K_d]:</span><br><span class="line">        player_x += <span class="number">300</span> * dt</span><br></pre></td></tr></table></figure>
+
+
+
+<p>碰撞检测可以简单地通过判断矩形是否重合从而判断是否碰撞，pygame自带精灵类这一工具，同学们可以自行了解。（涉及面向对象内容，需要使自定义类继承精灵类）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_score</span>():</span><br><span class="line">    <span class="keyword">global</span> score</span><br><span class="line">    <span class="keyword">if</span> enemy_x &lt;= player_x &lt;= (enemy_x + <span class="number">100</span>) <span class="keyword">and</span> enemy_y &lt;= player_y &lt;= (enemy_y + <span class="number">100</span>):</span><br><span class="line">        score += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> score</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">display_score</span>():</span><br><span class="line">    <span class="keyword">global</span> score</span><br><span class="line">    score_surf = score_font.render(<span class="string">f&quot;Score:<span class="subst">&#123;score&#125;</span>&quot;</span>, <span class="literal">False</span>, (<span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>))</span><br><span class="line">    screen.blit(score_surf, score_surf.get_rect(center=(<span class="number">100</span>, <span class="number">80</span>)))</span><br><span class="line">    <span class="keyword">return</span> score</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="四、游戏语言"><a href="#四、游戏语言" class="headerlink" title="四、游戏语言"></a>四、游戏语言</h2><p>pygame由于只能制作简单的2D游戏而无法成为常见3A游戏的使用工具。但作为学习python的途径以及开发游戏的启蒙，pygame仍然是不错的选择。</p>
+<p>2021年游戏项目中最常用的语言如下：</p>
+<p><strong>C++</strong></p>
+<p>C++ 是一种高级编程语言，用于构建最大的控制台和 Windows 游戏。它提供了大量的可扩展性，可以用于小型和大型的游戏项目，而且它是平台无关的，这意味着你可以简单地将项目从一个操作系统转移到另一个。C++ 无疑是游戏项目的最佳编程语言之一：《巫师3》、《黑暗之魂》、《上古卷轴 5：天际》、《PUBG》、《堡垒之夜》等都是用 C++ 创造的游戏项目。</p>
+<p><strong>Java</strong></p>
+<p>Java 是 1995 年创建的通用计算机编程中最好的面向对象的编程语言之一。Java 的建立是为了尽可能减少依赖关系，特别是与当时甚至现在的其他编程语言相比。Java 是顶级编程语言之一，它使游戏开发人员能够为每个平台构建游戏。它是 2021 年最流行的游戏项目编程语言之一： 《碟中谍III》、《Minecraft》、《FIFA 11》、《法拉利GT 3：世界赛道》等等都是用Java开发的游戏项目。</p>
+<p><strong>C#</strong></p>
+<p>在像 Unity 这样的游戏引擎中，C# 是你编码的编程语言，但 C++ 是引擎的核心。C# 是适用于 Windows 和 Xbox 游戏的最佳编程语言之一。Pokemon Go 和 Super Mario Run 是两个使用 C# 开发的流行游戏项目。</p>
+<p><strong>HTML</strong></p>
+<p>根据游戏开发商的说法，HTML5 是一个用于创建跨平台和跨浏览器应用程序和游戏的流行平台。它也可以与 JavaScript 互换使用。HTML 是一种简单易学的编程语言，不需要对算法有广泛的编程理解，这使其成为游戏设计师的一个突出选择。</p>
+
+</article>
+    
+    
+</div>
+<div id="post-next-prev" class="row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-blog-card trm-scroll-animation" data-scroll data-scroll-offset="40">
+        <a href="/2023/06/14/OS-Lab4-Challenge/" class="trm-cover-frame trm-anima-link">
+            
+            
+                <img alt="cover" class="no-fancybox" src="https://images.pexels.com/photos/2490949/pexels-photo-2490949.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2">
+            
+        </a>
+        
+        <div class="trm-card-descr">
+            <div class="trm-label trm-category trm-mb-20">
+                <a href=" /categories/OS/">
+                    OS
+                </a>
+            </div>
+            <h5>
+                <a href="/2023/06/14/OS-Lab4-Challenge/" class="trm-anima-link">
+                    OS_Lab4_Challenge
+                </a>
+            </h5>
+            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>23/06/14</li>
+                <li>19:35</li>
+                
+                    <li>2.6k</li>
+                
+                
+                    <li>9</li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation" data-scroll data-scroll-offset="50">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2023- 2023</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">Xenon的小破站</span>
+        </div>
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.3.0
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                主题 - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.0.3
+            </span>
+        </div>
+      
+
+     
+
+     
+</footer>
+ 
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            <div class="trm-fixed-container" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="单栏和双栏切换" onclick="asyncFun.switchSingleColumn()">
+            <i class="iconfont fas fa-arrows-alt-h"></i>
+        </div>
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+          </div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.0.3"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.0.3"></script>
+
+  <!-- 《页面点击小红心 -->
+  <!-- -->
+  <!-- 页面点击小红心》 -->
+
+  <!--鼠标点击烟花爆炸效果，需要引入jQuery-->
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+    <script type="text/javascript" src="/js/fireworks.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+
+</html>
