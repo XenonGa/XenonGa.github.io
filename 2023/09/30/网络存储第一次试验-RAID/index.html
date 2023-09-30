@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="网络存储Lab1-RAID一、实验流程1.登录虚拟机在cmd中输入如下命令，输入密码后即可连接至虚拟机。 1ssh -l buaa 10.251.255.228  其中buaa为用户名，10.251.255.228为虚拟机IP. 2.虚拟机连接网络配置校园网账号密码 1buaalogin config  连接网络 1buaalogin login  运行结果   3.实验切换到root权限 1su">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络存储第一次试验--RAID">
+<meta property="og:url" content="https://xenonga.github.io/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/index.html">
+<meta property="og:site_name" content="Xenon的小破站">
+<meta property="og:description" content="网络存储Lab1-RAID一、实验流程1.登录虚拟机在cmd中输入如下命令，输入密码后即可连接至虚拟机。 1ssh -l buaa 10.251.255.228  其中buaa为用户名，10.251.255.228为虚拟机IP. 2.虚拟机连接网络配置校园网账号密码 1buaalogin config  连接网络 1buaalogin login  运行结果   3.实验切换到root权限 1su">
+<meta property="og:locale">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="article:published_time" content="2023-09-30T01:57:51.000Z">
+<meta property="article:modified_time" content="2023-09-30T02:00:10.962Z">
+<meta property="article:author" content="Jiaxuan Gao">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xenonga.github.io/img/404.jpg">
+
+    <meta name="keywords" content="RAID">
+
+
+<title >网络存储第一次试验--RAID</title>
+
+<!-- Favicon -->
+
+    <link href='/rabbit-16%C3%9716.png?v=2.0.3' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"xenonga.github.io","author":"Jiaxuan Gao","root":"/","typed_text":["a SE Learner"],"theme_version":"2.0.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"rabbit-32×32.png","icon16":"rabbit-16×16.png","icon32":"rabbit-32×32.png","appleTouchIcon":"rabbit-32×32.png","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2023-09-30 10:00:10"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.0.3" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" data-scroll-container style="opacity: 0">
+          <div data-scroll-section id="content" class="trm-scroll-section">
+
+            <div class="locomotive-scroll__sticky-target" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none;"></div>
+
+            <!-- top bar -->
+            <header class="trm-top-bar" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/rabbit-32%C3%9732.png">
+    
+    
+        <div class="trm-logo-text">
+            Xe<span>non</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    主页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a  href="/categories/OS/" target="">
+                            OS
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/SoftwareEngineering/" target="">
+                            软件工程
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/DataBase/" target="">
+                            数据管理技术
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/about/" target="">
+                    关于
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner" data-scroll data-scroll-direction="vertical">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" data-scroll data-scroll-direction="vertical" data-scroll-speed="-3" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container" data-scroll data-scroll-direction="vertical" data-scroll-speed="0">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            网络存储第一次试验--RAID
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2023
+                                    </span
+                                ></li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <a href="#about-triger" data-scroll-to="#about-triger" data-scroll-offset="-130" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </a>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div id="page-sidebar" class="col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    
+
+<div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card" data-scroll data-scroll-repeat data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="60"> 
+    
+        <div class="trm-user-tabs" id="sidebar-tabs">
+           <div class="trm-tabs-nav trm-mb-40" id="trm-tabs-nav">
+                <div data-to="tabs-user" class="trm-tabs-nav-item">
+                    <i class="iconfont fas fa-user-alt"></i>
+                </div>
+                <div data-to="tabs-toc" class="trm-tabs-nav-item active">
+                    <i class="iconfont fas fa-th-list"></i>
+                </div>
+           </div>
+            <div name="tabs-user" class="trm-tabs-item">
+                <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/rabbit.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        Xenon的小破站
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+                <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/XenonGa/" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+        <a href="https://gitee.com/X2283509194" title="gitee" rel="nofollow" target="_blank">
+            <i class="iconfont iconfont cg-gitee"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+                <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                地球
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                城市:
+            </div>
+            <div class="trm-label trm-label-light">
+                北京
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                20
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+                
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:2283509194@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+            </div>
+            <div name="tabs-toc" class="trm-tabs-item active">
+                <div class="post-toc">
+    <ol class="toc"><li class="toc-item toc-level-1"><a rel="nofollow" class="toc-link" href="#网络存储Lab1-RAID"  data-scroll-to="#网络存储Lab1-RAID"><span class="toc-number">1.</span> <span class="toc-text">网络存储Lab1-RAID</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#一、实验流程"  data-scroll-to="#一、实验流程"><span class="toc-number">1.1.</span> <span class="toc-text">一、实验流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#1-登录虚拟机"  data-scroll-to="#1-登录虚拟机"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.登录虚拟机</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#2-虚拟机连接网络"  data-scroll-to="#2-虚拟机连接网络"><span class="toc-number">1.1.2.</span> <span class="toc-text">2.虚拟机连接网络</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#3-实验"  data-scroll-to="#3-实验"><span class="toc-number">1.1.3.</span> <span class="toc-text">3.实验</span></a></li></ol></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#二、思考题"  data-scroll-to="#二、思考题"><span class="toc-number">1.2.</span> <span class="toc-text">二、思考题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#1-为什么及在什么条件下选择用-RAID"  data-scroll-to="#1-为什么及在什么条件下选择用-RAID"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.为什么及在什么条件下选择用 RAID</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#2-RAID-amp-分布式存储-amp-集中存储的区别"  data-scroll-to="#2-RAID-amp-分布式存储-amp-集中存储的区别"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.RAID &amp; 分布式存储 &amp; 集中存储的区别</span></a></li></ol></li></ol></li></ol>
+</div>
+            </div>
+        </div>
+    
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div id="page-content" class="col-lg-8">
+                <div class="trm-content" id="trm-content">
+                    <div data-scroll data-scroll-repeat data-scroll-offset="500" id="about-triger"></div>
+
+                    <div id="post-info" class="row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            09/30
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            09:57
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Xenon
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="网络存储Lab1-RAID"><a href="#网络存储Lab1-RAID" class="headerlink" title="网络存储Lab1-RAID"></a>网络存储Lab1-RAID</h1><h2 id="一、实验流程"><a href="#一、实验流程" class="headerlink" title="一、实验流程"></a>一、实验流程</h2><h3 id="1-登录虚拟机"><a href="#1-登录虚拟机" class="headerlink" title="1.登录虚拟机"></a>1.登录虚拟机</h3><p>在cmd中输入如下命令，输入密码后即可连接至虚拟机。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh -l buaa 10.251.255.228</span><br></pre></td></tr></table></figure>
+
+<p>其中buaa为用户名，10.251.255.228为虚拟机IP.</p>
+<h3 id="2-虚拟机连接网络"><a href="#2-虚拟机连接网络" class="headerlink" title="2.虚拟机连接网络"></a>2.虚拟机连接网络</h3><p>配置校园网账号密码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">buaalogin config</span><br></pre></td></tr></table></figure>
+
+<p>连接网络</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">buaalogin login</span><br></pre></td></tr></table></figure>
+
+<p>运行结果</p>
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928200625408.png" class="" title="image-20230928200625408" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h3 id="3-实验"><a href="#3-实验" class="headerlink" title="3.实验"></a>3.实验</h3><p>切换到root权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo -i</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928201056846.png" class="" title="image-20230928201056846" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="使用LVM为根目录扩容"><a href="#使用LVM为根目录扩容" class="headerlink" title="使用LVM为根目录扩容"></a>使用LVM为根目录扩容</h4><p>查看虚拟机的磁盘列表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsblk -d</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928201358421.png" class="" title="image-20230928201358421" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>其中sda为系统所在磁盘，容量为20GB。</p>
+<p>查看根目录<code>/</code>的容量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">df</span> -lh /</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928202024277.png" class="" title="image-20230928202024277" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>根目录容量为15GB，存在在sda中没有利用到的空间。</p>
+<p>通过<code>fdisk</code>指令给空闲的磁盘空间分区</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fdisk /dev/sda</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928202615999.png" class="" title="image-20230928202615999" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>在<code>Command (m for help):</code>后输入<code>n</code>，之后使用默认值，默认按磁盘最大容量分区。</p>
+<p>在<code>Command (m for help):</code>后输入<code>t</code>，默认新创建的分区，输入<code>31</code>选择Linux LVM分区类型</p>
+<p>在<code>Command (m for help):</code>后输入<code>w</code>保存</p>
+<p>创建物理卷(PV)， 命名格式一般为 <code>磁盘名+分区号</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pvcreate /dev/sda4</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928203110723.png" class="" title="image-20230928203110723" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<p>查看卷组（VG）列表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vgdisplay</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928203253131.png" class="" title="image-20230928203253131" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>以上内容为Ubuntu在系统安装时已创建好的默认卷组</p>
+<p>将刚创建的物理卷加入卷组</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vgextend ubuntu-vg /dev/sda4</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928203633930.png" class="" title="image-20230928203633930" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<p>查看逻辑卷（LV）列表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lvdisplay</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928203830478.png" class="" title="image-20230928203830478" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<p>将逻辑卷扩容，然后为文件系统（ext4类型）扩容</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lvextend -l +100%FREE /dev/ubuntu-vg/ubuntu-lv</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928203911846.png" class="" title="image-20230928203911846" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">resize2fs /dev/ubuntu-vg/ubuntu-lv</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928203944718.png" class="" title="image-20230928203944718" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<p>查看根目录容量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">df</span> -lh /</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928204056703.png" class="" title="image-20230928204056703" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>根目录由15GB扩容至19GB。</p>
+<h4 id="RAID阵列搭建"><a href="#RAID阵列搭建" class="headerlink" title="RAID阵列搭建"></a>RAID阵列搭建</h4><p>安装mdadm工具</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install mdadm</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928205047809.png" class="" title="image-20230928205047809" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<h5 id="RAID-1"><a href="#RAID-1" class="headerlink" title="RAID 1"></a>RAID 1</h5><p>使用命令创建 RAID 1</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mdadm -Cv /dev/md1 -a <span class="built_in">yes</span> -n 2 -l 1 /dev/sd&#123;b,c&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928205508842.png" class="" title="image-20230928205508842" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<p>将创建好的RAID 1阵列格式化为ext4文件系统</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkfs.ext4 /dev/md1</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928205727017.png" class="" title="image-20230928205727017" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<p>查看 RAID 1 阵列的摘要信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mdadm -Q /dev/md1</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928205829777.png" class="" title="image-20230928205829777" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>可以看到两块10GB的磁盘组成的 RAID 1 阵列容量约为1GB</p>
+<p>将 RAID 1 阵列临时挂载到<code>/mnt/raid1</code>目录下，测试文件读写</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /mnt/raid1/</span><br><span class="line">mount /dev/md1 /mnt/raid1</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;Hello, world!&#x27;</span> &gt; /mnt/raid1/hello</span><br><span class="line"><span class="built_in">cat</span> /mnt/raid1/hello</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928210130969.png" class="" title="image-20230928210130969" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>文件读写正常。</p>
+<p>模拟阵列中的一块磁盘损坏</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mdadm /dev/md1 -f /dev/sdb</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928210239992.png" class="" title="image-20230928210239992" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<p>再次读取文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /mnt/raid1/hello</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928210313041.png" class="" title="image-20230928210313041" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>文件读写仍然正常。</p>
+<p>删除该阵列，释放磁盘空间</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">umount /mnt/raid1 </span><br><span class="line">mdadm -S /dev/md1</span><br><span class="line">mdadm --zero-superblock /dev/sd&#123;b,c&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928210438755.png" class="" title="image-20230928210438755" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<h5 id="RAID-5"><a href="#RAID-5" class="headerlink" title="RAID 5"></a>RAID 5</h5><p>创建RAID 5</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mdadm -Cv /dev/md5 -a <span class="built_in">yes</span> -n 5 -l 5 /dev/sd&#123;b,c,d,e,f&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928211433251.png" class="" title="image-20230928211433251" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<p>将创建好的RAID 5阵列格式化为ext4文件系统</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkfs.ext4 /dev/md5</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928211817743.png" class="" title="image-20230928211817743" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<p>查看 RAID 5 阵列的摘要信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mdadm -Q /dev/md5</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928212157889.png" class="" title="image-20230928212157889" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<p>将 RAID 5 阵列临时挂载到<code>/mnt/raid5</code>目录下，测试文件读写</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> -p /mnt/raid5/</span><br><span class="line">mount /dev/md5 /mnt/raid5</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;Hello, world!&#x27;</span> &gt; /mnt/raid5/hello</span><br><span class="line"><span class="built_in">cat</span> /mnt/raid5/hello</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928212452794.png" class="" title="image-20230928212452794" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<p>模拟阵列中的一块磁盘损坏</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mdadm /dev/md5 -f /dev/sdb</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928213112256.png" class="" title="image-20230928213112256" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<p>再次读取文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /mnt/raid5/hello</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928213208085.png" class="" title="image-20230928213208085" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>文件读取正常</p>
+<p>依次模拟阵列中磁盘损坏，每损坏一块磁盘读取一次文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mdadm /dev/md5 -f /dev/sdc</span><br><span class="line">mdadm /dev/md5 -f /dev/sdd</span><br><span class="line">mdadm /dev/md5 -f /dev/sde</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928213516188.png" class="" title="image-20230928213516188" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>显示如上，此时&#x2F;dev&#x2F;md5正在重建 RAID 阵列，其他设备参与重建过程，显示忙碌。</p>
+<p>再次读取文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /mnt/raid5/hello</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928213208085.png" class="" title="image-20230928213208085" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>文件读取正常</p>
+<p>删除该阵列并释放磁盘空间</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">umount /mnt/raid5</span><br><span class="line">mdadm -S /dev/md5</span><br><span class="line">mdadm --zero-superblock /dev/sd&#123;b,c,d,e,f&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="RAID-0"><a href="#RAID-0" class="headerlink" title="RAID 0"></a>RAID 0</h5><p>给待使用的磁盘分区</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fdisk /dev/sdb</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928213917327.png" class="" title="image-20230928213917327" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>在<code>Command (m for help):</code>后面输入<code>n</code>，之后全部采用默认值。</p>
+<p>在<code>Command (m for help):</code>后面输入<code>w</code>保存。</p>
+<p>新分区名称默认为<code>/dev/sdb1</code>。</p>
+<p>同理，为<code>/dev/sdc</code>也创建一个分区<code>/dev/sdc1</code>。</p>
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928214234259.png" class="" title="image-20230928214234259" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<p>在这两个分区上创建RAID 0阵列</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mdadm -Cv /dev/md0 -a <span class="built_in">yes</span> -n 2 -l 0 /dev/sd&#123;b1,c1&#125;</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928214120309.png" class="" title="image-20230928214120309" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<p>使用fdisk删除分区</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fdisk /dev/sdb</span><br></pre></td></tr></table></figure>
+
+<p>在<code>Command (m for help):</code>后面输入<code>d</code>，然后在<code>Command (m for help):</code>后面输入<code>w</code>保存</p>
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928214415753.png" class="" title="image-20230928214415753" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>显示 Device or resource busy，说明设备或资源忙碌，无法删除分区</p>
+<p>更新分区表并重启</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">partprobe</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928214534254.png" class="" title="image-20230928214534254" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<p>重启后运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mdadm -Q /dev/md0</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/image-20230928214714466.png" class="" title="image-20230928214714466" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>发现 RAID 0 已损坏。</p>
+<h2 id="二、思考题"><a href="#二、思考题" class="headerlink" title="二、思考题"></a>二、思考题</h2><h3 id="1-为什么及在什么条件下选择用-RAID"><a href="#1-为什么及在什么条件下选择用-RAID" class="headerlink" title="1.为什么及在什么条件下选择用 RAID"></a>1.为什么及在什么条件下选择用 RAID</h3><p>选择使用RAID的原因:</p>
+<ul>
+<li>RAID 可以提供冗余性，即使其中一个磁盘出现故障，数据仍然可用。</li>
+<li>RAID 可以通过数据镜像、奇偶校验等技术来保护数据。当磁盘失效时，RAID 可以自动恢复数据，从而提供数据完整性和可靠性。</li>
+<li>某些RAID级别（如RAID 0）可以通过将数据分布在多个磁盘上来提高读写性能。这对于需要处理大量读写操作的应用程序（如数据库服务器）非常有益。</li>
+<li>RAID 可以将多个磁盘组合成一个逻辑卷，从而提供更大的存储容量。这对于大型文件服务器和数据存储需求不断增长的环境非常有用。</li>
+<li>RAID 可以简化存储管理和备份过程。它提供了一种集中管理多个磁盘的方法，并可以为管理员提供更好的可视化和监控功能。</li>
+</ul>
+<p>什么条件下选择用RAID：</p>
+<ul>
+<li>如果需要确保关键数据的安全性和连续性，以防止磁盘故障导致数据丢失或停机时间，可以选择使用RAID。RAID提供了不同级别的冗余，如RAID 1和RAID 5，以保护数据并提供容错能力。</li>
+<li>如果特定情景的应用程序需要处理大量读写操作，比如数据库服务器或视频编辑工作站，那么RAID 0或RAID 10等级可以提供更好的性能。</li>
+<li>如果需要大容量的存储空间来存储大量数据，RAID可以将多个磁盘组合在一起形成一个逻辑卷，提供更大的存储容量。RAID级别如RAID 5和RAID 6可提供相对较高的容量利用率。</li>
+<li>RAID可以集中管理多个磁盘，并提供易于管理和监控的界面。这简化了存储管理过程，并可以提供更好的可视化和监控功能。</li>
+<li>如果特定情境下的业务需要24&#x2F;7的高可用性，RAID可以提供容错和快速恢复功能。在磁盘故障时，RAID可以自动重建数据，并保持系统可用性。</li>
+</ul>
+<h3 id="2-RAID-amp-分布式存储-amp-集中存储的区别"><a href="#2-RAID-amp-分布式存储-amp-集中存储的区别" class="headerlink" title="2.RAID &amp; 分布式存储 &amp; 集中存储的区别"></a>2.RAID &amp; 分布式存储 &amp; 集中存储的区别</h3><p>RAID（冗余独立磁盘阵列）：</p>
+<ul>
+<li>RAID 是一种通过将多个磁盘组合在一起来提供高级数据保护和性能的技术。RAID 可以提供数据冗余、容错性和性能提升。</li>
+<li>RAID 技术运行在单个服务器上，并由 RAID 控制器管理。它将多个磁盘视为一个逻辑驱动器，提供冗余和&#x2F;或性能。常见的 RAID 级别包括 RAID 0、RAID 1、RAID 5、RAID 6 等。</li>
+</ul>
+<p>分布式存储：</p>
+<ul>
+<li>分布式存储是一种数据存储模型，数据被存储在多个节点（通常是多台服务器）上，通过网络连接进行访问和管理。</li>
+<li>分布式存储将数据划分成多个块并在不同的节点上存储这些数据块。每个节点负责存储一部分数据，并提供高可用性和扩展性。</li>
+<li>分布式存储通常采用冗余备份技术，如数据复制或编码，以保证数据的可靠性和容错性。常见的分布式存储系统包括Hadoop HDFS、Ceph等。</li>
+</ul>
+<p>集中存储：</p>
+<ul>
+<li>集中存储是将数据集中存储在一个中心位置的存储设备（通常是存储服务器或网络存储设备）上的技术。</li>
+<li>所有的数据都存储在一个集中的设备上，用户可以通过网络访问并共享这些数据。集中存储提供了集中管理和共享存储资源的优势。</li>
+<li>集中存储可以使用各种技术，如网络附加存储（NAS）和存储区域网络（SAN），以提供高速数据访问和可扩展性</li>
+</ul>
+
+</article>
+    
+    
+</div>
+<div id="post-next-prev" class="row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-blog-card trm-scroll-animation" data-scroll data-scroll-offset="40">
+        <a href="/2023/08/20/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94pygame/" class="trm-cover-frame trm-anima-link">
+            
+            
+                <img alt="cover" class="no-fancybox" src="https://images.pexels.com/photos/18001513/pexels-photo-18001513.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2">
+            
+        </a>
+        
+        <div class="trm-card-descr">
+            <div class="trm-label trm-category trm-mb-20">
+                <a href=" /categories/pygame/">
+                    pygame
+                </a>
+            </div>
+            <h5>
+                <a href="/2023/08/20/%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%AE%9E%E8%B7%B5%E2%80%94%E2%80%94pygame/" class="trm-anima-link">
+                    程序设计实践——pygame
+                </a>
+            </h5>
+            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>23/08/20</li>
+                <li>21:21</li>
+                
+                    <li>3.3k</li>
+                
+                
+                    <li>12</li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation" data-scroll data-scroll-offset="50">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2023- 2023</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">Xenon的小破站</span>
+        </div>
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.3.0
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                主题 - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.0.3
+            </span>
+        </div>
+      
+
+     
+
+     
+</footer>
+ 
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            <div class="trm-fixed-container" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="单栏和双栏切换" onclick="asyncFun.switchSingleColumn()">
+            <i class="iconfont fas fa-arrows-alt-h"></i>
+        </div>
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+          </div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.0.3"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.0.3"></script>
+
+  <!-- 《页面点击小红心 -->
+  <!-- -->
+  <!-- 页面点击小红心》 -->
+
+  <!--鼠标点击烟花爆炸效果，需要引入jQuery-->
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+    <script type="text/javascript" src="/js/fireworks.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+
+</html>
