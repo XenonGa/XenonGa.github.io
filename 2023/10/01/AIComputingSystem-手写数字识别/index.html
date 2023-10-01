@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="AIComputingSystem-手写数字识别实验2.1 基于三层神经网络实现手写数字分类1.介绍一下“手写数字分类任务”和本实验中使用的数据集。本实验采用的数据集为 MNIST 手写数字库。 MNIST数据集是从NIST的两个手写数字数据集：Special Database 3 和Special Database 1中分别取出部分图像，并经过一些图像处理后得到的。 MNIST数据集共有7000">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AIComputingSystem-手写数字识别">
+<meta property="og:url" content="https://xenonga.github.io/2023/10/01/AIComputingSystem-%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E8%AF%86%E5%88%AB/index.html">
+<meta property="og:site_name" content="Xenon的小破站">
+<meta property="og:description" content="AIComputingSystem-手写数字识别实验2.1 基于三层神经网络实现手写数字分类1.介绍一下“手写数字分类任务”和本实验中使用的数据集。本实验采用的数据集为 MNIST 手写数字库。 MNIST数据集是从NIST的两个手写数字数据集：Special Database 3 和Special Database 1中分别取出部分图像，并经过一些图像处理后得到的。 MNIST数据集共有7000">
+<meta property="og:locale">
+<meta property="article:published_time" content="2023-10-01T08:56:32.000Z">
+<meta property="article:modified_time" content="2023-10-01T09:10:16.326Z">
+<meta property="article:author" content="Jiaxuan Gao">
+<meta name="twitter:card" content="summary">
+
+    <meta name="keywords" content="deepLearning">
+
+
+<title >AIComputingSystem-手写数字识别</title>
+
+<!-- Favicon -->
+
+    <link href='/rabbit-16%C3%9716.png?v=2.0.3' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"xenonga.github.io","author":"Jiaxuan Gao","root":"/","typed_text":["a SE Learner"],"theme_version":"2.0.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"rabbit-32×32.png","icon16":"rabbit-16×16.png","icon32":"rabbit-32×32.png","appleTouchIcon":"rabbit-32×32.png","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2023-10-01 17:10:16"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.0.3" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" data-scroll-container style="opacity: 0">
+          <div data-scroll-section id="content" class="trm-scroll-section">
+
+            <div class="locomotive-scroll__sticky-target" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none;"></div>
+
+            <!-- top bar -->
+            <header class="trm-top-bar" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/rabbit-32%C3%9732.png">
+    
+    
+        <div class="trm-logo-text">
+            Xe<span>non</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    主页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a  href="/categories/OS/" target="">
+                            OS
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/SoftwareEngineering/" target="">
+                            软件工程
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/DataBase/" target="">
+                            数据管理技术
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/about/" target="">
+                    关于
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner" data-scroll data-scroll-direction="vertical">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" data-scroll data-scroll-direction="vertical" data-scroll-speed="-3" src="https://pic1.zhimg.com/v2-b3c2c6745b9421a13a3c4706b19223b3_r.jpg">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container" data-scroll data-scroll-direction="vertical" data-scroll-speed="0">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            Hi my new friend!
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            AIComputingSystem-手写数字识别
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2023
+                                    </span
+                                ></li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <a href="#about-triger" data-scroll-to="#about-triger" data-scroll-offset="-130" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </a>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div id="page-sidebar" class="col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    
+
+<div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card" data-scroll data-scroll-repeat data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="60"> 
+    
+        <div class="trm-user-tabs" id="sidebar-tabs">
+           <div class="trm-tabs-nav trm-mb-40" id="trm-tabs-nav">
+                <div data-to="tabs-user" class="trm-tabs-nav-item">
+                    <i class="iconfont fas fa-user-alt"></i>
+                </div>
+                <div data-to="tabs-toc" class="trm-tabs-nav-item active">
+                    <i class="iconfont fas fa-th-list"></i>
+                </div>
+           </div>
+            <div name="tabs-user" class="trm-tabs-item">
+                <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/rabbit.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        Xenon的小破站
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+                <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/XenonGa/" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+        <a href="https://gitee.com/X2283509194" title="gitee" rel="nofollow" target="_blank">
+            <i class="iconfont iconfont cg-gitee"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+                <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                地球
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                城市:
+            </div>
+            <div class="trm-label trm-label-light">
+                北京
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                20
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+                
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:2283509194@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+            </div>
+            <div name="tabs-toc" class="trm-tabs-item active">
+                <div class="post-toc">
+    <ol class="toc"><li class="toc-item toc-level-1"><a rel="nofollow" class="toc-link" href="#AIComputingSystem-手写数字识别"  data-scroll-to="#AIComputingSystem-手写数字识别"><span class="toc-number">1.</span> <span class="toc-text">AIComputingSystem-手写数字识别</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#实验2-1-基于三层神经网络实现手写数字分类"  data-scroll-to="#实验2-1-基于三层神经网络实现手写数字分类"><span class="toc-number">1.1.</span> <span class="toc-text">实验2.1 基于三层神经网络实现手写数字分类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#1-介绍一下“手写数字分类任务”和本实验中使用的数据集。"  data-scroll-to="#1-介绍一下“手写数字分类任务”和本实验中使用的数据集。"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.介绍一下“手写数字分类任务”和本实验中使用的数据集。</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#2-本实验的神经网络都包含哪些层？各个层的功能是什么？"  data-scroll-to="#2-本实验的神经网络都包含哪些层？各个层的功能是什么？"><span class="toc-number">1.1.2.</span> <span class="toc-text">2.本实验的神经网络都包含哪些层？各个层的功能是什么？</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#3-网络的训练-training-过程和网络的推理-inference-过程有什么区别？"  data-scroll-to="#3-网络的训练-training-过程和网络的推理-inference-过程有什么区别？"><span class="toc-number">1.1.3.</span> <span class="toc-text">3.网络的训练(training)过程和网络的推理(inference)过程有什么区别？</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#4-参数和超参数的区别是什么？本实验中都使用了哪些超参数？"  data-scroll-to="#4-参数和超参数的区别是什么？本实验中都使用了哪些超参数？"><span class="toc-number">1.1.4.</span> <span class="toc-text">4.参数和超参数的区别是什么？本实验中都使用了哪些超参数？</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#5-什么是正则化？有哪些正则化技术？"  data-scroll-to="#5-什么是正则化？有哪些正则化技术？"><span class="toc-number">1.1.5.</span> <span class="toc-text">5.什么是正则化？有哪些正则化技术？</span></a></li></ol></li><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#实验2-2-基于-DLP-平台实现手写数字分类"  data-scroll-to="#实验2-2-基于-DLP-平台实现手写数字分类"><span class="toc-number">1.2.</span> <span class="toc-text">实验2.2 基于 DLP 平台实现手写数字分类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#1-什么是量化？量化会带来什么好处-x2F-坏处？"  data-scroll-to="#1-什么是量化？量化会带来什么好处-x2F-坏处？"><span class="toc-number">1.2.1.</span> <span class="toc-text">1.什么是量化？量化会带来什么好处&#x2F;坏处？</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#2-pycnml、CNML库以及DLP之间的关系是什么？"  data-scroll-to="#2-pycnml、CNML库以及DLP之间的关系是什么？"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.pycnml、CNML库以及DLP之间的关系是什么？</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#3-使用DLP相对于CPU有哪些优势和劣势"  data-scroll-to="#3-使用DLP相对于CPU有哪些优势和劣势"><span class="toc-number">1.2.3.</span> <span class="toc-text">3.使用DLP相对于CPU有哪些优势和劣势?</span></a></li></ol></li></ol></li></ol>
+</div>
+            </div>
+        </div>
+    
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div id="page-content" class="col-lg-8">
+                <div class="trm-content" id="trm-content">
+                    <div data-scroll data-scroll-repeat data-scroll-offset="500" id="about-triger"></div>
+
+                    <div id="post-info" class="row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            10/01
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            16:56
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Xenon
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h1 id="AIComputingSystem-手写数字识别"><a href="#AIComputingSystem-手写数字识别" class="headerlink" title="AIComputingSystem-手写数字识别"></a>AIComputingSystem-手写数字识别</h1><h2 id="实验2-1-基于三层神经网络实现手写数字分类"><a href="#实验2-1-基于三层神经网络实现手写数字分类" class="headerlink" title="实验2.1 基于三层神经网络实现手写数字分类"></a>实验2.1 基于三层神经网络实现手写数字分类</h2><h3 id="1-介绍一下“手写数字分类任务”和本实验中使用的数据集。"><a href="#1-介绍一下“手写数字分类任务”和本实验中使用的数据集。" class="headerlink" title="1.介绍一下“手写数字分类任务”和本实验中使用的数据集。"></a>1.介绍一下“手写数字分类任务”和本实验中使用的数据集。</h3><p>本实验采用的数据集为 MNIST 手写数字库。</p>
+<p>MNIST数据集是从NIST的两个手写数字数据集：Special Database 3 和Special Database 1中分别取出部分图像，并经过一些图像处理后得到的。</p>
+<p>MNIST数据集共有70000张图像，其中训练集60000张，测试集10000张。所有图像都是28×28的灰度图像，每张图像包含一个手写数字。</p>
+<p>该数据集中的图像数据和标记数据采用IDX格式的文件存放。图像的像素值按行优先顺序存放，取值范围为[0, 255]，其中0表示黑色，255表示白色。</p>
+<h3 id="2-本实验的神经网络都包含哪些层？各个层的功能是什么？"><a href="#2-本实验的神经网络都包含哪些层？各个层的功能是什么？" class="headerlink" title="2.本实验的神经网络都包含哪些层？各个层的功能是什么？"></a>2.本实验的神经网络都包含哪些层？各个层的功能是什么？</h3><p>全连接层：将输入数据与每个神经元之间建立全连接关系，每个神经元都与前一层的所有神经元相连，并通过学习可调节的权重来进行信息传递和转换。</p>
+<p>ReLU激活函数层：对输入信号进行非线性变换，通过将负值设为零来去除负值部分并保留正值部分，可以有效地解决梯度消失问题。</p>
+<p>softmax损失层：将神经网络的输出转化为概率分布。</p>
+<h3 id="3-网络的训练-training-过程和网络的推理-inference-过程有什么区别？"><a href="#3-网络的训练-training-过程和网络的推理-inference-过程有什么区别？" class="headerlink" title="3.网络的训练(training)过程和网络的推理(inference)过程有什么区别？"></a>3.网络的训练(training)过程和网络的推理(inference)过程有什么区别？</h3><p>在训练过程中，网络的目标是通过输入数据和对应的标签之间的比较来学习和调整参数，以最小化预定义的损失函数。而在推理过程中，网络的目标是根据给定的输入数据，生成相应的输出结果。</p>
+<p>在训练过程中，通常会使用训练数据集，其中包含输入数据和对应的标签。网络通过反向传播算法和优化算法来更新参数，以逐步提高在训练数据上的性能。而在推理过程中，使用的是新的、未知的输入数据，网络根据已经学习到的参数对这些数据进行预测或分类。</p>
+<p>在训练过程中，网络的参数会通过反向传播和优化算法进行更新，以最小化损失函数。而在推理过程中，网络的参数是固定的，不再进行更新，保持训练阶段学习到的状态。</p>
+<p>训练过程通常需要更大的计算量和时间，因为其涉及到反向传播、梯度计算和参数更新等复杂操作。推理过程只需要前向传播，通常速度更快。</p>
+<h3 id="4-参数和超参数的区别是什么？本实验中都使用了哪些超参数？"><a href="#4-参数和超参数的区别是什么？本实验中都使用了哪些超参数？" class="headerlink" title="4.参数和超参数的区别是什么？本实验中都使用了哪些超参数？"></a>4.参数和超参数的区别是什么？本实验中都使用了哪些超参数？</h3><p>参数：模型内部的可学习变量，用于表示模型的权重和偏置。其值通过训练过程中的优化算法来自动调整，以使得模型能够适应训练数据。参数是模型直接从数据中学习得到的，其值可以根据训练数据的特征和目标进行调整，以最小化损失函数。参数通常由模型的层定义，并且在训练过程中通过反向传播算法来更新。</p>
+<p>超参数：在训练模型之前设置的配置参数，用于控制模型的学习过程和性能。</p>
+<p>超参数不是通过模型训练过程自动学习得到的，而是由开发者在训练之前手动选择或调整的。超参数的值对模型的性能和训练过程具有重要影响，如学习率、批次大小、网络层数、神经元数量等。</p>
+<p>本实验中的超参数：<br><code>batch_size</code>：批次大小。它指定了每个训练批次中包含的样本数量。input_size：输入大小。它表示输入数据的特征维度或输入向量的长度。</p>
+<p><code>hidden1</code>：第一个隐藏层的神经元数量。</p>
+<p><code>hidden2</code>：第二个隐藏层的神经元数量。</p>
+<p><code>out_classes</code>：输出类别数量。它表示模型要预测的类别数量，例如在分类问题中的类别数目。</p>
+<p><code>lr</code>：学习率。它决定了在每次参数更新中，参数沿着梯度方向更新的步长大小。</p>
+<p><code>max_epoch</code>：最大训练轮数。它指定了训练过程中的最大迭代次数或轮数。</p>
+<p><code>print_iter</code>：打印间隔。它表示每隔多少个迭代或批次，打印一次训练状态或结果。</p>
+<h3 id="5-什么是正则化？有哪些正则化技术？"><a href="#5-什么是正则化？有哪些正则化技术？" class="headerlink" title="5.什么是正则化？有哪些正则化技术？"></a>5.什么是正则化？有哪些正则化技术？</h3><p>正则化：一种用于减少机器学习模型过拟合的技术。正则化通过在模型的损失函数中引入额外的惩罚项，以限制模型参数的大小或复杂性，从而提高模型的泛化能力。</p>
+<p>L1正则化： L1正则化通过在损失函数中添加模型参数的绝对值之和作为惩罚项。它倾向于产生稀疏的参数向量，即将一些参数设置为零，从而实现特征选择和降维的效果。</p>
+<p>L2正则化： L2正则化通过在损失函数中添加模型参数的平方和的一半作为惩罚项。它倾向于使参数的值较小，并且不会将参数完全设置为零，从而保留了所有特征。</p>
+<p>ElasticNet正则化： ElasticNet正则化是L1正则化和L2正则化的组合，通过在损失函数中同时添加L1和L2的惩罚项。它可以克服L1正则化在某些情况下选择过多特征的问题，并结合了L1和L2的优点。</p>
+<p>Dropout正则化： Dropout正则化是一种在神经网络中应用的正则化方法。它在训练过程中随机地将一部分神经元的输出设置为零，从而强制模型在没有某些神经元的情况下进行训练。这有助于减少神经网络对于特定神经元的依赖性，提高模型的鲁棒性和泛化能力。</p>
+<p>数据增强（Data Augmentation）： 数据增强是一种通过对训练数据进行随机变换来扩充数据集的技术。通过应用随机旋转、平移、缩放、翻转等变换，可以生成更多的训练样本，降低模型对于训练数据的过拟合风险。</p>
+<h2 id="实验2-2-基于-DLP-平台实现手写数字分类"><a href="#实验2-2-基于-DLP-平台实现手写数字分类" class="headerlink" title="实验2.2 基于 DLP 平台实现手写数字分类"></a>实验2.2 基于 DLP 平台实现手写数字分类</h2><h3 id="1-什么是量化？量化会带来什么好处-x2F-坏处？"><a href="#1-什么是量化？量化会带来什么好处-x2F-坏处？" class="headerlink" title="1.什么是量化？量化会带来什么好处&#x2F;坏处？"></a>1.什么是量化？量化会带来什么好处&#x2F;坏处？</h3><p>量化：对神经网络中的权重或偏置等参数用低精度的数据表示。 </p>
+<p>好处：</p>
+<p>1.通过量化，可以大幅减少模型的存储需求，从而更容易在资源受限的设备上部署和使用深度学习模型。</p>
+<p>2.量化可以减少模型的计算开销，包括内存带宽和乘法操作的数量，从而加速模型的推理速度。</p>
+<p>3.由于量化可以减少乘法操作和数据传输，因此可以降低模型的能耗，使得在功耗敏感的环境中更加高效。</p>
+<p>坏处：</p>
+<p>1.量化可能导致模型精度的小幅下降，特别是当量化位数较低时。低精度表示可能无法准确表示模型的复杂特征，从而影响模型性能。</p>
+<p>2.对于量化模型，训练和调优过程可能更加复杂，因为需要考虑量化的影响，并使用特定的量化训练技术和算法。</p>
+<h3 id="2-pycnml、CNML库以及DLP之间的关系是什么？"><a href="#2-pycnml、CNML库以及DLP之间的关系是什么？" class="headerlink" title="2.pycnml、CNML库以及DLP之间的关系是什么？"></a>2.pycnml、CNML库以及DLP之间的关系是什么？</h3><ul>
+<li>pycnml 是一个 Python 库，是一个用于编写和执行深度学习模型的库。</li>
+<li>CNML库提供了一组底层函数和指令，用于在 Cambricon 系列芯片上优化和执行深度学习模型。CNML 库可以与 pycnml 结合使用，用于在寒武纪处理器上部署和执行深度学习模型。</li>
+<li>DLP是深度学习处理器平台，可为pycnml与CNML的运行提供硬件环境。</li>
+</ul>
+<h3 id="3-使用DLP相对于CPU有哪些优势和劣势"><a href="#3-使用DLP相对于CPU有哪些优势和劣势" class="headerlink" title="3.使用DLP相对于CPU有哪些优势和劣势?"></a>3.使用DLP相对于CPU有哪些优势和劣势?</h3><p>优势：</p>
+<ol>
+<li>DLP专门设计用于深度学习任务，具有高度优化的硬件架构和指令集，可以实现高效的并行计算。相对于CPU，DLP可以同时处理多个计算任务，并且在深度学习模型的推理和训练过程中提供更高的性能。</li>
+<li>DLP通常采用专门的硬件设计和优化，以在相同的计算任务下提供更高的能效。由于深度学习任务的计算密集性质，使用DLP可以显著降低功耗，提高能源效率。</li>
+<li>DLP的硬件架构和指令集针对深度学习任务进行了优化，可以实现快速的矩阵乘法、卷积操作和激活函数计算等。这些优化可以加速深度学习模型的训练和推理过程，提高效率。</li>
+</ol>
+<p>劣势：</p>
+<ol>
+<li>相对于CPU而言，DLP的计算能力更专注于深度学习任务，但在通用计算方面的能力较弱。如果需要进行广泛的计算任务，CPU可能更适合，因为它具有更广泛的应用领域和通用计算能力。</li>
+<li>由于DLP是专门设计的硬件加速器，其软件和工具支持可能较为有限。使用DLP可能需要适配和优化深度学习框架、库和算法，以使其与特定的DLP平台兼容。</li>
+</ol>
+
+</article>
+    
+    
+</div>
+<div id="post-next-prev" class="row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-blog-card trm-scroll-animation" data-scroll data-scroll-offset="40">
+        <a href="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/" class="trm-cover-frame trm-anima-link">
+            
+            
+                <img alt="cover" class="no-fancybox" src="https://images.pexels.com/photos/18418268/pexels-photo-18418268.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2">
+            
+        </a>
+        
+        <div class="trm-card-descr">
+            <div class="trm-label trm-category trm-mb-20">
+                <a href=" /categories/NetworkStorage/">
+                    NetworkStorage
+                </a>
+            </div>
+            <h5>
+                <a href="/2023/09/30/%E7%BD%91%E7%BB%9C%E5%AD%98%E5%82%A8%E7%AC%AC%E4%B8%80%E6%AC%A1%E8%AF%95%E9%AA%8C-RAID/" class="trm-anima-link">
+                    网络存储第一次试验--RAID
+                </a>
+            </h5>
+            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>23/09/30</li>
+                <li>09:57</li>
+                
+                    <li>2k</li>
+                
+                
+                    <li>7</li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation" data-scroll data-scroll-offset="50">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2023- 2023</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">Xenon的小破站</span>
+        </div>
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.3.0
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                主题 - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.0.3
+            </span>
+        </div>
+      
+
+     
+
+     
+</footer>
+ 
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            <div class="trm-fixed-container" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="单栏和双栏切换" onclick="asyncFun.switchSingleColumn()">
+            <i class="iconfont fas fa-arrows-alt-h"></i>
+        </div>
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+          </div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.0.3"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.0.3"></script>
+
+  <!-- 《页面点击小红心 -->
+  <!-- -->
+  <!-- 页面点击小红心》 -->
+
+  <!--鼠标点击烟花爆炸效果，需要引入jQuery-->
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+    <script type="text/javascript" src="/js/fireworks.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+
+</html>
