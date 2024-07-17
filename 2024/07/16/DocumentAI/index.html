@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="Models and Datasets of Document AI1.Optical Character RecognitionTurning typed, handwritten, or printed text into machine-encoded text is known as Optical Character Recognition (OCR). It’s a widely st">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DocumentAI">
+<meta property="og:url" content="https://xenonga.github.io/2024/07/16/DocumentAI/index.html">
+<meta property="og:site_name" content="Xenon的小破站">
+<meta property="og:description" content="Models and Datasets of Document AI1.Optical Character RecognitionTurning typed, handwritten, or printed text into machine-encoded text is known as Optical Character Recognition (OCR). It’s a widely st">
+<meta property="og:locale">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="og:image" content="https://xenonga.github.io/img/404.jpg">
+<meta property="article:published_time" content="2024-07-16T15:32:25.000Z">
+<meta property="article:modified_time" content="2024-07-17T08:55:03.332Z">
+<meta property="article:author" content="Jiaxuan Gao">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xenonga.github.io/img/404.jpg">
+
+    <meta name="keywords" content="OCR, DocumentAI">
+
+
+<title >DocumentAI</title>
+
+<!-- Favicon -->
+
+    <link href='/rabbit-16%C3%9716.png?v=2.0.3' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/rabbit-32%C3%9732.png?v=2.0.3' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"xenonga.github.io","author":"Jiaxuan Gao","root":"/","typed_text":["a SE Learner"],"theme_version":"2.0.3","theme":{"switch":true,"default":"style-light"},"favicon":{"logo":"rabbit-32×32.png","icon16":"rabbit-16×16.png","icon32":"rabbit-32×32.png","appleTouchIcon":"rabbit-32×32.png","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-07-17 16:55:03"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.0.3" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+ 
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" data-scroll-container style="opacity: 0">
+          <div data-scroll-section id="content" class="trm-scroll-section">
+
+            <div class="locomotive-scroll__sticky-target" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none;"></div>
+
+            <!-- top bar -->
+            <header class="trm-top-bar" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/rabbit-32%C3%9732.png">
+    
+    
+        <div class="trm-logo-text">
+            Xe<span>non</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    主页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/categories/" target="">
+                    分类
+                </a>
+                
+                <ul>
+                    
+                    <li>
+                        <a  href="/categories/OS/" target="">
+                            OS
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/SoftwareEngineering/" target="">
+                            软件工程
+                        </a>
+                    </li>
+                    
+                    <li>
+                        <a  href="/categories/DataBase/" target="">
+                            数据管理技术
+                        </a>
+                    </li>
+                    
+                </ul>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/links/" target="">
+                    友链
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a data-no-swup href="/about/" target="">
+                    关于
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner" data-scroll data-scroll-direction="vertical">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" data-scroll data-scroll-direction="vertical" data-scroll-speed="-3" src="https://pic1.zhimg.com/v2-b3c2c6745b9421a13a3c4706b19223b3_r.jpg">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container" data-scroll data-scroll-direction="vertical" data-scroll-speed="0">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            Hi my new friend!
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            DocumentAI
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2024
+                                    </span
+                                ></li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <a href="#about-triger" data-scroll-to="#about-triger" data-scroll-offset="-130" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </a>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div id="page-sidebar" class="col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    
+
+<div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card" data-scroll data-scroll-repeat data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="60"> 
+    
+        <div class="trm-user-tabs" id="sidebar-tabs">
+           <div class="trm-tabs-nav trm-mb-40" id="trm-tabs-nav">
+                <div data-to="tabs-user" class="trm-tabs-nav-item">
+                    <i class="iconfont fas fa-user-alt"></i>
+                </div>
+                <div data-to="tabs-toc" class="trm-tabs-nav-item active">
+                    <i class="iconfont fas fa-th-list"></i>
+                </div>
+           </div>
+            <div name="tabs-user" class="trm-tabs-item">
+                <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/img/rabbit.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        Xenon的小破站
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+                <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/XenonGa/" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+        <a href="https://gitee.com/X2283509194" title="gitee" rel="nofollow" target="_blank">
+            <i class="iconfont iconfont cg-gitee"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+                <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                地球
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                城市:
+            </div>
+            <div class="trm-label trm-label-light">
+                北京
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                20
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+                
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:2283509194@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+            </div>
+            <div name="tabs-toc" class="trm-tabs-item active">
+                <div class="post-toc">
+    <ol class="toc"><li class="toc-item toc-level-2"><a rel="nofollow" class="toc-link" href="#Models-and-Datasets-of-Document-AI"  data-scroll-to="#Models-and-Datasets-of-Document-AI"><span class="toc-number">1.</span> <span class="toc-text">Models and Datasets of Document AI</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#1-Optical-Character-Recognition"  data-scroll-to="#1-Optical-Character-Recognition"><span class="toc-number">1.1.</span> <span class="toc-text">1.Optical Character Recognition</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#2-Multi-Functional-Document-AI"  data-scroll-to="#2-Multi-Functional-Document-AI"><span class="toc-number">1.2.</span> <span class="toc-text">2.Multi Functional Document AI</span></a></li><li class="toc-item toc-level-3"><a rel="nofollow" class="toc-link" href="#3-Datasets"  data-scroll-to="#3-Datasets"><span class="toc-number">1.3.</span> <span class="toc-text">3.Datasets</span></a></li></ol></li></ol>
+</div>
+            </div>
+        </div>
+    
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div id="page-content" class="col-lg-8">
+                <div class="trm-content" id="trm-content">
+                    <div data-scroll data-scroll-repeat data-scroll-offset="500" id="about-triger"></div>
+
+                    <div id="post-info" class="row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            07/16
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            23:32
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            Xenon
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h2 id="Models-and-Datasets-of-Document-AI"><a href="#Models-and-Datasets-of-Document-AI" class="headerlink" title="Models and Datasets of Document AI"></a>Models and Datasets of Document AI</h2><h3 id="1-Optical-Character-Recognition"><a href="#1-Optical-Character-Recognition" class="headerlink" title="1.Optical Character Recognition"></a>1.<strong>Optical Character Recognition</strong></h3><p>Turning typed, handwritten, or printed text into machine-encoded text is known as Optical Character Recognition (OCR). It’s a widely studied problem with many well-established open-source and commercial offerings.</p>
+<h4 id="TrOCR-Transformer-based-Optical-Character-Recognition-with-Pre-trained-Models"><a href="#TrOCR-Transformer-based-Optical-Character-Recognition-with-Pre-trained-Models" class="headerlink" title="TrOCR: Transformer-based Optical Character Recognition with Pre-trained Models"></a><strong>TrOCR: Transformer-based Optical Character Recognition with Pre-trained Models</strong></h4><img src="/2024/07/16/DocumentAI/image-20240710145345597.png" class="" title="image-20240710145345597" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>The article “TrOCR: Transformer-based Optical Character Recognition with Pre-trained Models” introduces a novel OCR model called TrOCR. This model leverages pre-trained Transformer architectures for both image understanding and text generation, eliminating the need for CNNs and RNNs typically used in OCR systems. TrOCR uses pre-trained image Transformers (e.g., ViT, DeiT, BEiT) as encoders and pre-trained text Transformers (e.g., BERT, RoBERTa, MiniLM) as decoders, simplifying the model structure and enhancing performance. The model is trained in two stages: pre-training on large-scale synthetic data and fine-tuning on human-labeled datasets. TrOCR achieves state-of-the-art results on various OCR benchmarks, including printed, handwritten, and scene text recognition tasks. The models and code are publicly available for further research and development.</p>
+<p>Compared to other OCR models, TrOCR stands out by completely eliminating the use of CNNs and RNNs, which are traditionally used in image understanding and text generation tasks, respectively. Most existing OCR models rely on CNNs for feature extraction and RNNs for sequence modeling, often requiring additional language models for improved accuracy. TrOCR’s use of pre-trained Transformers for both tasks simplifies the architecture and leverages the advantages of large-scale pre-training. This distinguishes TrOCR from other models and showcases its potential for achieving superior performance with a more streamlined approach.</p>
+<p>The TrOCR article provides valuable insights that can be directly applied to the field of PDF conversion, especially in the context of extracting and recognizing text from PDF documents. </p>
+<p><strong>End-to-End Text Recognition</strong></p>
+<p>TrOCR’s approach of using an end-to-end Transformer-based model for OCR can streamline the PDF conversion process. Traditional PDF conversion systems might rely on separate stages for text detection and recognition. TrOCR’s unified approach can potentially simplify the pipeline, making it more efficient and less prone to errors.</p>
+<p><strong>Elimination of CNN and RNN Dependencies</strong></p>
+<p>TrOCR eliminates the need for CNNs and RNNs, which are commonly used in OCR tasks. This can reduce the complexity of your PDF conversion system, making it easier to implement and maintain.</p>
+<p><strong>Pre-training and Fine-tuning Strategy</strong></p>
+<p>The two-stage training process of TrOCR, involving pre-training on synthetic data and fine-tuning on human-labeled datasets, can be adapted to PDF conversion.</p>
+<p>​		</p>
+<h4 id="Nougat-Neural-Optical-Understanding-for-Academic-Documents"><a href="#Nougat-Neural-Optical-Understanding-for-Academic-Documents" class="headerlink" title="Nougat: Neural Optical Understanding for Academic Documents"></a><strong>Nougat: Neural Optical Understanding for Academic Documents</strong></h4><img src="/2024/07/16/DocumentAI/image-20240711161411469.png" class="" title="image-20240711161411469" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>Nougat (Neural Optical Understanding for Academic Documents) is a Visual Transformer model designed to perform Optical Character Recognition (OCR) on scientific documents, converting them into a markup language. This approach addresses the challenge of semantic information loss in PDFs, particularly for mathematical expressions. The model uses a Swin Transformer encoder to process document images into latent embeddings, which are then converted to a sequence of tokens in an autoregressive manner. The primary contributions of the paper include:</p>
+<ol>
+<li>The release of a pre-trained model capable of converting PDFs to a lightweight markup language.</li>
+<li>An approach that only depends on the image of a page, making it applicable to scanned papers and books.</li>
+</ol>
+<p>The aims of Nougat—to improve the accessibility and searchability of scientific documents by converting them into machine-readable text—are well-supported by the methodology and results. The choice of a transformer-based model, known for its effectiveness in sequence-to-sequence tasks, is apt for OCR tasks involving complex structures like mathematical expressions. The results demonstrate that the model can effectively convert PDFs into a useful markup language.</p>
+<p>Compared to existing OCR tools like Tesseract OCR, which processes text line-by-line, Nougat’s transformer-based approach offers a more holistic understanding of the document’s structure. It avoids the common pitfalls of traditional OCR methods, such as misinterpreting superscripts and subscripts, making it more suitable for scientific documents. The use of an end-to-end architecture also sets it apart from models that rely on third-party OCR engines, providing a more integrated solution.</p>
+<h3 id="2-Multi-Functional-Document-AI"><a href="#2-Multi-Functional-Document-AI" class="headerlink" title="2.Multi Functional Document AI"></a>2.Multi Functional Document AI</h3><h4 id="DiT-Self-supervised-Pre-training-for-Document-Image-Transformer"><a href="#DiT-Self-supervised-Pre-training-for-Document-Image-Transformer" class="headerlink" title="DiT: Self-supervised Pre-training for Document Image Transformer"></a><strong>DiT: Self-supervised Pre-training for Document Image Transformer</strong></h4><p>function: document image classification, layout analysis, table detection, and OCR text detection. </p>
+<img src="/2024/07/16/DocumentAI/image-20240710162148743.png" class="" title="image-20240710162148743" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>DiT (Document Image Transformer) is a self-supervised pre-trained model designed for Document AI tasks. Leveraging the Transformer architecture, DiT focuses on document image understanding by pre-training on a large-scale dataset of 42 million unlabeled document images. The model employs Masked Image Modeling (MIM) as its pre-training objective, similar to the BEiT model, to predict visual tokens from corrupted input images. This approach allows DiT to learn the global patch relationships within document images without relying on human-labeled data. The pre-trained DiT model has been fine-tuned and tested on several Document AI benchmarks, achieving state-of-the-art results in tasks such as document image classification, layout analysis, table detection, and OCR text detection. </p>
+<p>By adopting a self-supervised learning approach, the authors effectively address the scarcity of large-scale human-labeled document image datasets. Training on 42 million unlabeled document images using MIM allows the model to capture intricate details and relationships in the document layout, making it versatile for various Document AI tasks. The choice of using a Transformer architecture aligns well with recent advancements in natural image processing and leverages the strengths of multi-head attention mechanisms to process image patches effectively.</p>
+<p>Compared to other Document AI approaches, DiT stands out for its self-supervised learning methodology and its application of the Transformer architecture to document images. Traditional models often rely on supervised learning with manually annotated datasets, which can be limiting in terms of scalability and adaptability to different document types. DiT’s approach of pre-training on a massive unlabeled dataset sets it apart by addressing these limitations. Additionally, the state-of-the-art results achieved by DiT across multiple benchmarks underscore its superiority over conventional models that may not leverage such extensive pre-training techniques.</p>
+<p>One potential area for further exploration could be the adaptation of DiT to multilingual document processing, given the diverse range of languages and scripts in real-world documents. This could enhance its applicability and robustness in global contexts.</p>
+<h4 id="LayoutLMv3-Pre-training-for-Document-AI-with-Unified-Text-and-Image-Masking"><a href="#LayoutLMv3-Pre-training-for-Document-AI-with-Unified-Text-and-Image-Masking" class="headerlink" title="LayoutLMv3: Pre-training for Document AI with Unified Text and Image Masking"></a><strong>LayoutLMv3: Pre-training for Document AI with Unified Text and Image Masking</strong></h4><img src="/2024/07/16/DocumentAI/image-20240711154551449.png" class="" title="image-20240711154551449" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>function: form understanding, receipt understanding, document visual question answering, document image classification, document layout analysis	</p>
+<p>LayoutLMv3 is a pre-trained multimodal model designed for Document AI, which integrates text and image masking to improve multimodal representation learning. Unlike previous multimodal pre-trained models that have different pre-training objectives for text and image modalities, LayoutLMv3 uses a unified approach, simplifying the architecture and enhancing performance. Key features and contributions include:</p>
+<ol>
+<li><strong>Unified Architecture and Pre-training Objectives</strong>: 	LayoutLMv3 employs unified text and image masking objectives, including Masked Language Modeling (MLM), Masked Image Modeling (MIM), and Word-Patch Alignment (WPA), to learn multimodal representations effectively.</li>
+<li><strong>Experimental Validation</strong>: The model achieves state-of-the-art performance on both text-centric tasks (form understanding, receipt understanding, document visual question answering) and image-centric tasks (document image classification, document layout analysis).</li>
+<li><strong>Parameter Efficiency</strong>: The model does not rely on pre-trained CNN or Faster R-CNN backbones for visual features, significantly reducing the number of parameters and eliminating the need for region annotations.</li>
+</ol>
+<p>The methodology used in LayoutLMv3 is highly appropriate for the goals of the study. By unifying text and image masking objectives, the authors address the common issue in multimodal representation learning where different objectives for text and image modalities can hinder the learning process. This unified approach is not only innovative but also practical, as it simplifies the training process and improves cross-modal alignment.</p>
+<p>The aims of the study are to improve multimodal representation learning for Document AI tasks by using a unified text and image masking approach. The methodology directly supports this aim by employing MLM, MIM, and WPA objectives within a single architecture. The results validate the effectiveness of this approach, as LayoutLMv3 achieves state-of-the-art performance across various benchmarks, demonstrating that the unified methodology successfully meets the study’s aims.</p>
+<p>Compared to other models in the same domain, such as DocFormer and SelfDoc, LayoutLMv3 stands out due to its unified pre-training objectives and its avoidance of reliance on CNN-based backbones. This makes LayoutLMv3 more efficient in terms of parameter usage and training complexity. Additionally, its performance on both text-centric and image-centric tasks surpasses that of other models, highlighting its robustness and versatility.</p>
+<h4 id="Table-Transformer-TATR"><a href="#Table-Transformer-TATR" class="headerlink" title="Table Transformer (TATR)"></a>Table Transformer (TATR)</h4><img src="/2024/07/16/DocumentAI/image-20240711160102234.png" class="" title="image-20240711160102234" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p>TATR is an advanced deep learning model designed for object detection specifically tailored to extract tables from image inputs. Introduced in the context of the PubTables-1M project. It operates by leveraging object detection principles to achieve robust table recognition.</p>
+<p>TATR’s methodology, based on object detection using Transformer architecture, aligns well with current trends in computer vision, particularly in handling complex document structures like tables. The use of Transformer models allows for holistic understanding of table relationships within documents, enhancing accuracy and adaptability across different domains.</p>
+<p> The paper effectively integrates its aim of comprehensive table extraction with a Transformer-based object detection approach. By focusing on direct set prediction and leveraging global context via bipartite matching, TATR achieves notable advancements in table recognition accuracy without the traditional anchor-based mechanisms.</p>
+<p>Compared to other methods in table extraction, TATR’s use of Transformers for object detection represents a significant leap forward. It demonstrates competitive performance comparable to well-established detectors like Faster R-CNN while simplifying the detection pipeline and improving inference efficiency.</p>
+<h3 id="3-Datasets"><a href="#3-Datasets" class="headerlink" title="3.Datasets"></a>3.Datasets</h3><img src="/2024/07/16/DocumentAI/image-20240711163132714.png" class="" title="image-20240711163132714" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<p><a target="_blank" rel="noopener" href="https://github.com/HCIILAB/M6Doc">https://github.com/HCIILAB/M6Doc</a><br><a target="_blank" rel="noopener" href="https://github.com/DS4SD/DocLayNet">https://github.com/DS4SD/DocLayNet</a><br><a target="_blank" rel="noopener" href="https://github.com/doc-analysis/TableBank">https://github.com/doc-analysis/TableBank</a><br><a target="_blank" rel="noopener" href="https://github.com/buptlihang/CDLA">https://github.com/buptlihang/CDLA</a><br><a target="_blank" rel="noopener" href="https://github.com/ibm-aur-nlp/PubLayNet">https://github.com/ibm-aur-nlp/PubLayNet</a><br><a target="_blank" rel="noopener" href="https://github.com/360AILAB-NLP/360LayoutAnalysis">https://github.com/360AILAB-NLP/360LayoutAnalysis</a></p>
+<h4 id="PubTables-1M-Towards-comprehensive-table-extraction-from-unstructured-documents"><a href="#PubTables-1M-Towards-comprehensive-table-extraction-from-unstructured-documents" class="headerlink" title="PubTables-1M: Towards comprehensive table extraction from unstructured documents"></a><strong>PubTables-1M: Towards comprehensive table extraction from unstructured documents</strong></h4><p>PubTables-1M is a comprehensive dataset developed for <strong>table structure recognition</strong> (TSR) and <strong>table detection</strong> (TD) tasks in document analysis. It comprises nearly a million tables sourced from the PMC Open Access (PMCOA) corpus, each annotated with spatial and semantic information derived from PDF and XML representations of scientific articles. The dataset addresses challenges such as aligning text from PDFs with structured XML data, normalizing table structures to correct over-segmentation, and applying quality control measures to ensure annotation accuracy.</p>
+<img src="/2024/07/16/DocumentAI/image-20240711164434844.png" class="" title="image-20240711164434844" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<h4 id="M6Doc-Dataset"><a href="#M6Doc-Dataset" class="headerlink" title="M6Doc Dataset"></a>M6Doc Dataset</h4><p>The <a target="_blank" rel="noopener" href="https://openaccess.thecvf.com/content/CVPR2023/html/Cheng_M6Doc_A_Large-Scale_Multi-Format_Multi-Type_Multi-Layout_Multi-Language_Multi-Annotation_Category_Dataset_CVPR_2023_paper.html">M6Doc</a> dataset for the research of document <strong>layout analysis</strong> in Modern Document. It contains a total of 9,080 modern document images, which are categorized into seven subsets, <em>i.e.</em>, scientific article (11%), textbook (23%), test paper (22%), magazine (22%), newspaper (11%), note (5.5%), and book (5.5%) according to their content and layouts. It contains three formats: PDF (64%), photographed documents (5%), and scanned documents (31%). The dataset includes a total of 237,116 annotated instances.</p>
+<img src="/2024/07/16/DocumentAI/image-20240711164206791.png" class="" title="image-20240711164206791" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<h4 id="DocLayNet"><a href="#DocLayNet" class="headerlink" title="DocLayNet"></a>DocLayNet</h4><p>DocLayNet is a human-annotated document layout segmentation dataset containing <code>80863</code> pages from a broad variety of document sources. It provides page-by-page layout segmentation ground-truth using bounding-boxes for 11 distinct class labels on 80863 unique pages from 6 document categories. It provides several unique features compared to related work such as PubLayNet or DocBank:</p>
+<ol>
+<li><em>Human Annotation</em>: DocLayNet is hand-annotated by well-trained experts, providing a gold-standard in layout segmentation through human recognition and interpretation of each page layout</li>
+<li><em>Large layout variability</em>: DocLayNet includes diverse and complex layouts from a large variety of public sources in Finance, Science, Patents, Tenders, Law texts and Manuals</li>
+<li><em>Detailed label set</em>: DocLayNet defines 11 class labels to distinguish layout features in high detail.</li>
+<li><em>Redundant annotations</em>: A fraction of the pages in DocLayNet are double- or triple-annotated, allowing to estimate annotation uncertainty and an upper-bound of achievable prediction accuracy with ML models</li>
+<li><em>Pre-defined train- test- and validation-sets</em>: DocLayNet provides fixed sets for each to ensure proportional representation of the class-labels and avoid leakage of unique layout styles across the sets.</li>
+</ol>
+<img src="/2024/07/16/DocumentAI/image-20240711164824215.png" class="" title="image-20240711164824215" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<h4 id="TableBank"><a href="#TableBank" class="headerlink" title="TableBank"></a>TableBank</h4><p>TableBank is a new image-based table detection and recognition dataset built with novel weak supervision from Word and Latex documents on the internet. The TableBank dataset totally consists of 417,234 high quality labeled tables as well as their original documents in a variety of domains.</p>
+<img src="/2024/07/16/DocumentAI/image-20240711165744370.png" class="" title="image-20240711165744370" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<h4 id="CDLA"><a href="#CDLA" class="headerlink" title="CDLA"></a>CDLA</h4><p>CDLA is a Chinese Document Layout Analysis dataset, targeted at scenarios involving Chinese literature (papers). It includes the following 10 labels:</p>
+<img src="/2024/07/16/DocumentAI/image-20240711165931293.png" class="" title="image-20240711165931293" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<img src="/2024/07/16/DocumentAI/image-20240711170018608.png" class="" title="image-20240711170018608" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+
+
+<h4 id="PubLayNet"><a href="#PubLayNet" class="headerlink" title="PubLayNet"></a>PubLayNet</h4><p>PubLayNet is a large dataset of document images, of which the layout is annotated with both bounding boxes and polygonal segmentations. The source of the documents is <a target="_blank" rel="noopener" href="https://www.ncbi.nlm.nih.gov/pmc/tools/openftlist/">PubMed Central Open Access Subset (commercial use collection)</a>. The annotations are automatically generated by matching the PDF format and the XML format of the articles in the PubMed Central Open Access Subset.</p>
+<img src="/2024/07/16/DocumentAI/image-20240711170606908.png" class="" title="image-20240711170606908" onerror='this.onerror=null;this.src="/img/404.jpg"'>
+
+<h4 id="360LayoutAnalysis"><a href="#360LayoutAnalysis" class="headerlink" title="360LayoutAnalysis"></a>360LayoutAnalysis</h4><p>360LayoutAnalysis uses manual annotation to refine and optimize the data of research papers with fine-grained labels, constructing a fine-grained layout analysis dataset for research report scenarios.</p>
+<p>Main features:</p>
+<ol>
+<li>Covers three vertical fields: Chinese research papers, English research papers, and Chinese research reports, along with a general scenario model.</li>
+<li>Lightweight and fast inference (trained with YOLOv8, single model size is 6.23MB).</li>
+<li>Chinese research paper scenario includes paragraph information.</li>
+<li>Chinese research report scenario&#x2F;general scenario.</li>
+</ol>
+
+
+</article>
+    
+    
+</div>
+<div id="post-next-prev" class="row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-blog-card trm-scroll-animation" data-scroll data-scroll-offset="40">
+        <a href="/2023/10/01/AIComputingSystem-%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E8%AF%86%E5%88%AB/" class="trm-cover-frame trm-anima-link">
+            
+            
+                <img alt="cover" class="no-fancybox" src="https://images.pexels.com/photos/15895549/pexels-photo-15895549.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load">
+            
+        </a>
+        
+        <div class="trm-card-descr">
+            <div class="trm-label trm-category trm-mb-20">
+                <a href=" /categories/AIComputingSystem/">
+                    AIComputingSystem
+                </a>
+            </div>
+            <h5>
+                <a href="/2023/10/01/AIComputingSystem-%E6%89%8B%E5%86%99%E6%95%B0%E5%AD%97%E8%AF%86%E5%88%AB/" class="trm-anima-link">
+                    AIComputingSystem-手写数字识别
+                </a>
+            </h5>
+            <div class="trm-divider trm-mb-20 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>23/10/01</li>
+                <li>16:56</li>
+                
+                    <li>2.4k</li>
+                
+                
+                    <li>8</li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-scroll-animation" data-scroll data-scroll-offset="50">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2023- 2024</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">Xenon的小破站</span>
+        </div>
+    
+
+    
+        <div class="trm-footer-item">
+            <span>
+                由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.3.0
+            </span>
+            <span class="footer-separator" data-separator=" | "></span>
+            <span> 
+                主题 - 
+                <a rel="noopener" href='https://github.com/MaLuns/hexo-theme-async' target='_blank'>Async</a>
+                v2.0.3
+            </span>
+        </div>
+      
+
+     
+
+     
+</footer>
+ 
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            <div class="trm-fixed-container" data-scroll data-scroll-sticky data-scroll-target=".locomotive-scroll__sticky-target" data-scroll-offset="-10">
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="单栏和双栏切换" onclick="asyncFun.switchSingleColumn()">
+            <i class="iconfont fas fa-arrows-alt-h"></i>
+        </div>
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+          </div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
+
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="/js/plugins/typing.js?v=2.0.3"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="/js/main.js?v=2.0.3"></script>
+
+  <!-- 《页面点击小红心 -->
+  <!-- -->
+  <!-- 页面点击小红心》 -->
+
+  <!--鼠标点击烟花爆炸效果，需要引入jQuery-->
+    <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+    <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+    <script type="text/javascript" src="/js/fireworks.js"></script>
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+
+</html>
